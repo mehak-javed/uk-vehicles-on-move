@@ -1,26 +1,123 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* The site is light-only: dark: styles apply only inside an explicit .dark wrapper, never from the OS setting. */
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * UK Vehicles On Move — design tokens (US-02)
+ *
+ * Brand: black, off-white, gold accent, neutral greys.
+ * Contrast (WCAG 2.2 AA, 4.5:1 for normal text):
+ *   gold  #C9A227 on ink      8.1:1  → gold text/buttons on dark surfaces
+ *   ink   on gold             8.1:1  → "accent" button
+ *   gold-dark #7A5C0A on paper 5.9:1 → gold text on light surfaces
+ *   muted #5C5A55 on paper    6.5:1
+ *   plain gold on paper only 2.3:1 → never use for text on light surfaces
+ */
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette */
+  --ink: #0b0b0c;
+  --ink-soft: #1c1c1f;
+  --paper: #faf8f3;
+  --white: #ffffff;
+  --gold: #c9a227;
+  --gold-light: #e3c766;
+  --gold-dark: #7a5c0a;
+  --grey-100: #f1eee7;
+  --grey-200: #e4e0d6;
+  --grey-400: #b5b2aa;
+  --grey-600: #5c5a55;
+
+  /* Semantic roles (used by shadcn/ui components) */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--white);
+  --card-foreground: var(--ink);
+  --popover: var(--white);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--grey-100);
+  --secondary-foreground: var(--ink);
+  --muted: var(--grey-100);
+  --muted-foreground: var(--grey-600);
+  --accent: var(--gold);
+  --accent-foreground: var(--ink);
+  --destructive: #b42318;
+  --border: var(--grey-200);
+  --input: var(--grey-400);
+  --ring: var(--gold-dark);
+  --radius: 0.5rem;
 }
 
 @theme inline {
+  /* Semantic colours */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand colours (bg-ink, text-gold-dark, …) */
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-grey-100: var(--grey-100);
+  --color-grey-200: var(--grey-200);
+  --color-grey-400: var(--grey-400); /* text on ink: 9.3:1 */
+  --color-grey-600: var(--grey-600); /* text on paper: 6.5:1 */
+
+  /* Typography: serif headings, sans-serif body */
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display), ui-serif, Georgia, serif;
+
+  /* Radii */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight;
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
