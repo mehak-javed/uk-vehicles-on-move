@@ -157,7 +157,7 @@ export default function StyleguidePage() {
   if (!enabled) notFound();
 
   return (
-    <main className="py-16">
+    <div className="py-16">
       <Container className="flex flex-col">
         <SectionHeading
           as="h1"
@@ -442,6 +442,6 @@ export default function StyleguidePage() {
           </div>
         </Section>
       </Container>
-    </main>
+    </div>
   );
 }
