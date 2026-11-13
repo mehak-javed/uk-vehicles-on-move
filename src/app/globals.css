@@ -90,6 +90,14 @@
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-display), ui-serif, Georgia, serif;
 
+  /* Announcement ticker: content is duplicated, so -50% loops seamlessly */
+  --animate-ticker: ticker 40s linear infinite;
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
   /* Radii */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
