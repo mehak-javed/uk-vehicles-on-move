@@ -20,11 +20,11 @@ A story can move to **Ready** when:
 
 ## Definition of Done
 A story is **Done** when:
-- [ ] All acceptance criteria are met and verified on the Vercel preview
+- [ ] All acceptance criteria are met and verified on the Netlify deploy preview
 - [ ] Code is reviewed and approved through a pull request
 - [ ] CI passes: lint, typecheck, build and tests
 - [ ] New logic has unit tests; critical journeys have E2E coverage
-- [ ] Inputs are validated server-side; RLS covers any new table
+- [ ] Inputs are validated server-side; every new query goes through the authorisation layer
 - [ ] No secrets or personal data are committed
 - [ ] The UI is responsive (375 / 768 / 1280 px) and keyboard-accessible
 - [ ] Docs and `.env.example` are updated where relevant
@@ -57,7 +57,10 @@ chore(ci): add playwright job
 - Squash-merge to keep `main` history linear
 
 ## Releases
-Semantic versioning (`v1.0.0`) with tagged releases and `CHANGELOG.md`. Production deploys come from `main` through Vercel.
+Semantic versioning (`v1.0.0`) with tagged releases and `CHANGELOG.md`. Production deploys come from `main` through Netlify. Prisma migrations run with `prisma migrate deploy` during the production build.
 
 ## Security
 Never commit secrets, credentials or customer data. Use `.env.local` (git-ignored) and document variable names in `.env.example`. Report vulnerabilities privately to the maintainers, not in public issues.
+
+## Environments
+The same code runs locally, on Netlify deploy previews and in production. Only environment variables change (see `.env.example` and PLAN.md §6). Never write files to the server's disk: uploads go to Cloudinary and data goes to PostgreSQL.

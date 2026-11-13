@@ -6,6 +6,8 @@ Run from the repository root after the repo has been pushed to GitHub:
 
     python3 scripts/create_github_issues.py --dry-run   # preview only
     python3 scripts/create_github_issues.py             # create everything
+    python3 scripts/create_github_issues.py --update    # sync existing issues with the backlog
+    python3 scripts/create_github_issues.py --update --keep-meta  # sync text only, keep labels/milestones
 
 Order of operations:
   1. labels  2. milestones  3. epics  4. stories (linked to their epic, with
@@ -21,6 +23,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 BACKLOG = ROOT / "docs" / "BACKLOG.md"
 DRY_RUN = "--dry-run" in sys.argv
+KEEP_META = "--keep-meta" in sys.argv  # with --update: change only titles/bodies, keep existing labels & milestones
+UPDATE = "--update" in sys.argv  # edit existing issues (matched by US-xx / [Epic] Ex in the title)
 
 LABEL_COLORS = {
     "type:epic": "3e1f79", "type:story": "1d76db", "type:enabler": "5319e7", "type:bug": "d73a4a",
@@ -70,6 +74,21 @@ def parse_backlog(text):
     return items
 
 
+def existing_issue_numbers():
+    """Map backlog ids (E1, US-07 …) to existing issue numbers by reading issue titles."""
+    if DRY_RUN:
+        return {}
+    out = gh("issue", "list", "--state", "all", "--limit", "500",
+             "--json", "number,title", capture=True)
+    found = {}
+    for issue in json.loads(out):
+        m = re.search(r"\b(US-\d+)\b", issue["title"]) or \
+            re.search(r"\[Epic\]\s*(E\d+)\b", issue["title"])
+        if m and m.group(1) not in found:
+            found[m.group(1)] = issue["number"]
+    return found
+
+
 def create_issue(item, body):
     args = ["issue", "create", "--title", item["title"], "--body", body]
     for label in item["labels"]:
@@ -87,7 +106,9 @@ def main():
     print(f"Parsed {len(epics)} epics and {len(stories)} stories from {BACKLOG.relative_to(ROOT)}")
 
     print("1. Labels")
-    for name in sorted({l for i in items for l in i["labels"]} | set(EXTRA_LABELS)):
+    if KEEP_META:
+        print("   skipped (--keep-meta)")
+    for name in ([] if KEEP_META else sorted({l for i in items for l in i["labels"]} | set(EXTRA_LABELS))):
         gh("label", "create", name, "--color", color_for(name), "--force")
 
     print("2. Milestones")
@@ -95,15 +116,32 @@ def main():
     if not DRY_RUN:
         out = gh("api", "repos/{owner}/{repo}/milestones?state=all&per_page=100", capture=True)
         existing = {m["title"] for m in json.loads(out)}
-    for title in dict.fromkeys(i["milestone"] for i in stories if i["milestone"]):
+    for title in ([] if KEEP_META else dict.fromkeys(i["milestone"] for i in stories if i["milestone"])):
         if title not in existing:
             gh("api", "repos/{owner}/{repo}/milestones", "-f", f"title={title}")
 
     numbers = {}  # backlog id -> issue number
+    if UPDATE:
+        numbers = existing_issue_numbers()
+        missing = [i["id"] for i in items if i["id"] not in numbers]
+        print(f"   Found {len(numbers)} existing issues; {len(missing)} new: {missing or '-'}")
+
+    def upsert(item, body):
+        if UPDATE and item["id"] in numbers:
+            args = ["issue", "edit", str(numbers[item["id"]]),
+                    "--title", item["title"], "--body", body]
+            if not KEEP_META:
+                for label in item["labels"]:
+                    args += ["--add-label", label]
+                if item["milestone"]:
+                    args += ["--milestone", item["milestone"]]
+            gh(*args)
+            return numbers[item["id"]]
+        return create_issue(item, body)
 
     print("3. Epics")
     for epic in epics:
-        numbers[epic["id"]] = create_issue(epic, epic["body"])
+        numbers[epic["id"]] = upsert(epic, epic["body"])
         print(f"  ✓ #{numbers[epic['id']]} {epic['title']}")
 
     print("4. Stories")
@@ -119,7 +157,7 @@ def main():
         if story["epic"]:
             epic = next(e for e in epics if e["id"] == story["epic"])
             body = f"**Epic:** #{numbers[story['epic']]} {epic['title']}\n\n{body}"
-        numbers[story["id"]] = create_issue(story, body)
+        numbers[story["id"]] = upsert(story, body)
         if story["epic"]:
             children[story["epic"]].append(numbers[story["id"]])
         print(f"  ✓ #{numbers[story['id']]} {story['title']}")
