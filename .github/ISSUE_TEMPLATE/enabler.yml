@@ -1,0 +1,33 @@
+name: Enabler / technical task
+description: Technical work that supports user stories (CI, infrastructure, security, tooling)
+title: "US-XX · "
+labels: ["type:enabler"]
+body:
+  - type: input
+    id: epic
+    attributes:
+      label: Epic
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: Goal
+      value: |
+        As a **<persona>**, I want **<capability>**, so that **<benefit>**.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - **Given** … **when** … **then** …
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ]

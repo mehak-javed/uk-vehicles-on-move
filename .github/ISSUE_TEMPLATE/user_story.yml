@@ -1,0 +1,52 @@
+name: User story
+description: A user-facing increment of value
+title: "US-XX · "
+labels: ["type:story"]
+body:
+  - type: input
+    id: epic
+    attributes:
+      label: Epic
+      placeholder: "#1 E2 · Public website"
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: User story
+      value: |
+        As a **<persona>**, I want **<capability>**, so that **<benefit>**.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - **Given** … **when** … **then** …
+        - **Given** … **when** … **then** …
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      value: |
+        - [ ]
+  - type: input
+    id: dependencies
+    attributes:
+      label: Dependencies
+      placeholder: "US-11, US-12 or none"
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority (MoSCoW)
+      options: [Must, Should, Could, Won't (this release)]
+    validations:
+      required: true
+  - type: dropdown
+    id: points
+    attributes:
+      label: Story points
+      options: ["1", "2", "3", "5", "8"]
