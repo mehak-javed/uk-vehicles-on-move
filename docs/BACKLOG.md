@@ -71,7 +71,8 @@ As a **developer**, I want every change to be automatically linted, type-checked
 **Acceptance criteria**
 - **Given** a pull request is opened, **when** CI runs, **then** lint, typecheck and build jobs run and report status on the PR.
 - **Given** any CI job fails, **when** I try to merge, **then** branch protection blocks the merge.
-- **Given** a pull request is opened, **when** Vercel builds it, **then** a preview URL is posted on the PR.
+- **Given** a pull request is opened, **when** Netlify builds it, **then** a deploy preview URL is posted on the PR.
+- **Given** a fresh clone, **when** I copy `.env.example` to `.env.local` and run `npm run dev`, **then** the app starts locally.
 
 **Tasks**
 - [ ] Scaffold Next.js 15 (App Router, TypeScript strict, Tailwind, `src/`)
@@ -79,7 +80,7 @@ As a **developer**, I want every change to be automatically linted, type-checked
 - [ ] `.env.example` documenting every variable (no real values committed)
 - [ ] GitHub Actions workflow: install → lint → typecheck → build
 - [ ] Branch protection on `main`: PR required, CI must pass
-- [ ] Connect Vercel previews
+- [ ] Create a Netlify site linked to the repo (`netlify.toml`, Next.js runtime) with deploy previews per PR
 
 **Dependencies:** none
 
@@ -285,28 +286,30 @@ As a **visitor on any device**, I want the site to work well and be easy to find
 
 **Dependencies:** US-03 – US-09
 
-## US-11 · Data model, Row Level Security & storage
+## US-11 · PostgreSQL data model, authorisation layer & file storage
 id: US-11
 epic: E1
 labels: type:enabler, area:backend, area:database, area:security, priority:must, points:5
 milestone: Day 3 — Backend
 
 **User story**
-As the **operations admin**, I want all business data stored securely with strict access rules, so that customers and drivers can only ever see their own information.
+As the **operations admin**, I want all business data and documents stored securely with strict access rules, so that customers and drivers can only ever see their own information.
 
 **Acceptance criteria**
-- **Given** the migrations, **when** applied to a clean database, **then** every table in the data model is created and RLS is enabled on every table.
-- **Given** a customer, **when** they query `jobs`, **then** only jobs where they are the customer are returned.
-- **Given** a driver, **when** they query `jobs`, **then** only jobs assigned to them are returned.
-- **Given** private buckets (`applications`, `incidents`, `job-photos`), **when** an unauthenticated request is made, **then** access is denied. Files are served only through short-lived signed URLs.
+- **Given** the Prisma migrations, **when** applied to a clean PostgreSQL database (local or Neon), **then** every model in the data model is created.
+- **Given** a customer, **when** they request jobs through the data-access layer, **then** only jobs where they are the customer are returned.
+- **Given** a driver, **when** they request jobs, **then** only jobs assigned to them are returned.
+- **Given** a private file (CV, licence, incident or job photo), **when** its Cloudinary URL is opened without a signature, **then** access is denied. Files are served only through short-lived signed URLs.
+- **Given** the same code, **when** run locally and on Netlify, **then** only `DATABASE_URL` and `CLOUDINARY_FOLDER` differ.
 
 **Tasks**
-- [ ] Supabase project + local CLI setup
-- [ ] Migrations for all tables in PLAN.md §6
+- [ ] Neon project with `main` (production) and `dev` branches. Local option: PostgreSQL in Docker (`docker-compose.yml`)
+- [ ] Prisma schema for all models in PLAN.md §6 + first migration
+- [ ] Prisma client singleton (safe for serverless connection reuse, Neon pooled connection string)
 - [ ] Reference number generator (e.g. `UVM-Q-1042`)
-- [ ] RLS policies per role
-- [ ] Storage buckets and policies
-- [ ] Generated TypeScript types + seed data
+- [ ] Data-access layer `src/server/data/*` with ownership + role checks on every query
+- [ ] Cloudinary setup: signed upload endpoint, `authenticated` delivery for private files, signed URL helper, `uvm/dev` vs `uvm/prod` folders
+- [ ] Seed script (`prisma db seed`) with demo admin, customer, driver and jobs
 
 **Dependencies:** US-01
 
@@ -326,11 +329,13 @@ As a **customer, driver or admin**, I want to sign in securely and see only the 
 - **Given** the public site, **when** anyone looks for it, **then** there is no way to self-register as admin or driver.
 
 **Tasks**
-- [ ] Supabase Auth (email/password + magic link for customers)
-- [ ] `profiles` trigger with default role `customer`
-- [ ] Route protection middleware by role
-- [ ] Wire up sign-in, sign-out, reset password
-- [ ] Admin account created only via CLI/seed
+- [ ] Better Auth with the Prisma adapter (email + password, hashed passwords, database sessions)
+- [ ] `role` field on `User` (`ADMIN` / `CUSTOMER` / `DRIVER`), default `CUSTOMER`
+- [ ] Password reset + account invite emails sent through Resend
+- [ ] Middleware + server-side session checks protecting `/portal/*`, `/driver/*`, `/admin/*` by role
+- [ ] Wire up sign-in, sign-out, reset password screens
+- [ ] Admin account created only via seed / CLI script
+- [ ] `BETTER_AUTH_URL` set per environment (localhost locally, company domain in production)
 
 **Dependencies:** US-09, US-11
 
@@ -350,10 +355,10 @@ As a **visitor**, I want my quote request to be received and confirmed with a re
 - **Given** a bot or more than 5 submissions per hour from one IP, **when** it submits, **then** the request is blocked.
 
 **Tasks**
-- [ ] Server action with shared Zod validation
+- [ ] Server action with shared Zod validation, saving through Prisma
 - [ ] Cloudflare Turnstile verification
-- [ ] Rate limiting
-- [ ] React Email templates (company + customer)
+- [ ] Rate limiting (stored in PostgreSQL, since serverless functions keep no memory between requests)
+- [ ] Resend client + React Email templates (company + customer); sender from `EMAIL_FROM`
 - [ ] Connect the US-07 form to the server action
 
 **Dependencies:** US-07, US-11
@@ -388,14 +393,14 @@ milestone: Day 4 — Backend
 As a **driver applicant**, I want to submit my application with my CV and driving licence, so that the company can assess me for work.
 
 **Acceptance criteria**
-- **Given** a valid application with documents, **when** I submit, **then** files are stored in the private `applications` bucket and the application is saved with status `new`.
+- **Given** a valid application with documents, **when** I submit, **then** files are uploaded directly to Cloudinary as private (`authenticated`) assets and the application is saved with status `new`.
 - **Given** a successful submission, **then** I receive an acknowledgement email and the company is notified.
-- **Given** a file that is not PDF/JPG/PNG or is over 5 MB, **when** uploaded, **then** the server rejects it.
+- **Given** a file that is not PDF/JPG/PNG or is over 5 MB, **when** uploaded, **then** it is rejected (client check + signed upload restrictions).
 
 **Tasks**
-- [ ] Secure upload with server-side type and size checks
-- [ ] `driver_applications` insert
-- [ ] Acknowledgement and notification emails
+- [ ] Signed direct browser → Cloudinary upload (folder `uvm/<env>/applications`, allowed formats, max size)
+- [ ] `DriverApplication` record storing Cloudinary `public_id`s
+- [ ] Acknowledgement and notification emails (Resend)
 
 **Dependencies:** US-08, US-11
 
@@ -409,14 +414,14 @@ milestone: Day 4 — Backend
 As a **driver**, I want to report an incident with photos as soon as it happens, so that the company can respond quickly and keep an accurate record.
 
 **Acceptance criteria**
-- **Given** a valid incident report, **when** submitted, **then** it is stored with a reference number (`UVM-I-…`) and photos go to the private `incidents` bucket.
+- **Given** a valid incident report, **when** submitted, **then** it is stored with a reference number (`UVM-I-…`) and photos are uploaded to Cloudinary as private assets.
 - **Given** a new incident, **then** an urgent email is sent to the company immediately.
 - **Given** I am a signed-in driver, **when** I open the form from a job, **then** the job reference is pre-filled.
 
 **Tasks**
-- [ ] Photo upload (multiple, mobile camera friendly)
-- [ ] `incident_reports` insert + reference number
-- [ ] Urgent email notification
+- [ ] Multiple photo upload, mobile camera friendly (signed direct upload to `uvm/<env>/incidents`)
+- [ ] `IncidentReport` record + reference number
+- [ ] Urgent email notification (Resend)
 
 **Dependencies:** US-08, US-11
 
@@ -435,10 +440,12 @@ As the **operations admin**, I want emails to come from the company domain and l
 - **Given** the business mailboxes, **when** set up, **then** general and quotes mailboxes can send and receive.
 
 **Tasks**
-- [ ] Confirm domain with the client
-- [ ] Create business mailboxes (provider chosen by the client)
-- [ ] Verify the domain in Resend; add DNS records
-- [ ] Deliverability test
+- [ ] Confirm the domain purchase and get access to its DNS settings
+- [ ] Zoho Mail Free: add the domain, create `info@` and `quotes@`, add MX + SPF + DKIM records
+- [ ] Resend: verify the `send.` subdomain (MX + SPF + DKIM records)
+- [ ] Add a DMARC record (start with `p=none`, tighten after monitoring)
+- [ ] Switch `EMAIL_FROM` from `onboarding@resend.dev` to `quotes@<domain>`
+- [ ] Deliverability test to Gmail and Outlook
 
 **Dependencies:** none (raise with the client on Day 1)
 
@@ -480,7 +487,7 @@ As the **operations admin**, I want to turn an accepted quote into a scheduled j
 
 **Tasks**
 - [ ] Convert-to-job action
-- [ ] Customer invite via Supabase Auth
+- [ ] Customer account invite via Better Auth (set-password email through Resend)
 - [ ] Jobs list and detail with driver assignment
 - [ ] Job event logging
 
@@ -502,8 +509,8 @@ As the **operations admin**, I want to review driver applications and their docu
 
 **Tasks**
 - [ ] Applications list and detail
-- [ ] Signed URL document viewer
-- [ ] Approve (invite driver) / reject actions
+- [ ] Document viewer using expiring Cloudinary signed URLs (generated only for admins)
+- [ ] Approve (invite a driver account via Better Auth, role `DRIVER`) / reject actions
 
 **Dependencies:** US-12, US-15
 
@@ -538,7 +545,7 @@ As the **operations admin**, I want to publish news, testimonials, gallery image
 **Acceptance criteria**
 - **Given** the content area, **when** I create, edit or delete a news post, testimonial or gallery image, **then** the public site reflects the change within 60 seconds.
 - **Given** the announcement ticker settings, **when** I update the messages, **then** the ticker on every page shows them.
-- **Given** an image upload, **when** saved, **then** it is optimised and stored in the public media bucket.
+- **Given** an image upload, **when** saved, **then** it is stored in Cloudinary (`uvm/<env>/public`) and served optimised (auto format and quality).
 
 **Tasks**
 - [ ] CRUD screens for news, testimonials, gallery
@@ -563,7 +570,7 @@ As a **customer**, I want to see the status of my delivery and proof photos, so 
 
 **Tasks**
 - [ ] Portal jobs list
-- [ ] Job detail with timeline and photo gallery (signed URLs)
+- [ ] Job detail with timeline and photo gallery (Cloudinary signed URLs, generated only after the ownership check)
 - [ ] Profile page (name, phone)
 
 **Dependencies:** US-12, US-19
@@ -601,11 +608,11 @@ As a **driver**, I want to record collection and delivery with photos and notes,
 - **Given** an assigned job, **when** I tap "Collected", "In transit" or "Delivered", **then** the status updates in order and a `job_events` record is created with time and author.
 - **Given** "Collected" or "Delivered", **when** I confirm, **then** at least one photo is required, captured from the camera or gallery.
 - **Given** a problem, **when** I tap "Report incident", **then** the incident form opens with the job reference pre-filled.
-- **Given** a job not assigned to me, **when** I try to update it, **then** the database rejects the update (RLS).
+- **Given** a job not assigned to me, **when** I try to update it, **then** the server rejects the update (authorisation layer) and nothing changes.
 
 **Tasks**
 - [ ] Status transition actions with validation of allowed transitions
-- [ ] Photo upload to `job-photos` with type (collection / delivery / damage)
+- [ ] Signed direct photo upload to Cloudinary (`uvm/<env>/jobs`) + `JobPhoto` record with type (collection / delivery / damage)
 - [ ] Notes field
 - [ ] Incident shortcut
 
@@ -644,12 +651,13 @@ As a **developer**, I want automated tests for the critical journeys, so that fu
 **Acceptance criteria**
 - **Given** CI, **when** a PR is opened, **then** unit and end-to-end tests run and must pass before merge.
 - **Given** the E2E suite, **then** it covers: visitor submits a quote → admin prices and converts it → driver marks it delivered → customer sees the timeline.
-- **Given** the RLS test, **then** a customer cannot read another customer's job and a driver cannot update an unassigned job.
+- **Given** the authorisation tests, **then** a customer cannot read another customer's job and a driver cannot update an unassigned job.
 
 **Tasks**
 - [ ] Vitest: validation schemas, reference generator, status transition rules
-- [ ] Playwright E2E against a seeded local Supabase
-- [ ] RLS policy tests
+- [ ] Playwright E2E against a seeded PostgreSQL (Docker service in GitHub Actions)
+- [ ] Authorisation tests for the data-access layer
+- [ ] Mock Resend and Cloudinary in tests
 - [ ] Add test jobs to CI
 
 **Dependencies:** US-13 – US-25
@@ -670,7 +678,7 @@ As a **visitor**, I want control over cookies and clear information about how my
 - **Given** the privacy notice, **then** it lists retention periods for applications, incidents and quotes.
 
 **Tasks**
-- [ ] Consent state + conditional script loading
+- [ ] Consent state + conditional script loading (Cloudflare Web Analytics is cookieless; anything non-essential waits for consent)
 - [ ] Privacy and cookie policy content (client approval)
 - [ ] Privacy notices on forms
 
@@ -692,8 +700,9 @@ As the **business owner**, I want the platform protected against common attacks,
 - **Given** the repository history, **when** scanned for secrets, **then** none are found.
 
 **Tasks**
-- [ ] Security headers in `next.config`
+- [ ] Security headers in `next.config` / `netlify.toml`
 - [ ] Enable Dependabot + secret scanning
+- [ ] Confirm no code writes to the server file system and no private file is delivered without a signature
 - [ ] OWASP checklist in `docs/SECURITY_REVIEW.md`
 - [ ] Verify rate limits and server-side validation on all endpoints
 
@@ -709,16 +718,19 @@ milestone: Day 7 — Release
 As the **business owner**, I want the website live on the company domain and monitored, so that customers can use it and problems are spotted quickly.
 
 **Acceptance criteria**
-- **Given** the production URL, **when** visited, **then** it is served over HTTPS on the company domain.
-- **Given** the production database, **when** checked, **then** all migrations are applied and an admin account exists.
-- **Given** a smoke test, **when** run on production, **then** every form and portal journey works.
+- **Given** the production URL, **when** visited, **then** it is served over HTTPS on the company domain (and `www` redirects to it, or the reverse).
+- **Given** the production database (Neon `main` branch), **when** checked, **then** all Prisma migrations are applied and an admin account exists.
+- **Given** a smoke test on production, **when** a quote is submitted and a photo uploaded, **then** both emails arrive from `quotes@<domain>` (not in spam) and the file appears in `uvm/prod` on Cloudinary.
 - **Given** the site goes down, **when** detected, **then** an uptime alert is sent.
 
 **Tasks**
-- [ ] Production Supabase project + migrations
-- [ ] Vercel production env vars + custom domain
-- [ ] Analytics (consent-based) + uptime monitoring + error tracking
-- [ ] Production smoke test, then tag release `v1.0.0`
+- [ ] Netlify production environment variables (every key in `.env.example`, production values)
+- [ ] Build command runs `prisma migrate deploy` against the Neon `main` branch
+- [ ] Connect the custom domain in Netlify (DNS records at the registrar) + HTTPS certificate
+- [ ] `BETTER_AUTH_URL` and Turnstile site domain set to the company domain
+- [ ] Cloudflare Web Analytics + UptimeRobot monitor on the home page and a health endpoint
+- [ ] Create the production admin account
+- [ ] Production smoke test of every form and portal, then tag release `v1.0.0`
 
 **Dependencies:** US-27, US-28, US-29, US-17
 
@@ -733,6 +745,7 @@ As the **operations admin**, I want a simple guide to using the back office, and
 
 **Acceptance criteria**
 - **Given** the README, **then** it explains the purpose, architecture, local setup, environment variables, testing and deployment.
+- **Given** the runbook, **then** it lists every external service (Netlify, Neon, Cloudinary, Resend, Zoho, Cloudflare, UptimeRobot), its free-plan limits and who owns the account.
 - **Given** the admin guide, **then** it covers pricing quotes, creating jobs, assigning drivers, approving applications and publishing content.
 - **Given** the phase-2 items, **then** each exists as a backlog issue.
 

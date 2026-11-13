@@ -19,7 +19,7 @@ Closes #
 ## Checklist (Definition of Done)
 - [ ] CI passes (lint, typecheck, build, tests)
 - [ ] Tests added or updated
-- [ ] Server-side validation and RLS cover any new input or table
+- [ ] Server-side validation and authorisation checks cover any new input or query
 - [ ] Responsive and keyboard-accessible
 - [ ] No secrets or personal data committed
 - [ ] Docs / `.env.example` updated if needed
