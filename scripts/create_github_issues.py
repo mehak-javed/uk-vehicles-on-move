@@ -62,6 +62,8 @@ def parse_backlog(text):
             m = re.match(r"^(id|epic|labels|milestone):\s*(.+)$", line)
             if m and not body:
                 meta[m.group(1)] = m.group(2).strip()
+            elif not body and not line.strip():
+                continue  # blank lines before/among metadata (Prettier adds one after headings)
             else:
                 body.append(line)
         labels = [l.strip() for l in meta.get("labels", "").split(",") if l.strip()]

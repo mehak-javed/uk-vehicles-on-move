@@ -1,8 +1,9 @@
 # Ways of Working
 
 ## Backlog structure
-- **Epic** (`type:epic`): a large business capability, e.g. *Operations back office*
-- **User story** (`type:story`): a user-facing increment written as *As a … I want … so that …* with Given/When/Then acceptance criteria
+
+- **Epic** (`type:epic`): a large business capability, e.g. _Operations back office_
+- **User story** (`type:story`): a user-facing increment written as _As a … I want … so that …_ with Given/When/Then acceptance criteria
 - **Enabler** (`type:enabler`): technical work that supports stories (CI, security, infrastructure)
 - **Bug** (`type:bug`): a defect against an accepted story
 
@@ -11,15 +12,19 @@ Labels: `area:*` (frontend, backend, database, auth, admin, design, devops, emai
 **Board:** Backlog → Ready → In Progress → In Review → Done
 
 ## Definition of Ready
+
 A story can move to **Ready** when:
-- [ ] It follows the *As a / I want / so that* format
+
+- [ ] It follows the _As a / I want / so that_ format
 - [ ] It has testable Given/When/Then acceptance criteria
 - [ ] It is estimated, prioritised and linked to an epic
 - [ ] Dependencies are done or not blocking
 - [ ] Designs or content it needs are available (or a placeholder is agreed)
 
 ## Definition of Done
+
 A story is **Done** when:
+
 - [ ] All acceptance criteria are met and verified on the Netlify deploy preview
 - [ ] Code is reviewed and approved through a pull request
 - [ ] CI passes: lint, typecheck, build and tests
@@ -31,6 +36,7 @@ A story is **Done** when:
 - [ ] It is merged to `main` and the issue is closed
 
 ## Branching
+
 Trunk-based development with short-lived branches from `main`:
 
 ```
@@ -43,6 +49,7 @@ docs/US-31-admin-guide
 `main` is protected: a pull request and passing CI are required, and force-pushes are disabled.
 
 ## Commits
+
 [Conventional Commits](https://www.conventionalcommits.org/), enforced by commitlint:
 
 ```
@@ -52,15 +59,19 @@ chore(ci): add playwright job
 ```
 
 ## Pull requests
+
 - One story per PR. Link it with `Closes #<issue>`
 - Fill in the PR template, including test evidence (screenshots for UI changes)
 - Squash-merge to keep `main` history linear
 
 ## Releases
+
 Semantic versioning (`v1.0.0`) with tagged releases and `CHANGELOG.md`. Production deploys come from `main` through Netlify. Prisma migrations run with `prisma migrate deploy` during the production build.
 
 ## Security
+
 Never commit secrets, credentials or customer data. Use `.env.local` (git-ignored) and document variable names in `.env.example`. Report vulnerabilities privately to the maintainers, not in public issues.
 
 ## Environments
+
 The same code runs locally, on Netlify deploy previews and in production. Only environment variables change (see `.env.example` and PLAN.md §6). Never write files to the server's disk: uploads go to Cloudinary and data goes to PostgreSQL.
