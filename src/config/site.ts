@@ -44,7 +44,6 @@ export const siteConfig = {
   ],
 
   quoteLink: { title: "Get a Free Quote", href: "/quote" },
-  signInLink: { title: "Sign in", href: "/login" },
 
   footerNav: {
     company: [
