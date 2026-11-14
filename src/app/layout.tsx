@@ -21,6 +21,10 @@ const display = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  // Makes Open Graph image URLs absolute (required for social sharing)
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
   title: {
     default: "UK Vehicles On Move",
     template: "%s | UK Vehicles On Move",
