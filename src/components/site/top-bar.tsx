@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Phone, UserRound } from "lucide-react";
+import { Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { WhatsAppIcon } from "@/components/site/social-icons";
@@ -11,7 +10,7 @@ export function TopBar() {
 
   return (
     <div className="bg-ink text-sm text-paper">
-      <Container className="flex h-10 items-center justify-between gap-4">
+      <Container className="flex h-10 items-center gap-4">
         <ul className="flex items-center gap-4 sm:gap-6">
           {phone && (
             <li>
@@ -43,13 +42,6 @@ export function TopBar() {
             </li>
           )}
         </ul>
-        <Link
-          href={siteConfig.signInLink.href}
-          className="flex items-center gap-2 rounded-sm hover:text-gold focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none"
-        >
-          <UserRound className="size-4" aria-hidden="true" />
-          {siteConfig.signInLink.title}
-        </Link>
       </Container>
     </div>
   );
