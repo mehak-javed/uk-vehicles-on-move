@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin, Phone, Quote } from "lucide-react";
+import { ArrowRight, MapPin, Quote } from "lucide-react";
 
 import { UkCoverageMap } from "@/components/home/uk-coverage-map";
 import { Container } from "@/components/layout/container";
@@ -19,6 +19,7 @@ import {
   featuredCities,
   newsPosts,
   partners,
+  serviceHref,
   services,
   testimonials,
 } from "@/content/home";
@@ -89,36 +90,40 @@ export function ServicesGrid() {
           description="Flexible vehicle delivery for one car or a whole fleet."
         />
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map(({ title, description, icon: Icon, href }) => (
-            <li key={title}>
-              <Card className="h-full transition-shadow hover:shadow-lg">
-                <CardHeader className="gap-4">
-                  <span className="flex size-12 items-center justify-center rounded-lg bg-ink text-gold">
-                    <Icon className="size-6" aria-hidden="true" />
-                  </span>
-                  <CardTitle className="font-heading text-xl">
-                    <h3>{title}</h3>
-                  </CardTitle>
-                  <CardDescription className="text-base">
-                    {description}
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="mt-auto">
-                  <Link
-                    href={href}
-                    className="inline-flex items-center gap-1 rounded-sm text-sm font-semibold text-gold-dark hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-                  >
-                    Learn more
-                    <span className="sr-only">
-                      {" "}
-                      about {title.toLowerCase()}
+          {services.map((service) => {
+            const { title, description, icon: Icon } = service;
+            const href = serviceHref(service);
+            return (
+              <li key={title}>
+                <Card className="h-full transition-shadow hover:shadow-lg">
+                  <CardHeader className="gap-4">
+                    <span className="flex size-12 items-center justify-center rounded-lg bg-ink text-gold">
+                      <Icon className="size-6" aria-hidden="true" />
                     </span>
-                    <ArrowRight className="size-4" aria-hidden="true" />
-                  </Link>
-                </CardFooter>
-              </Card>
-            </li>
-          ))}
+                    <CardTitle className="font-heading text-xl">
+                      <h3>{title}</h3>
+                    </CardTitle>
+                    <CardDescription className="text-base">
+                      {description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardFooter className="mt-auto">
+                    <Link
+                      href={href}
+                      className="inline-flex items-center gap-1 rounded-sm text-sm font-semibold text-gold-dark hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+                    >
+                      Learn more
+                      <span className="sr-only">
+                        {" "}
+                        about {title.toLowerCase()}
+                      </span>
+                      <ArrowRight className="size-4" aria-hidden="true" />
+                    </Link>
+                  </CardFooter>
+                </Card>
+              </li>
+            );
+          })}
         </ul>
       </Container>
     </section>
@@ -273,46 +278,6 @@ export function Testimonials() {
             </li>
           ))}
         </ul>
-      </Container>
-    </section>
-  );
-}
-
-export function CtaBand() {
-  const { phone } = siteConfig.contact;
-
-  return (
-    <section className="bg-gold py-16 text-ink">
-      <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-        <div className="flex max-w-xl flex-col gap-2">
-          <h2 className="text-3xl font-semibold sm:text-4xl">
-            Ready to move your vehicle?
-          </h2>
-          <p className="text-lg text-ink/80">
-            Get a free, no-obligation quote in minutes.
-          </p>
-        </div>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Button asChild size="xl">
-            <Link href={siteConfig.quoteLink.href}>
-              {siteConfig.quoteLink.title}
-              <ArrowRight data-icon="inline-end" aria-hidden="true" />
-            </Link>
-          </Button>
-          {phone && (
-            <Button
-              asChild
-              variant="outline"
-              size="xl"
-              className="border-ink/30 bg-transparent hover:bg-ink/10"
-            >
-              <a href={phone.href}>
-                <Phone data-icon="inline-start" aria-hidden="true" />
-                Call {phone.label}
-              </a>
-            </Button>
-          )}
-        </div>
       </Container>
     </section>
   );

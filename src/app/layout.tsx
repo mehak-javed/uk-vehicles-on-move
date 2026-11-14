@@ -21,7 +21,10 @@ const display = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "UK Vehicles On Move",
+  title: {
+    default: "UK Vehicles On Move",
+    template: "%s | UK Vehicles On Move",
+  },
   description: "Professional vehicle delivery across the United Kingdom.",
 };
 

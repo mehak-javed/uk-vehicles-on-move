@@ -1,8 +1,8 @@
 import { Hero } from "@/components/home/hero";
+import { CtaBand } from "@/components/site/cta-band";
 import {
   AboutTeaser,
   Coverage,
-  CtaBand,
   LatestNews,
   Partners,
   ServicesGrid,
