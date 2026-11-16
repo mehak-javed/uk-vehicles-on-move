@@ -34,8 +34,8 @@ export function DesktopNavLinks({ pathname }: { pathname?: string | null }) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative rounded-sm px-3 py-2 font-geo text-xs font-medium tracking-[0.18em] text-paper/70 uppercase transition-colors hover:text-paper focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none",
-                "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform hover:after:scale-x-100",
+                "relative rounded-sm px-3 py-2 font-geo text-xs font-medium tracking-[0.18em] text-paper/70 uppercase transition-colors duration-300 ease-out hover:text-paper focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none",
+                "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform after:duration-500 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:after:scale-x-100 motion-reduce:after:transition-none",
                 active && "text-paper after:scale-x-100",
               )}
             >
@@ -91,7 +91,7 @@ export function MobileNav() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "flex border-b border-paper/10 py-3.5 font-geo text-sm font-medium tracking-[0.15em] uppercase focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none",
+                        "flex border-b border-paper/10 py-3.5 font-geo text-sm font-medium tracking-[0.15em] uppercase transition-colors duration-300 ease-out hover:text-gold focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none",
                         active ? "text-gold" : "text-paper/80",
                       )}
                     >
@@ -102,18 +102,6 @@ export function MobileNav() {
               );
             })}
           </ul>
-          <SheetClose asChild>
-            <Button
-              asChild
-              variant="accent"
-              size="xl"
-              className="rounded-full font-geo text-sm tracking-[0.15em] uppercase"
-            >
-              <Link href={siteConfig.quoteLink.href}>
-                {siteConfig.quoteLink.title}
-              </Link>
-            </Button>
-          </SheetClose>
         </nav>
       </SheetContent>
     </Sheet>

@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 
 import logoEmblem from "../../../public/brand/logo-emblem.png";
 import logoFull from "../../../public/brand/logo-full.png";
-import logoFullLight from "../../../public/brand/logo-full-light.png";
 
 const COMPANY_NAME =
   process.env.NEXT_PUBLIC_COMPANY_NAME || "UK Vehicles On Move";
@@ -18,8 +17,6 @@ type LogoProps = {
    * a light panel instead.
    */
   onDark?: boolean;
-  /** Light artwork (off-white lettering, gold kept) for dark backgrounds. */
-  light?: boolean;
   /** Load immediately (use for the header logo, which is above the fold). */
   preload?: boolean;
   className?: string;
@@ -29,12 +26,10 @@ type LogoProps = {
 export function Logo({
   variant = "full",
   onDark = false,
-  light = false,
   preload = false,
   className,
 }: LogoProps) {
-  const src =
-    variant === "emblem" ? logoEmblem : light ? logoFullLight : logoFull;
+  const src = variant === "full" ? logoFull : logoEmblem;
 
   return (
     <Link

@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Montserrat, Playfair_Display } from "next/font/google";
-import { AnnouncementTicker } from "@/components/site/announcement-ticker";
 import { CookieBanner } from "@/components/site/cookie-banner";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
-import { TopBar } from "@/components/site/top-bar";
 import "./globals.css";
 
 // Body text: clean sans-serif. Headings: classic serif for a premium feel.
@@ -53,9 +51,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           Skip to content
         </a>
-        <TopBar />
         <SiteHeader />
-        <AnnouncementTicker />
         <main
           id="main"
           tabIndex={-1}

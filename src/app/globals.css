@@ -5,6 +5,13 @@
 /* The site is light-only: dark: styles apply only inside an explicit .dark wrapper, never from the OS setting. */
 @custom-variant dark (&:is(.dark *));
 
+/* Applies when the page contains an element marked data-transparent-header
+   (the homepage hero), so the navbar can sit over the photo. */
+@custom-variant transparent-header (body:has([data-transparent-header]) &);
+
+/* Set on <html> once the page has scrolled past the homepage hero. */
+@custom-variant scrolled (html[data-scrolled] &);
+
 /*
  * UK Vehicles On Move — design tokens (US-02)
  *
@@ -96,48 +103,6 @@
   @keyframes ticker {
     to {
       transform: translateX(-50%);
-    }
-  }
-
-  /* Hero car: lane dashes scroll down (one 52px dash cycle every 1.4s) so the car
-     looks like it is driving forward; the second mask is the edge fade */
-  --animate-road: road 1.4s linear infinite;
-  @keyframes road {
-    from {
-      mask-position:
-        0 0,
-        0 0;
-    }
-    to {
-      mask-position:
-        0 52px,
-        0 0;
-    }
-  }
-
-  /* Road-surface streaks rushing past (one 160px pattern cycle) */
-  --animate-road-surface: road-surface 2s linear infinite;
-  @keyframes road-surface {
-    to {
-      background-position: 0 160px;
-    }
-  }
-
-  /* Hero car: small drift and sway, as if steering along the lane */
-  --animate-drive: drive 7s ease-in-out infinite;
-  @keyframes drive {
-    0%,
-    100% {
-      transform: translate(0, 0) rotate(0deg);
-    }
-    25% {
-      transform: translate(3px, -4px) rotate(0.6deg);
-    }
-    50% {
-      transform: translate(0, -7px) rotate(0deg);
-    }
-    75% {
-      transform: translate(-3px, -4px) rotate(-0.6deg);
     }
   }
 
