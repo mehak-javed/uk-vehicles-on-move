@@ -170,10 +170,10 @@ export default function StyleguidePage() {
         <Section title="Logo">
           <div className="flex flex-wrap gap-6">
             <div className="rounded-lg border border-border bg-paper p-6">
-              <Logo />
+              <Logo className="h-24" />
             </div>
             <div className="rounded-lg bg-ink p-6">
-              <Logo tone="dark" />
+              <Logo onDark className="h-24" />
             </div>
           </div>
         </Section>

@@ -15,8 +15,8 @@ import { siteConfig } from "@/config/site";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
-      <Container className="flex h-18 items-center justify-between gap-6">
-        <Logo />
+      <Container className="flex h-20 items-center justify-between gap-6">
+        <Logo preload className="h-16" />
         <nav aria-label="Main" className="flex items-center gap-2">
           {/* The active link needs the URL; the fallback keeps the links in the static shell. */}
           <Suspense fallback={<DesktopNavLinks />}>
