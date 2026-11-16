@@ -32,9 +32,14 @@ function CarStage() {
         <div
           key={side}
           aria-hidden="true"
-          className={`absolute inset-y-0 ${side} w-[3px] bg-gold/60 [mask-image:repeating-linear-gradient(to_bottom,black_0_28px,transparent_28px_52px),linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] [mask-composite:intersect]`}
+          className={`absolute inset-y-0 ${side} w-[3px] bg-gold/60 [mask-image:repeating-linear-gradient(to_bottom,black_0_28px,transparent_28px_52px),linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] [mask-composite:intersect] motion-safe:animate-road`}
         />
       ))}
+      {/* Faint streaks on the road surface rushing past the car */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 left-1/2 w-[60%] -translate-x-1/2 bg-[repeating-linear-gradient(to_bottom,transparent_0_40px,color-mix(in_oklch,var(--paper)_7%,transparent)_40px_44px,transparent_44px_110px,color-mix(in_oklch,var(--paper)_4%,transparent)_110px_112px,transparent_112px_160px)] [mask-image:linear-gradient(to_right,transparent,black_20%,transparent_42%,transparent_58%,black_80%,transparent),linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] [mask-composite:intersect] motion-safe:animate-road-surface motion-reduce:hidden"
+      />
 
       {/* Ring around the car */}
       <svg
@@ -69,19 +74,22 @@ function CarStage() {
         aria-hidden="true"
         className="absolute top-1/2 left-1/2 h-[62%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-[40%] bg-gold/15 blur-3xl"
       />
-      <div
-        aria-hidden="true"
-        className="absolute top-1/2 left-1/2 h-[54%] w-[30%] -translate-x-1/2 -translate-y-[48%] rounded-[40%] bg-black/70 blur-lg"
-      />
+      {/* The car (and its shadow) drift gently while the road moves past */}
+      <div className="relative flex h-[52%] items-center justify-center motion-safe:animate-drive">
+        <div
+          aria-hidden="true"
+          className="absolute top-1/2 left-1/2 h-[104%] w-[90%] -translate-x-1/2 -translate-y-[48%] rounded-[40%] bg-black/70 blur-lg"
+        />
 
-      {/* The car, seen from above */}
-      <Image
-        src={heroCar}
-        alt=""
-        preload
-        sizes="(min-width: 640px) 120px, 100px"
-        className="relative h-[52%] w-auto animate-in drop-shadow-[0_18px_22px_rgba(0,0,0,0.65)] duration-700 fade-in slide-in-from-bottom-6 motion-reduce:animate-none"
-      />
+        {/* The car, seen from above, facing up the road */}
+        <Image
+          src={heroCar}
+          alt=""
+          preload
+          sizes="(min-width: 640px) 120px, 100px"
+          className="relative h-full w-auto animate-in drop-shadow-[0_18px_22px_rgba(0,0,0,0.65)] duration-700 fade-in slide-in-from-bottom-6 motion-reduce:animate-none"
+        />
+      </div>
     </div>
   );
 }
