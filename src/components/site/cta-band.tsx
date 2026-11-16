@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
 /** Gold call-to-action strip used at the bottom of marketing pages. */
-export function CtaBand() {
-  const { phone } = siteConfig.contact;
+export function CtaBand({ showPhone = true }: { showPhone?: boolean }) {
+  const phone = showPhone ? siteConfig.contact.phone : undefined;
 
   return (
     <section className="bg-gold py-16 text-ink">

@@ -34,9 +34,9 @@ export function DesktopNavLinks({ pathname }: { pathname?: string | null }) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative rounded-md px-3 py-2 text-sm font-medium text-ink/80 transition-colors hover:text-ink focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
-                "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-gold after:transition-transform hover:after:scale-x-100",
-                active && "text-ink after:scale-x-100",
+                "relative rounded-sm px-3 py-2 font-geo text-xs font-medium tracking-[0.18em] text-paper/70 uppercase transition-colors duration-300 ease-out hover:text-paper focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none",
+                "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform after:duration-500 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:after:scale-x-100 motion-reduce:after:transition-none",
+                active && "text-paper after:scale-x-100",
               )}
             >
               {item.title}
@@ -62,15 +62,20 @@ export function MobileNav() {
         <Button
           variant="ghost"
           size="icon-lg"
-          className="lg:hidden"
+          className="text-paper hover:bg-paper/10 hover:text-paper lg:hidden"
           aria-label="Open menu"
         >
           <Menu className="size-6" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-xs bg-paper">
+      <SheetContent
+        side="right"
+        className="w-full max-w-xs border-paper/10 bg-ink text-paper"
+      >
         <SheetHeader>
-          <SheetTitle className="font-heading text-xl">Menu</SheetTitle>
+          <SheetTitle className="font-geo text-sm font-medium tracking-[0.25em] text-gold uppercase">
+            Menu
+          </SheetTitle>
           <SheetDescription className="sr-only">
             Site navigation
           </SheetDescription>
@@ -86,8 +91,8 @@ export function MobileNav() {
                       href={item.href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "flex border-b border-border py-3 text-base font-medium focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
-                        active ? "text-gold-dark" : "text-ink",
+                        "flex border-b border-paper/10 py-3.5 font-geo text-sm font-medium tracking-[0.15em] uppercase transition-colors duration-300 ease-out hover:text-gold focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none",
+                        active ? "text-gold" : "text-paper/80",
                       )}
                     >
                       {item.title}
@@ -97,13 +102,6 @@ export function MobileNav() {
               );
             })}
           </ul>
-          <SheetClose asChild>
-            <Button asChild variant="accent" size="xl">
-              <Link href={siteConfig.quoteLink.href}>
-                {siteConfig.quoteLink.title}
-              </Link>
-            </Button>
-          </SheetClose>
         </nav>
       </SheetContent>
     </Sheet>

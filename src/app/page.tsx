@@ -23,7 +23,7 @@ export default function Home() {
       <Coverage />
       <Partners />
       <Testimonials />
-      <CtaBand />
+      <CtaBand showPhone={false} />
     </>
   );
 }
