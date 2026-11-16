@@ -3,57 +3,51 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-/**
- * Logo slot. Until the client supplies a logo file this renders a
- * text wordmark. To switch, add the file to /public and set LOGO_SRC.
- */
-const LOGO_SRC: string | null = null;
+import logoEmblem from "../../../public/brand/logo-emblem.png";
+import logoFull from "../../../public/brand/logo-full.png";
+
 const COMPANY_NAME =
   process.env.NEXT_PUBLIC_COMPANY_NAME || "UK Vehicles On Move";
 
 type LogoProps = {
-  tone?: "light" | "dark";
+  /** "full" = truck badge with the company name; "emblem" = badge only. */
+  variant?: "full" | "emblem";
+  /**
+   * On dark backgrounds the logo's black lettering disappears, so it sits on
+   * a light panel instead.
+   */
+  onDark?: boolean;
+  /** Load immediately (use for the header logo, which is above the fold). */
+  preload?: boolean;
   className?: string;
 };
 
-export function Logo({ tone = "light", className }: LogoProps) {
+/** Company logo (client-supplied artwork, background removed). Links home. */
+export function Logo({
+  variant = "full",
+  onDark = false,
+  preload = false,
+  className,
+}: LogoProps) {
+  const src = variant === "full" ? logoFull : logoEmblem;
+
   return (
     <Link
       href="/"
-      aria-label={`${COMPANY_NAME} — home`}
+      aria-label={`${COMPANY_NAME} home`}
       className={cn(
-        "inline-flex items-center gap-2 rounded-md focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+        "inline-flex shrink-0 items-center rounded-md focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none",
+        onDark && "rounded-xl bg-paper p-3",
         className,
       )}
     >
-      {LOGO_SRC ? (
-        <Image
-          src={LOGO_SRC}
-          alt=""
-          width={160}
-          height={40}
-          className="h-10 w-auto"
-        />
-      ) : (
-        <span className="flex flex-col leading-none" aria-hidden="true">
-          <span
-            className={cn(
-              "font-heading text-xl font-semibold",
-              tone === "dark" ? "text-paper" : "text-ink",
-            )}
-          >
-            UK Vehicles
-          </span>
-          <span
-            className={cn(
-              "text-[0.7rem] font-semibold tracking-[0.3em] uppercase",
-              tone === "dark" ? "text-gold" : "text-gold-dark",
-            )}
-          >
-            On Move
-          </span>
-        </span>
-      )}
+      <Image
+        src={src}
+        alt={COMPANY_NAME}
+        preload={preload}
+        sizes="200px"
+        className="h-full w-auto"
+      />
     </Link>
   );
 }
