@@ -21,7 +21,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-paper/10 bg-ink text-paper transition-colors duration-300 transparent-header:border-transparent transparent-header:bg-transparent transparent-header:scrolled:border-paper/10 transparent-header:scrolled:bg-ink/90 transparent-header:scrolled:backdrop-blur-sm">
       <HeaderScrollState />
       <Container className="flex h-20 items-center justify-between gap-6">
-        <Logo preload className="h-16" />
+        <Logo preload onDark className="h-16" />
         <nav aria-label="Main" className="flex items-center gap-2">
           {/* The active link needs the URL; the fallback keeps the links in the static shell. */}
           <Suspense fallback={<DesktopNavLinks />}>
