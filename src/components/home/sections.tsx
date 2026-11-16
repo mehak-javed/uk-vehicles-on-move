@@ -17,12 +17,12 @@ import {
 import { siteConfig } from "@/config/site";
 import {
   featuredCities,
-  newsPosts,
   partners,
   serviceHref,
   services,
   testimonials,
 } from "@/content/home";
+import { formatNewsDate, getNewsPosts } from "@/content/news";
 
 const steps = [
   {
@@ -130,19 +130,10 @@ export function ServicesGrid() {
   );
 }
 
-const dateFormat = new Intl.DateTimeFormat("en-GB", {
-  day: "numeric",
-  month: "long",
-  year: "numeric",
-});
-
-/** Hidden until real posts exist. */
+/** Hidden until posts exist (real, or samples on previews). */
 export function LatestNews() {
-  if (newsPosts.length === 0) return null;
-
-  const latest = [...newsPosts]
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-    .slice(0, 3);
+  const latest = getNewsPosts().slice(0, 3);
+  if (latest.length === 0) return null;
 
   return (
     <section className="py-20 sm:py-24">
@@ -162,7 +153,7 @@ export function LatestNews() {
                     dateTime={post.publishedAt}
                     className="text-sm text-muted-foreground"
                   >
-                    {dateFormat.format(new Date(post.publishedAt))}
+                    {formatNewsDate(post.publishedAt)}
                   </time>
                   <CardTitle className="font-heading text-xl">
                     <h3>

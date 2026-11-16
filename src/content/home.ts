@@ -25,17 +25,6 @@ export const featuredCities: City[] = [
   { name: "Edinburgh", lon: -3.19, lat: 55.95 },
 ];
 
-export type NewsPost = {
-  slug: string;
-  title: string;
-  excerpt: string;
-  /** ISO date, e.g. "2026-11-14" */
-  publishedAt: string;
-};
-
-/** Real posts only. Added in US-06 / US-22. */
-export const newsPosts: NewsPost[] = [];
-
 export type Testimonial = { quote: string; name: string; role?: string };
 
 /** Real, approved customer reviews only. */
