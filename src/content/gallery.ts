@@ -1,9 +1,10 @@
 /**
  * Gallery photos. Static for now; managed from the admin area later (US-22).
- * Add real photos to /public/gallery and list them in `galleryImages`.
+ *
+ * The site is currently a draft for client review, so the gallery shows
+ * dummy stock photos. Replace `galleryImages` with the company's own photos
+ * (in /public/gallery) before launch.
  */
-import { showSampleContent } from "@/content/sample";
-
 export type GalleryImage = {
   src: string;
   /** Describe what the photo shows, for screen readers. */
@@ -13,14 +14,9 @@ export type GalleryImage = {
   caption?: string;
 };
 
-/** Real photos only. */
-const galleryImages: GalleryImage[] = [];
-
 /**
- * Sample stock photos from Unsplash (Unsplash License: free to use, no
- * attribution required). Photo IDs are noted so they can be traced. These
- * are NOT the company's own work, so they only appear with
- * SHOW_SAMPLE_CONTENT=true and must be replaced with real photos.
+ * Dummy stock photos from Unsplash (Unsplash License: free to use, no
+ * attribution required). Photo IDs are noted so they can be traced.
  */
 const sample = (
   n: number,
@@ -35,7 +31,7 @@ const sample = (
   caption: `Sample photo ${n}`,
 });
 
-const sampleImages: GalleryImage[] = [
+const galleryImages: GalleryImage[] = [
   sample(1, 878, 1200, "Car carrier truck transporting vehicles on a road"), // q36Yp9RpHa0
   sample(2, 1200, 676, "Two cars loaded onto a car carrier truck"), // vvnZdwe80EE
   sample(3, 1200, 752, "Car transporter truck driving along a highway"), // 9iTgJ8mv_S4
@@ -52,6 +48,5 @@ const sampleImages: GalleryImage[] = [
 ];
 
 export function getGalleryImages(): GalleryImage[] {
-  if (galleryImages.length > 0) return galleryImages;
-  return showSampleContent ? sampleImages : [];
+  return galleryImages;
 }
