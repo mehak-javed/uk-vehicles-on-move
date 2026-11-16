@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Montserrat, Playfair_Display } from "next/font/google";
 import { AnnouncementTicker } from "@/components/site/announcement-ticker";
 import { CookieBanner } from "@/components/site/cookie-banner";
 import { SiteFooter } from "@/components/site/site-footer";
@@ -11,6 +11,14 @@ import "./globals.css";
 const body = Inter({
   variable: "--font-body",
   subsets: ["latin"],
+  display: "swap",
+});
+
+// Geometric sans for the navbar and hero headline.
+const geo = Montserrat({
+  variable: "--font-geo",
+  subsets: ["latin"],
+  weight: ["300", "500", "700"],
   display: "swap",
 });
 
@@ -36,7 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en-GB"
-      className={`${body.variable} ${display.variable} h-full antialiased`}
+      className={`${body.variable} ${display.variable} ${geo.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <a

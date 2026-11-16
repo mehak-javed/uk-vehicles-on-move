@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Phone } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
@@ -8,11 +8,7 @@ import { siteConfig } from "@/config/site";
 
 import heroCar from "../../../public/home/hero-car-top.png";
 
-const highlights = [
-  "Trade and private customers",
-  "Door-to-door collection and delivery",
-  "Free, no-obligation quotes",
-];
+const highlights = ["Door-to-door", "Trade & private", "Free quotes"];
 
 /**
  * Car stage: a top-down view of the road with the car standing upright in
@@ -67,75 +63,80 @@ function CarStage() {
 }
 
 /**
- * Home hero. On large screens: headline on the left, the car in the
- * middle, call to action on the right. On smaller screens these stack.
+ * Home hero: all text on the left (uppercase headline, service words,
+ * description and buttons), the red car driving along the road on the right.
+ * On smaller screens the text comes first, then the car.
  */
 export function Hero() {
   const { phone } = siteConfig.contact;
 
   return (
     <section className="relative isolate overflow-hidden bg-ink text-paper">
-      {/* Soft gold light behind the car */}
+      {/* Soft light behind the car, like a lit garage floor */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,color-mix(in_oklch,var(--gold)_14%,transparent),transparent_70%)]"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_40%_70%_at_72%_50%,color-mix(in_oklch,var(--paper)_9%,transparent),transparent_70%)]"
       />
 
-      <Container className="grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-[minmax(0,16rem)_1fr_minmax(0,16rem)] lg:gap-6 lg:py-20 xl:grid-cols-[minmax(0,19rem)_1fr_minmax(0,19rem)]">
-        {/* Left: headline */}
-        <div className="flex flex-col items-center gap-5 text-center lg:items-start lg:text-left">
-          <p className="text-sm font-semibold tracking-[0.25em] text-gold uppercase">
-            UK vehicle delivery specialists
-          </p>
-          <h1 className="max-w-xl text-4xl leading-[1.1] font-semibold text-balance sm:text-5xl lg:text-4xl xl:text-5xl">
-            Your vehicle, delivered{" "}
-            <span className="text-gold">anywhere in the UK</span>
-          </h1>
-        </div>
-
-        {/* Middle: the car */}
-        <CarStage />
-
-        {/* Right: details and call to action */}
+      <Container className="grid items-center gap-8 py-14 sm:py-16 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-10 lg:py-16">
+        {/* Left: text */}
         <div className="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
-          <p className="max-w-md text-lg text-pretty text-grey-400 lg:text-base">
+          <h1 className="font-geo text-4xl leading-[1.05] tracking-[0.04em] uppercase sm:text-5xl xl:text-6xl">
+            <span className="block font-light">Vehicle delivery</span>
+            <span className="block font-bold">
+              across the <span className="text-gold">UK</span>
+            </span>
+          </h1>
+
+          <ul
+            aria-label="What we offer"
+            className="flex flex-wrap justify-center gap-x-5 gap-y-2 font-geo text-xs font-medium tracking-[0.2em] text-paper uppercase lg:justify-start"
+          >
+            {highlights.map((item, i) => (
+              <li key={item} className="flex items-center gap-5">
+                {i > 0 && (
+                  <span
+                    aria-hidden="true"
+                    className="size-1 rounded-full bg-gold"
+                  />
+                )}
+                {item}
+              </li>
+            ))}
+          </ul>
+
+          <p className="max-w-md text-base text-pretty text-grey-400 sm:text-lg">
             Professional drivers collect your car or van and deliver it
             door-to-door, safely and on time, for dealers, businesses and
             private owners.
           </p>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:w-full lg:flex-col">
-            <Button asChild variant="accent" size="xl">
+
+          <div className="flex flex-col items-center gap-4 sm:flex-row lg:items-center">
+            <Button
+              asChild
+              variant="accent"
+              size="xl"
+              className="rounded-full px-7 font-geo text-sm font-medium tracking-[0.15em] uppercase"
+            >
               <Link href={siteConfig.quoteLink.href}>
                 {siteConfig.quoteLink.title}
                 <ArrowRight data-icon="inline-end" aria-hidden="true" />
               </Link>
             </Button>
             {phone && (
-              <Button
-                asChild
-                variant="outline"
-                size="xl"
-                className="border-paper/30 bg-transparent text-paper hover:bg-paper/10 hover:text-paper"
+              <a
+                href={phone.href}
+                className="inline-flex items-center gap-2 rounded-sm font-geo text-sm tracking-[0.1em] text-paper/80 uppercase transition-colors hover:text-gold focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none"
               >
-                <a href={phone.href}>
-                  <Phone data-icon="inline-start" aria-hidden="true" />
-                  Call {phone.label}
-                </a>
-              </Button>
+                <Phone className="size-4" aria-hidden="true" />
+                {phone.label}
+              </a>
             )}
           </div>
-          <ul className="flex flex-col gap-3 text-sm text-paper/90">
-            {highlights.map((item) => (
-              <li key={item} className="flex items-center gap-2">
-                <CheckCircle2
-                  className="size-4 shrink-0 text-gold"
-                  aria-hidden="true"
-                />
-                {item}
-              </li>
-            ))}
-          </ul>
         </div>
+
+        {/* Right: the car driving along the road */}
+        <CarStage />
       </Container>
     </section>
   );

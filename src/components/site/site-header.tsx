@@ -11,12 +11,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
-/** Sticky header: logo, main navigation and the quote call-to-action. */
+/** Sticky dark header: logo, uppercase navigation and the quote button. */
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-paper/95 backdrop-blur supports-[backdrop-filter]:bg-paper/80">
+    <header className="sticky top-0 z-40 border-b border-paper/10 bg-ink text-paper">
       <Container className="flex h-20 items-center justify-between gap-6">
-        <Logo preload className="h-16" />
+        <Logo preload light className="h-16" />
         <nav aria-label="Main" className="flex items-center gap-2">
           {/* The active link needs the URL; the fallback keeps the links in the static shell. */}
           <Suspense fallback={<DesktopNavLinks />}>
@@ -26,7 +26,7 @@ export function SiteHeader() {
             asChild
             variant="accent"
             size="lg"
-            className="hidden px-4 sm:inline-flex lg:ml-4"
+            className="hidden rounded-full px-5 font-geo text-xs font-medium tracking-[0.15em] uppercase sm:inline-flex lg:ml-4"
           >
             <Link href={siteConfig.quoteLink.href}>
               {siteConfig.quoteLink.title}

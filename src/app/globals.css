@@ -89,6 +89,7 @@
   /* Typography: serif headings, sans-serif body */
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-display), ui-serif, Georgia, serif;
+  --font-geo: var(--font-geo), ui-sans-serif, system-ui, sans-serif;
 
   /* Announcement ticker: content is duplicated, so -50% loops seamlessly */
   --animate-ticker: ticker 40s linear infinite;
