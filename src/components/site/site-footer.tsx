@@ -33,7 +33,7 @@ export function SiteFooter() {
   const { phone, whatsapp, email } = siteConfig.contact;
 
   return (
-    <footer className="bg-ink text-paper">
+    <footer data-header-dark className="bg-ink text-paper">
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <div className="flex flex-col gap-5 lg:col-span-2">
           <Logo onDark className="h-32 w-fit" />

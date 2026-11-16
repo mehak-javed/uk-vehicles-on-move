@@ -34,9 +34,9 @@ export function DesktopNavLinks({ pathname }: { pathname?: string | null }) {
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative rounded-sm px-3 py-2 font-geo text-xs font-medium tracking-[0.18em] text-paper/70 uppercase transition-colors duration-300 ease-out hover:text-paper focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none",
+                "relative rounded-sm px-3 py-2 font-geo text-xs font-medium tracking-[0.18em] text-paper/75 uppercase transition-colors duration-300 ease-out hover:text-paper focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none header-light:text-ink/70 header-light:hover:text-ink",
                 "after:absolute after:inset-x-3 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold after:transition-transform after:duration-500 after:ease-[cubic-bezier(0.22,1,0.36,1)] hover:after:scale-x-100 motion-reduce:after:transition-none",
-                active && "text-paper after:scale-x-100",
+                active && "text-paper after:scale-x-100 header-light:text-ink",
               )}
             >
               {item.title}
@@ -62,7 +62,7 @@ export function MobileNav() {
         <Button
           variant="ghost"
           size="icon-lg"
-          className="text-paper hover:bg-paper/10 hover:text-paper lg:hidden"
+          className="text-paper hover:bg-paper/10 hover:text-paper lg:hidden header-light:text-ink header-light:hover:bg-ink/5 header-light:hover:text-ink"
           aria-label="Open menu"
         >
           <Menu className="size-6" />

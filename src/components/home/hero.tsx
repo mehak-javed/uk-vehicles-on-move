@@ -16,7 +16,7 @@ const highlights = ["Door-to-door", "Trade & private", "Free quotes"];
 export function Hero() {
   return (
     <section
-      data-transparent-header
+      data-header-dark
       // Pulled up under the sticky navbar (h-20) so the photo shows behind it
       className="relative isolate -mt-20 overflow-hidden bg-ink text-paper"
     >
