@@ -1,8 +1,8 @@
 /**
  * News articles. Static for now; moved to the database and admin area in
- * US-22. Real articles only; samples appear only with SHOW_SAMPLE_CONTENT.
+ * US-22. The site is currently a draft for client review, so these are
+ * dummy articles. Replace them with real company news before launch.
  */
-import { showSampleContent } from "@/content/sample";
 
 export type NewsPost = {
   slug: string;
@@ -16,15 +16,12 @@ export type NewsPost = {
   image?: { src: string; alt: string; width: number; height: number };
 };
 
-/** Real articles only. */
-const newsPosts: NewsPost[] = [];
-
 const sampleBody = [
   "This is a sample article used to preview the news layout. It will be replaced with real company news before the website goes live.",
   "Articles can cover company updates, new services, coverage areas or helpful advice for customers moving a vehicle.",
 ];
 
-const samplePosts: NewsPost[] = [
+const newsPosts: NewsPost[] = [
   {
     slug: "sample-article-one",
     title: "Sample article: our new website",
@@ -32,10 +29,10 @@ const samplePosts: NewsPost[] = [
     publishedAt: "2026-11-10",
     body: sampleBody,
     image: {
-      src: "/samples/gallery-1.jpg",
-      alt: "Sample placeholder image",
+      src: "/samples/photo-3.jpg",
+      alt: "Car transporter truck driving along a highway",
       width: 1200,
-      height: 800,
+      height: 752,
     },
   },
   {
@@ -45,10 +42,10 @@ const samplePosts: NewsPost[] = [
     publishedAt: "2026-11-03",
     body: sampleBody,
     image: {
-      src: "/samples/gallery-2.jpg",
-      alt: "Sample placeholder image",
+      src: "/samples/photo-6.jpg",
+      alt: "Red hatchback driving on an open country road",
       width: 1200,
-      height: 800,
+      height: 899,
     },
   },
   {
@@ -62,9 +59,9 @@ const samplePosts: NewsPost[] = [
 
 /** All posts, newest first. */
 export function getNewsPosts(): NewsPost[] {
-  const posts =
-    newsPosts.length > 0 ? newsPosts : showSampleContent ? samplePosts : [];
-  return [...posts].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  return [...newsPosts].sort((a, b) =>
+    b.publishedAt.localeCompare(a.publishedAt),
+  );
 }
 
 export function getNewsPost(slug: string): NewsPost | undefined {
