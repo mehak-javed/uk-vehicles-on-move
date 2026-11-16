@@ -5,12 +5,12 @@
 /* The site is light-only: dark: styles apply only inside an explicit .dark wrapper, never from the OS setting. */
 @custom-variant dark (&:is(.dark *));
 
-/* Applies when the page contains an element marked data-transparent-header
-   (the homepage hero), so the navbar can sit over the photo. */
-@custom-variant transparent-header (body:has([data-transparent-header]) &);
-
-/* Set on <html> once the page has scrolled past the homepage hero. */
+/* Set on <html> once the page has been scrolled (header border and blur). */
 @custom-variant scrolled (html[data-scrolled] &);
+
+/* Set on <html> while the transparent header is over a light area, so it
+   switches to dark text and the black-lettering logo. */
+@custom-variant header-light (html[data-header-light] &);
 
 /*
  * UK Vehicles On Move — design tokens (US-02)

@@ -181,7 +181,7 @@ export function LatestNews() {
 /** Featured cities followed by the UK coverage map. */
 export function Coverage() {
   return (
-    <section className="bg-ink py-20 text-paper sm:py-24">
+    <section data-header-dark className="bg-ink py-20 text-paper sm:py-24">
       <Container className="grid items-center gap-12 lg:grid-cols-2">
         <div className="flex flex-col gap-8">
           <SectionHeading

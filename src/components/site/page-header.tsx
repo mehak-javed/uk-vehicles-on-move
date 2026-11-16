@@ -16,7 +16,8 @@ export function PageHeader({
   breadcrumb,
 }: PageHeaderProps) {
   return (
-    <section className="bg-ink text-paper">
+    // Pulled up under the transparent header (h-20) so the dark band shows behind it
+    <section data-header-dark className="-mt-20 bg-ink pt-20 text-paper">
       <Container className="flex flex-col gap-4 py-14 sm:py-20">
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-2 text-sm text-grey-400">

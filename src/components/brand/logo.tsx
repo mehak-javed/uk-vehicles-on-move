@@ -18,6 +18,11 @@ type LogoProps = {
    * shown in white instead of black (truck, ring and gold kept as is).
    */
   onDark?: boolean;
+  /**
+   * Switches automatically with the header background: white lettering over
+   * dark areas, black lettering over light ones (`header-light` variant).
+   */
+  adaptive?: boolean;
   /** Load immediately (use for the header logo, which is above the fold). */
   preload?: boolean;
   className?: string;
@@ -27,6 +32,7 @@ type LogoProps = {
 export function Logo({
   variant = "full",
   onDark = false,
+  adaptive = false,
   preload = false,
   className,
 }: LogoProps) {
@@ -42,13 +48,34 @@ export function Logo({
         className,
       )}
     >
-      <Image
-        src={src}
-        alt={COMPANY_NAME}
-        preload={preload}
-        sizes="200px"
-        className="h-full w-auto"
-      />
+      {adaptive ? (
+        <>
+          {/* White lettering over dark areas (default) */}
+          <Image
+            src={logoFullLightText}
+            alt={COMPANY_NAME}
+            preload={preload}
+            sizes="200px"
+            className="h-full w-auto header-light:hidden"
+          />
+          {/* Black lettering over light areas */}
+          <Image
+            src={logoFull}
+            alt=""
+            aria-hidden="true"
+            sizes="200px"
+            className="hidden h-full w-auto header-light:block"
+          />
+        </>
+      ) : (
+        <Image
+          src={src}
+          alt={COMPANY_NAME}
+          preload={preload}
+          sizes="200px"
+          className="h-full w-auto"
+        />
+      )}
     </Link>
   );
 }
