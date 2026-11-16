@@ -16,12 +16,12 @@ const highlights = [
 
 /**
  * Car stage: a top-down view of the road with the car standing upright in
- * the middle, lane markings on each side and a gold ring around the car.
+ * the middle and lane markings on each side.
  * Only the car is an image (transparent PNG); the road is CSS/SVG.
  */
 function CarStage() {
   return (
-    <div className="relative mx-auto flex h-[420px] w-[280px] items-center justify-center sm:h-[520px] sm:w-[340px]">
+    <div className="relative mx-auto flex h-[420px] w-[320px] items-center justify-center sm:h-[520px] sm:w-[440px]">
       {/* Road surface */}
       <div
         aria-hidden="true"
@@ -41,41 +41,13 @@ function CarStage() {
         className="absolute inset-y-0 left-1/2 w-[60%] -translate-x-1/2 bg-[repeating-linear-gradient(to_bottom,transparent_0_40px,color-mix(in_oklch,var(--paper)_7%,transparent)_40px_44px,transparent_44px_110px,color-mix(in_oklch,var(--paper)_4%,transparent)_110px_112px,transparent_112px_160px)] [mask-image:linear-gradient(to_right,transparent,black_20%,transparent_42%,transparent_58%,black_80%,transparent),linear-gradient(to_bottom,transparent,black_20%,black_80%,transparent)] [mask-composite:intersect] motion-safe:animate-road-surface motion-reduce:hidden"
       />
 
-      {/* Ring around the car */}
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 200 200"
-        className="absolute top-1/2 left-1/2 size-[86%] -translate-x-1/2 -translate-y-1/2"
-      >
-        <circle
-          cx="100"
-          cy="100"
-          r="97"
-          fill="none"
-          className="stroke-gold/40"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
-        <circle
-          cx="100"
-          cy="100"
-          r="97"
-          fill="none"
-          className="origin-center stroke-gold motion-safe:animate-[spin_14s_linear_infinite]"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeDasharray="70 540"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
-
       {/* Glow and shadow under the car */}
       <div
         aria-hidden="true"
-        className="absolute top-1/2 left-1/2 h-[62%] w-[46%] -translate-x-1/2 -translate-y-1/2 rounded-[40%] bg-gold/15 blur-3xl"
+        className="absolute top-1/2 left-1/2 h-[70%] w-[50%] -translate-x-1/2 -translate-y-1/2 rounded-[40%] bg-gold/15 blur-3xl"
       />
       {/* The car (and its shadow) drift gently while the road moves past */}
-      <div className="relative flex h-[52%] items-center justify-center motion-safe:animate-drive">
+      <div className="relative flex h-[62%] items-center justify-center motion-safe:animate-drive">
         <div
           aria-hidden="true"
           className="absolute top-1/2 left-1/2 h-[104%] w-[90%] -translate-x-1/2 -translate-y-[48%] rounded-[40%] bg-black/70 blur-lg"
@@ -86,7 +58,7 @@ function CarStage() {
           src={heroCar}
           alt=""
           preload
-          sizes="(min-width: 640px) 120px, 100px"
+          sizes="(min-width: 640px) 150px, 120px"
           className="relative h-full w-auto animate-in drop-shadow-[0_18px_22px_rgba(0,0,0,0.65)] duration-700 fade-in slide-in-from-bottom-6 motion-reduce:animate-none"
         />
       </div>

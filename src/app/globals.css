@@ -98,9 +98,9 @@
     }
   }
 
-  /* Hero car: lane dashes scroll down (one 52px dash cycle) so the car
+  /* Hero car: lane dashes scroll down (one 52px dash cycle every 1.4s) so the car
      looks like it is driving forward; the second mask is the edge fade */
-  --animate-road: road 0.45s linear infinite;
+  --animate-road: road 1.4s linear infinite;
   @keyframes road {
     from {
       mask-position:
@@ -115,7 +115,7 @@
   }
 
   /* Road-surface streaks rushing past (one 160px pattern cycle) */
-  --animate-road-surface: road-surface 0.6s linear infinite;
+  --animate-road-surface: road-surface 2s linear infinite;
   @keyframes road-surface {
     to {
       background-position: 0 160px;
@@ -123,7 +123,7 @@
   }
 
   /* Hero car: small drift and sway, as if steering along the lane */
-  --animate-drive: drive 4s ease-in-out infinite;
+  --animate-drive: drive 7s ease-in-out infinite;
   @keyframes drive {
     0%,
     100% {
