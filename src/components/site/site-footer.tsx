@@ -36,7 +36,7 @@ export function SiteFooter() {
     <footer className="bg-ink text-paper">
       <Container className="grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-5">
         <div className="flex flex-col gap-5 lg:col-span-2">
-          <Logo tone="dark" />
+          <Logo onDark className="h-32 w-fit" />
           <p className="max-w-sm text-sm text-grey-400">{siteConfig.tagline}</p>
           <SocialIcons />
         </div>
