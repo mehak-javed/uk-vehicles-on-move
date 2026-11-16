@@ -34,12 +34,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { useTodayInUk } from "@/components/forms/use-today";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import {
   quoteRequestSchema,
   quoteSteps,
-  todayInUk,
   vehicleTypes,
   type QuoteFormValues,
   type QuoteRequest,
@@ -64,6 +64,7 @@ const defaultValues: Partial<QuoteFormValues> = {
 
 export function QuoteForm() {
   const [step, setStep] = useState(0);
+  const today = useTodayInUk();
   const [result, setResult] = useState<{ reference: string } | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
@@ -414,7 +415,7 @@ export function QuoteForm() {
               name: "preferredDate",
               label: "Preferred collection date",
               type: "date",
-              min: todayInUk(),
+              min: today,
               reg: register("preferredDate"),
             })}
             <div className="flex items-end pb-3">
