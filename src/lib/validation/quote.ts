@@ -1,38 +1,19 @@
 import { z } from "zod";
 
+import {
+  email,
+  privacyConsent,
+  todayInUk,
+  ukPhone,
+  ukPostcode,
+} from "@/lib/validation/common";
+
+export { todayInUk };
+
 /**
  * Quote request validation, shared by the browser form and the server
  * action, so both apply exactly the same rules.
  */
-
-// UK postcode, e.g. "SW1A 1AA", "m1 1ae", "B338TH". Normalised to "B33 8TH".
-const UK_POSTCODE = /^([A-Z]{1,2}\d[A-Z\d]?)\s*(\d[A-Z]{2})$/i;
-
-export const ukPostcode = z
-  .string()
-  .trim()
-  .min(1, "Enter a postcode")
-  .regex(UK_POSTCODE, "Enter a valid UK postcode, like SW1A 1AA")
-  .transform((v) => v.toUpperCase().replace(UK_POSTCODE, "$1 $2"));
-
-// UK phone: 07…, 01…, 02…, +44… or 0044…, spaces/dashes/brackets allowed.
-// Normalised to international format, e.g. "+447700900123".
-export const ukPhone = z
-  .string()
-  .trim()
-  .min(1, "Enter a phone number")
-  .transform((v) => v.replace(/[\s\-().]/g, ""))
-  .refine((v) => /^(?:(?:\+|00)44|0)[1-9]\d{8,9}$/.test(v), {
-    message: "Enter a valid UK phone number, like 07700 900123",
-  })
-  .transform((v) => `+44${v.replace(/^(?:\+44|0044|0)/, "")}`);
-
-/** Today's date in the UK as YYYY-MM-DD. */
-export function todayInUk(): string {
-  return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/London",
-  }).format(new Date());
-}
 
 export const vehicleTypes = [
   { value: "car", label: "Car" },
@@ -71,15 +52,13 @@ export const quoteRequestSchema = z.object({
 
   // Step 3: contact details
   fullName: z.string().trim().min(2, "Enter your full name").max(100),
-  email: z.email("Enter a valid email address, like name@example.com"),
+  email,
   phone: ukPhone,
   customerType: z.enum(["private", "trade"], {
     error: "Choose private or trade",
   }),
   companyName: z.string().trim().max(100),
-  privacyAccepted: z.literal(true, {
-    error: "Please confirm you have read the privacy policy",
-  }),
+  privacyAccepted: privacyConsent,
 });
 
 /** What the form holds while the user types. */
