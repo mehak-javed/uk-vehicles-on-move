@@ -1,5 +1,5 @@
 import { Hero } from "@/components/home/hero";
-import { CtaBand } from "@/components/site/cta-band";
+import { AnnouncementTicker } from "@/components/site/announcement-ticker";
 import {
   AboutTeaser,
   Coverage,
@@ -10,8 +10,9 @@ import {
 } from "@/components/home/sections";
 
 /**
- * Home page (US-04). Section order is part of the acceptance criteria:
- * hero, about, services, news, cities + map, partners, testimonials, CTA.
+ * Home page (US-04): hero, about, services, news, partners, testimonials,
+ * then the gold announcement banner with the coverage map ("Where we
+ * deliver") below it, in place of the closing CTA band (for now).
  */
 export default function Home() {
   return (
@@ -20,10 +21,10 @@ export default function Home() {
       <AboutTeaser />
       <ServicesGrid />
       <LatestNews />
-      <Coverage />
       <Partners />
       <Testimonials />
-      <CtaBand showPhone={false} />
+      <AnnouncementTicker />
+      <Coverage />
     </>
   );
 }
