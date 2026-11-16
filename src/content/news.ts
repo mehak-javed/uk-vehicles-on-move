@@ -32,10 +32,10 @@ const samplePosts: NewsPost[] = [
     publishedAt: "2026-11-10",
     body: sampleBody,
     image: {
-      src: "/samples/gallery-1.jpg",
-      alt: "Sample placeholder image",
+      src: "/samples/photo-3.jpg",
+      alt: "Car transporter truck driving along a highway",
       width: 1200,
-      height: 800,
+      height: 752,
     },
   },
   {
@@ -45,10 +45,10 @@ const samplePosts: NewsPost[] = [
     publishedAt: "2026-11-03",
     body: sampleBody,
     image: {
-      src: "/samples/gallery-2.jpg",
-      alt: "Sample placeholder image",
+      src: "/samples/photo-6.jpg",
+      alt: "Red hatchback driving on an open country road",
       width: 1200,
-      height: 800,
+      height: 899,
     },
   },
   {
