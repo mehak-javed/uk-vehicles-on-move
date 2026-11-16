@@ -21,7 +21,7 @@ const highlights = [
  */
 function CarStage() {
   return (
-    <div className="relative mx-auto flex h-[420px] w-[320px] items-center justify-center sm:h-[520px] sm:w-[440px]">
+    <div className="relative mx-auto flex h-[480px] w-[340px] items-center justify-center sm:h-[600px] sm:w-[520px] lg:h-[640px] lg:w-[560px]">
       {/* Road surface */}
       <div
         aria-hidden="true"
@@ -47,7 +47,7 @@ function CarStage() {
         className="absolute top-1/2 left-1/2 h-[70%] w-[50%] -translate-x-1/2 -translate-y-1/2 rounded-[40%] bg-gold/15 blur-3xl"
       />
       {/* The car (and its shadow) drift gently while the road moves past */}
-      <div className="relative flex h-[62%] items-center justify-center motion-safe:animate-drive">
+      <div className="relative flex h-[76%] items-center justify-center motion-safe:animate-drive">
         <div
           aria-hidden="true"
           className="absolute top-1/2 left-1/2 h-[104%] w-[90%] -translate-x-1/2 -translate-y-[48%] rounded-[40%] bg-black/70 blur-lg"
@@ -58,7 +58,7 @@ function CarStage() {
           src={heroCar}
           alt=""
           preload
-          sizes="(min-width: 640px) 150px, 120px"
+          sizes="(min-width: 640px) 220px, 160px"
           className="relative h-full w-auto animate-in drop-shadow-[0_18px_22px_rgba(0,0,0,0.65)] duration-700 fade-in slide-in-from-bottom-6 motion-reduce:animate-none"
         />
       </div>
@@ -81,13 +81,13 @@ export function Hero() {
         className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_45%_60%_at_50%_50%,color-mix(in_oklch,var(--gold)_14%,transparent),transparent_70%)]"
       />
 
-      <Container className="grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-[1fr_auto_1fr] lg:gap-8 lg:py-20">
+      <Container className="grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-[minmax(0,16rem)_1fr_minmax(0,16rem)] lg:gap-6 lg:py-20 xl:grid-cols-[minmax(0,19rem)_1fr_minmax(0,19rem)]">
         {/* Left: headline */}
         <div className="flex flex-col items-center gap-5 text-center lg:items-start lg:text-left">
           <p className="text-sm font-semibold tracking-[0.25em] text-gold uppercase">
             UK vehicle delivery specialists
           </p>
-          <h1 className="max-w-xl text-4xl leading-[1.1] font-semibold text-balance sm:text-5xl xl:text-6xl">
+          <h1 className="max-w-xl text-4xl leading-[1.1] font-semibold text-balance sm:text-5xl lg:text-4xl xl:text-5xl">
             Your vehicle, delivered{" "}
             <span className="text-gold">anywhere in the UK</span>
           </h1>
@@ -98,12 +98,12 @@ export function Hero() {
 
         {/* Right: details and call to action */}
         <div className="flex flex-col items-center gap-6 text-center lg:items-start lg:text-left">
-          <p className="max-w-md text-lg text-pretty text-grey-400">
+          <p className="max-w-md text-lg text-pretty text-grey-400 lg:text-base">
             Professional drivers collect your car or van and deliver it
             door-to-door, safely and on time, for dealers, businesses and
             private owners.
           </p>
-          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:flex-col xl:flex-row">
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row lg:w-full lg:flex-col">
             <Button asChild variant="accent" size="xl">
               <Link href={siteConfig.quoteLink.href}>
                 {siteConfig.quoteLink.title}
