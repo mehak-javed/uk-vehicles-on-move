@@ -105,3 +105,11 @@ test('the "Let\'s move it" band appears only on the contact page', async ({
     await expect(band).toHaveCount(0);
   }
 });
+
+test("the contact page links to the quote form from its sidebar", async ({
+  page,
+}) => {
+  await page.goto("/contact");
+  await page.getByRole("link", { name: /free quote/i }).click();
+  await expect(page).toHaveURL(/\/quote$/);
+});

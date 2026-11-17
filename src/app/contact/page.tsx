@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Mail, MessageCircle, Phone } from "lucide-react";
+import { FileText, Mail, MessageCircle, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/contact/contact-form";
 import { ContactHero } from "@/components/contact/contact-hero";
@@ -40,6 +39,13 @@ export default function ContactPage() {
       href: `mailto:${email}`,
       external: false,
     },
+    {
+      icon: FileText,
+      title: "Free quote",
+      detail: "Get a price in minutes",
+      href: siteConfig.quoteLink.href,
+      external: false,
+    },
   ].filter((o) => !!o);
 
   return (
@@ -77,16 +83,6 @@ export default function ContactPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-sm text-muted-foreground">
-              Looking for a price?{" "}
-              <Link
-                href="/quote"
-                className="font-medium text-gold-dark underline underline-offset-4"
-              >
-                Request a free quote
-              </Link>
-              .
-            </p>
           </aside>
           <ContactForm />
         </Container>
