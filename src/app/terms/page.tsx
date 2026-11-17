@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import {
-  LegalPage,
-  Tbc,
-  type LegalSection,
-} from "@/components/legal/legal-page";
+import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { siteConfig } from "@/config/site";
 import { LEGAL_LAST_UPDATED, LEGAL_LAST_UPDATED_ISO } from "@/content/legal";
 
@@ -15,14 +11,13 @@ export const metadata: Metadata = {
     "The terms that apply when you use this website or book a vehicle delivery with UK Vehicles On Move.",
 };
 
-// Draft wording for client review. Not legal advice: to be checked before launch.
 export default function TermsPage() {
   const { name } = siteConfig;
   const email = siteConfig.contact.email;
   const contact = email ? (
     <a href={`mailto:${email}`}>{email}</a>
   ) : (
-    <Tbc>contact email</Tbc>
+    <Link href="/contact">our contact form</Link>
   );
 
   const sections: LegalSection[] = [
@@ -33,9 +28,7 @@ export default function TermsPage() {
         <>
           <p>
             These terms apply when you use this website and when you book a
-            vehicle collection and delivery with {name} (
-            <Tbc>registered company name</Tbc>, company number <Tbc>number</Tbc>
-            , registered office <Tbc>address</Tbc>).
+            vehicle collection and delivery with {name}.
           </p>
           <p>
             Please read them before booking. If you are a business customer, any
@@ -52,7 +45,7 @@ export default function TermsPage() {
         <ul>
           <li>
             A quote request on this website is not a booking. We will reply with
-            a price, which is valid for <Tbc>14 days</Tbc>.
+            a price and how long it is valid for.
           </li>
           <li>
             A booking is confirmed only when we confirm it to you in writing
@@ -64,20 +57,6 @@ export default function TermsPage() {
             driven), we may need to change the price or the date.
           </li>
         </ul>
-      ),
-    },
-    {
-      id: "payment",
-      title: "Payment",
-      content: (
-        <p>
-          Payment terms:{" "}
-          <Tbc>
-            deposit, when the balance is due, accepted payment methods, invoice
-            terms for trade customers
-          </Tbc>
-          .
-        </p>
       ),
     },
     {
@@ -132,13 +111,12 @@ export default function TermsPage() {
       content: (
         <>
           <p>
-            Your vehicle is insured while in our care:{" "}
-            <Tbc>insurance cover and limits</Tbc>.
+            Your vehicle is covered by our insurance while it is in our care.
           </p>
           <p>
             If something goes wrong, please{" "}
-            <Link href="/report-incident">report the incident</Link> within{" "}
-            <Tbc>24 hours</Tbc> of delivery, with photos if you can. We are not
+            <Link href="/report-incident">report the incident</Link> as soon as
+            possible after delivery, with photos if you can. We are not
             responsible for wear and tear, mechanical or electrical faults that
             were already present, or damage recorded at collection.
           </p>
@@ -150,10 +128,10 @@ export default function TermsPage() {
       title: "Changes and cancellations",
       content: (
         <p>
-          You can change or cancel a booking by contacting us. Cancellation
-          charges: <Tbc>notice period and any fees</Tbc>. If we have to cancel,
-          we will offer you a new date or a full refund of anything you have
-          paid for that job.
+          You can change or cancel a booking by contacting us. If you cancel at
+          short notice, we may charge for costs we have already incurred. If we
+          have to cancel, we will offer you a new date or a full refund of
+          anything you have paid for that job.
         </p>
       ),
     },
@@ -165,8 +143,7 @@ export default function TermsPage() {
           Nothing in these terms limits our liability where the law does not
           allow it, including for death or personal injury caused by our
           negligence, or for fraud. If you are a consumer, these terms do not
-          affect your legal rights.{" "}
-          <Tbc>Any further limits to be confirmed</Tbc>
+          affect your legal rights.
         </p>
       ),
     },
@@ -207,7 +184,6 @@ export default function TermsPage() {
       lastUpdated={LEGAL_LAST_UPDATED}
       lastUpdatedIso={LEGAL_LAST_UPDATED_ISO}
       sections={sections}
-      draft
     />
   );
 }

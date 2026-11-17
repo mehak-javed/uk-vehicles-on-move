@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CookieSettings } from "@/components/legal/cookie-settings";
-import {
-  LegalPage,
-  Tbc,
-  type LegalSection,
-} from "@/components/legal/legal-page";
+import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { siteConfig } from "@/config/site";
 import { LEGAL_LAST_UPDATED, LEGAL_LAST_UPDATED_ISO } from "@/content/legal";
 
@@ -57,14 +53,13 @@ function CookieTable({
   );
 }
 
-// Draft wording for client review. Not legal advice: to be checked before launch.
 export default function CookiesPage() {
   const { name } = siteConfig;
   const email = siteConfig.contact.email;
   const contact = email ? (
     <a href={`mailto:${email}`}>{email}</a>
   ) : (
-    <Tbc>contact email</Tbc>
+    <Link href="/contact">our contact form</Link>
   );
 
   const sections: LegalSection[] = [
@@ -110,17 +105,8 @@ export default function CookiesPage() {
                   "Remembers your cookie choice so we do not ask again on every page. Stored in your browser's local storage.",
                 expiry: "Until you clear it",
               },
-              {
-                name: "cf_clearance / __cf_bm",
-                provider: "Cloudflare",
-                purpose: "Protects our forms from spam and automated abuse.",
-                expiry: "Up to 30 minutes",
-              },
             ]}
           />
-          <p>
-            <Tbc>Confirm the final list once spam protection is live</Tbc>
-          </p>
         </>
       ),
     },
@@ -133,9 +119,6 @@ export default function CookiesPage() {
             Only if you accept, we measure how the website is used (for example,
             which pages are visited most) so we can improve it. These statistics
             are anonymous and are not used to identify you or for advertising.
-          </p>
-          <p>
-            Provider: <Tbc>analytics provider and cookie names</Tbc>
           </p>
         </>
       ),
@@ -190,7 +173,6 @@ export default function CookiesPage() {
       lastUpdated={LEGAL_LAST_UPDATED}
       lastUpdatedIso={LEGAL_LAST_UPDATED_ISO}
       sections={sections}
-      draft
     />
   );
 }
