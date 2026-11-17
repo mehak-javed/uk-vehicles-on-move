@@ -8,7 +8,7 @@ const pages = [
   { path: "/services", heading: /services/i },
   { path: "/gallery", heading: /gallery/i },
   { path: "/news", heading: /news/i },
-  { path: "/contact", heading: "Contact us" },
+  { path: "/contact", heading: "Let's move it." },
   { path: "/quote", heading: /quote/i },
   { path: "/drive-with-us", heading: /drive with us/i },
   { path: "/report-incident", heading: /report an incident/i },
@@ -92,11 +92,11 @@ test("the home quote button opens the contact page", async ({ page }) => {
   await expect(page).toHaveURL(/\/contact$/);
 });
 
-test('"Ready to move your vehicle?" appears only on the contact page', async ({
+test('the "Let\'s move it" band appears only on the contact page', async ({
   page,
 }) => {
   const band = page.getByRole("heading", {
-    name: "Ready to move your vehicle?",
+    name: "Let's move it.",
   });
   await page.goto("/contact");
   await expect(band).toBeVisible();
