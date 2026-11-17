@@ -15,7 +15,8 @@ import { MAX_FILE_BYTES } from "@/lib/validation/common";
  *    which avoids the hosting platform's request-size limit.
  * 3. The form is submitted with the ticket. The server checks the ticket,
  *    confirms each file on Cloudinary (it exists, size is within limits),
- *    and attaches it to the company email through a signed private link.
+ *    and attaches it to the company email (Resend downloads it through a
+ *    signed, expiring private link).
  */
 
 export type UploadField = "cv" | "licence" | "photos";
@@ -36,6 +37,7 @@ export type UploadedFile = {
 
 const isDev = process.env.NODE_ENV !== "production";
 const TICKET_LIFETIME_MS = 60 * 60 * 1000; // 1 hour to finish the form
+const DOWNLOAD_LINK_SECONDS = 24 * 60 * 60; // for Resend to fetch attachments
 
 function cloudinaryEnv() {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
@@ -179,19 +181,22 @@ export async function confirmUploads(
       const resource = (await cloudinary.api.resource(upload.publicId, {
         resource_type: upload.resourceType,
         type: "authenticated",
-      })) as { bytes: number; format?: string; version: number };
+      })) as { bytes: number; format?: string };
       if (resource.bytes > MAX_FILE_BYTES) return null;
 
-      const url = cloudinary.url(upload.publicId, {
-        resource_type: upload.resourceType,
-        type: "authenticated",
-        sign_url: true,
-        secure: true,
-        version: resource.version,
-        ...(upload.resourceType === "image" && resource.format
-          ? { format: resource.format }
-          : {}),
-      });
+      // A signed, expiring download link through Cloudinary's API. Unlike
+      // normal delivery links it also works for PDFs, which Cloudinary
+      // blocks by default. Resend downloads it once when sending.
+      const url = cloudinary.utils.private_download_url(
+        upload.publicId,
+        resource.format ?? "",
+        {
+          resource_type: upload.resourceType,
+          type: "authenticated",
+          expires_at: Math.floor(Date.now() / 1000) + DOWNLOAD_LINK_SECONDS,
+          attachment: true,
+        },
+      );
       attachments.push({ filename: safeName(String(upload.name)), path: url });
     } catch (error) {
       console.error("[uploads] Could not confirm file on Cloudinary", error);

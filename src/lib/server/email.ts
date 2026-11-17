@@ -36,12 +36,14 @@ export function companyInbox(): string[] {
 /** Returns true when the email was accepted for delivery. */
 export async function sendEmail(message: EmailMessage): Promise<boolean> {
   const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM;
+  // Resend's shared test sender until the company domain is verified.
+  const from =
+    process.env.EMAIL_FROM || "UK Vehicles On Move <onboarding@resend.dev>";
 
-  if (!apiKey || !from || message.to.length === 0) {
+  if (!apiKey || message.to.length === 0) {
     if (isDev) {
       console.info(
-        `\n[email] Not sent (set RESEND_API_KEY, EMAIL_FROM and EMAIL_COMPANY_INBOX to send for real)\n` +
+        `\n[email] Not sent (set RESEND_API_KEY and EMAIL_COMPANY_INBOX to send for real)\n` +
           `To: ${message.to.join(", ") || "(no recipient)"}\nSubject: ${message.subject}\n` +
           (message.attachments?.length
             ? `Attachments: ${message.attachments.map((a) => a.filename).join(", ")}\n`
@@ -51,7 +53,7 @@ export async function sendEmail(message: EmailMessage): Promise<boolean> {
       return true;
     }
     console.error(
-      "[email] Email is not configured: set RESEND_API_KEY, EMAIL_FROM and EMAIL_COMPANY_INBOX.",
+      "[email] Email is not configured: set RESEND_API_KEY and EMAIL_COMPANY_INBOX.",
     );
     return false;
   }

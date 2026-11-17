@@ -34,7 +34,8 @@ skipped, and uploaded files are listed by name but not stored.
    - `RESEND_API_KEY` = the key (starts with `re_`)
    - `EMAIL_COMPANY_INBOX` = the address(es) that should receive the forms,
      comma-separated
-   - `EMAIL_FROM` = `UK Vehicles On Move <onboarding@resend.dev>` for now
+   - `EMAIL_FROM` can stay empty for now: Resend's test sender
+     `onboarding@resend.dev` is used
 3. **Before the domain is verified**, Resend only delivers to the email
    address of your Resend account. So for testing, use that address as
    `EMAIL_COMPANY_INBOX` and as the customer email in the form.
@@ -60,12 +61,10 @@ something looks suspicious.
    **API key** and **API secret** into:
    - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
    - `CLOUDINARY_FOLDER` = `uvm/dev` on your computer, `uvm/prod` on Netlify
-2. **Important:** go to **Settings → Security** and turn on **"Allow
-   delivery of PDF and ZIP files"**. Without it, PDF CVs and licences
-   cannot be attached to the email.
 
-Files are stored as **private** ("authenticated") files: they can only be
-opened with the signed links in the company email.
+Files are stored as **private** ("authenticated") files. They are attached
+to the company email; nobody can open them on Cloudinary without your
+account.
 
 ## After changing `.env.local`
 

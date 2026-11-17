@@ -55,7 +55,6 @@ export async function sendFormEmails({
           ? [["Files (not attached)", company.fileNames.join(", ")] as EmailRow]
           : []),
     ],
-    links: attachments.map((a) => ({ label: a.filename, href: a.path })),
   });
 
   const sent = await sendEmail({
