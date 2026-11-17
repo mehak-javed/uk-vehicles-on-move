@@ -298,15 +298,10 @@
   }
 }
 
-/* Services showcase: the panel text rises in when the service changes */
-@keyframes panel-text-in {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 1rem, 0);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .service-panel-text {
-    animation: panel-text-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+/* Hide the scrollbar on swipeable rows (they still scroll by touch/trackpad) */
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
