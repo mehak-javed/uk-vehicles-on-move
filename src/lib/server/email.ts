@@ -40,6 +40,14 @@ export async function sendEmail(message: EmailMessage): Promise<boolean> {
   const from =
     process.env.EMAIL_FROM || "UK Vehicles On Move <onboarding@resend.dev>";
 
+  // Automated tests: never send real emails, just record them in the log.
+  if (process.env.EMAIL_TRANSPORT === "log") {
+    console.info(
+      `[email] (test) "${message.subject}" to ${message.to.join(", ")}`,
+    );
+    return true;
+  }
+
   if (!apiKey || message.to.length === 0) {
     if (isDev) {
       console.info(

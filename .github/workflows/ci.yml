@@ -11,6 +11,7 @@ concurrency:
 
 jobs:
   quality:
+    # Keep this name: the branch rule on main requires a check with it.
     name: Lint, typecheck & build
     runs-on: ubuntu-latest
     steps:
@@ -33,5 +34,24 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      - name: Unit tests
+        run: npm test
+
       - name: Build
         run: npm run build
+
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser tests
+        run: npm run test:e2e
+
+      - name: Upload test report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

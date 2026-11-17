@@ -59,9 +59,13 @@ function cloudinaryEnv() {
 
 export const uploadsEnabled = () => cloudinaryEnv() !== null;
 
-/** Secret used to sign tickets: any server secret that is configured. */
+/**
+ * Secret used to sign tickets: FORM_SIGNING_SECRET if set (the automated
+ * tests use it), otherwise any other server secret that is configured.
+ */
 function ticketSecret(): string | null {
   return (
+    process.env.FORM_SIGNING_SECRET ||
     process.env.CLOUDINARY_API_SECRET ||
     process.env.TURNSTILE_SECRET_KEY ||
     process.env.RESEND_API_KEY ||
@@ -162,6 +166,8 @@ export async function confirmUploads(
   uploads: unknown,
 ): Promise<EmailAttachment[] | null> {
   if (!Array.isArray(uploads)) return null;
+  // No files expected and none sent (e.g. an incident report without photos)
+  if (ticket.ids.length === 0 && uploads.length === 0) return [];
   const env = cloudinaryEnv();
 
   // Local development without Cloudinary: nothing was uploaded.
