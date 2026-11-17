@@ -14,8 +14,6 @@ import { ServicesScroller } from "@/components/home/services-scroller";
 import { UkCoverageMap } from "@/components/home/uk-coverage-map";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { siteConfig } from "@/config/site";
 import {
   featuredCities,
@@ -23,7 +21,6 @@ import {
   serviceHref,
   testimonials,
 } from "@/content/home";
-import { formatNewsDate, getNewsPosts } from "@/content/news";
 import { services as allServices } from "@/content/services";
 
 const steps = [
@@ -206,54 +203,6 @@ export function ServicesGrid() {
         </Container>
       }
     />
-  );
-}
-
-/** Hidden until posts exist (real, or samples on previews). */
-export function LatestNews() {
-  const latest = getNewsPosts().slice(0, 3);
-  if (latest.length === 0) return null;
-
-  return (
-    <section className="py-20 sm:py-24">
-      <Container className="flex flex-col gap-12">
-        <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-          <SectionHeading eyebrow="Latest news" title="Company updates" />
-          <Button asChild variant="outline" size="lg" className="w-fit px-4">
-            <Link href="/news">All news</Link>
-          </Button>
-        </div>
-        <ul className="grid gap-6 md:grid-cols-3">
-          {latest.map((post) => (
-            <li key={post.slug}>
-              <Card className="h-full">
-                <CardHeader>
-                  <time
-                    dateTime={post.publishedAt}
-                    className="text-sm text-muted-foreground"
-                  >
-                    {formatNewsDate(post.publishedAt)}
-                  </time>
-                  <CardTitle className="font-heading text-xl">
-                    <h3>
-                      <Link
-                        href={`/news/${post.slug}`}
-                        className="hover:underline"
-                      >
-                        {post.title}
-                      </Link>
-                    </h3>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{post.excerpt}</p>
-                </CardContent>
-              </Card>
-            </li>
-          ))}
-        </ul>
-      </Container>
-    </section>
   );
 }
 
