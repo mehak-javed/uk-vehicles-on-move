@@ -41,11 +41,11 @@ export function CoverageExplorer({
               className={cn(
                 "flex cursor-default items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm transition-colors duration-300",
                 active === city.name
-                  ? "border-gold text-gold"
-                  : "border-paper/15 text-paper",
+                  ? "border-gold-dark bg-gold/10 text-gold-dark"
+                  : "border-ink/15 bg-card text-ink",
               )}
             >
-              <MapPin className="size-3.5 text-gold" aria-hidden="true" />
+              <MapPin className="size-3.5 text-gold-dark" aria-hidden="true" />
               {city.name}
             </li>
           ))}

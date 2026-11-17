@@ -99,7 +99,7 @@ export const projectCity = (city: City) => project([city.lon, city.lat]);
 export const MAP_SIZE = { width: WIDTH, height: HEIGHT };
 
 /**
- * UK map drawn from small gold dots, with a pin per featured city. Pins
+ * UK map drawn from small gold dots (dark gold, for light backgrounds), with a pin per featured city. Pins
  * pulse softly (staggered); the active city's pin grows. Hovering a pin
  * reports it through `onActive`.
  */
@@ -124,7 +124,7 @@ export function UkCoverageMap({
         Map of the United Kingdom with pins on {cities.length} featured cities:{" "}
         {cities.map((c) => c.name).join(", ")}.
       </desc>
-      <g className="fill-gold/30" aria-hidden="true">
+      <g className="fill-gold-dark/25" aria-hidden="true">
         {DOTS.map(({ x, y }) => (
           <circle key={`${x}-${y}`} cx={x} cy={y} r={2.6} />
         ))}
@@ -144,14 +144,14 @@ export function UkCoverageMap({
               cx={x}
               cy={y}
               r={6}
-              className="pin-pulse fill-gold"
+              className="pin-pulse fill-gold-dark"
               style={{ animationDelay: `${i * 0.33}s` }}
             />
             <circle
               cx={x}
               cy={y}
               r={isActive ? 10 : 6}
-              className="fill-gold transition-[r] duration-300"
+              className="fill-gold-dark transition-[r] duration-300"
             />
             {/* Larger invisible target, easier to hover */}
             <circle cx={x} cy={y} r={18} fill="transparent" />

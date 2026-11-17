@@ -196,6 +196,6 @@ test("hovering a city pill shows it on the coverage map", async ({
     section.getByText("Glasgow", { exact: true }).last(),
   ).toBeVisible();
   await expect(section.locator('li[data-city="Glasgow"]')).toHaveClass(
-    /border-gold/,
+    /border-gold-dark/,
   );
 });
