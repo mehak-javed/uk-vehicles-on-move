@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -21,6 +21,8 @@ import {
 
 import { submitQuote } from "@/app/quote/actions";
 import { FieldError } from "@/components/forms/field-error";
+import { Turnstile } from "@/components/forms/turnstile";
+import { useFormSubmit } from "@/components/forms/use-form-submit";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
@@ -65,9 +67,7 @@ const defaultValues: Partial<QuoteFormValues> = {
 export function QuoteForm() {
   const [step, setStep] = useState(0);
   const today = useTodayInUk();
-  const [result, setResult] = useState<{ reference: string } | null>(null);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
+  const { result, error: serverError, pending, run, captcha } = useFormSubmit();
   const headingRef = useRef<HTMLHeadingElement>(null);
   const firstRender = useRef(true);
 
@@ -118,15 +118,10 @@ export function QuoteForm() {
   }
 
   // Runs only after the whole form passes validation in the browser.
-  const onSubmit = handleSubmit(() => {
-    setServerError(null);
-    startTransition(async () => {
-      // Send the raw form values: the server validates them again.
-      const res = await submitQuote(getValues());
-      if (res.ok) setResult({ reference: res.reference });
-      else setServerError(res.message);
-    });
-  });
+  // Send the raw form values: the server validates them again.
+  const onSubmit = handleSubmit(() =>
+    run((token) => submitQuote(getValues(), token)),
+  );
 
   // Helpers so every field gets a label, error message and ARIA wiring.
   const err = (name: FieldName) => errors[name]?.message as string | undefined;
@@ -666,6 +661,7 @@ export function QuoteForm() {
                 </dl>
               </section>
             ))}
+            <Turnstile {...captcha} />
             {serverError && (
               <p
                 role="alert"

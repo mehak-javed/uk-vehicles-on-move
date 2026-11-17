@@ -14,7 +14,9 @@ import {
   TextareaField,
   TextField,
 } from "@/components/forms/fields";
+import { Turnstile } from "@/components/forms/turnstile";
 import { useFormSubmit } from "@/components/forms/use-form-submit";
+import { submitWithFiles } from "@/lib/uploads/client";
 import { useTodayInUk } from "@/components/forms/use-today";
 import { toFileMeta } from "@/lib/validation/common";
 import {
@@ -42,7 +44,7 @@ export function IncidentForm() {
     },
     mode: "onTouched",
   });
-  const { result, error, pending, headingRef, run } = useFormSubmit();
+  const { result, error, pending, headingRef, run, captcha } = useFormSubmit();
   const today = useTodayInUk();
 
   if (result) {
@@ -63,13 +65,19 @@ export function IncidentForm() {
       <form
         noValidate
         onSubmit={form.handleSubmit((data) =>
-          // Only photo details are sent; the photos themselves will be
-          // uploaded straight to secure storage in US-16.
-          run(() =>
-            submitIncidentReport({
-              ...form.getValues(),
-              photos: toFileMeta(data.photos),
-            }),
+          // Photos go straight to private storage; only their details
+          // and the upload ticket are sent with the form.
+          run((token) =>
+            submitWithFiles(
+              "incident",
+              { photos: data.photos },
+              token,
+              (proof) =>
+                submitIncidentReport(
+                  { ...form.getValues(), photos: toFileMeta(data.photos) },
+                  proof,
+                ),
+            ),
           ),
         )}
         className="flex flex-col gap-8 rounded-2xl border border-border bg-card p-6 sm:p-8"
@@ -149,6 +157,7 @@ export function IncidentForm() {
           name="privacyAccepted"
           purpose="to look into this incident"
         />
+        <Turnstile {...captcha} />
         <FormError message={error} />
         <SubmitButton pending={pending}>Send report</SubmitButton>
       </form>
