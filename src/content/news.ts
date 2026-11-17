@@ -1,6 +1,5 @@
 /**
- * News articles. Static for now; moved to the database and admin area in
- * US-22. The site is currently a draft for client review, so these are
+ * News articles. To add one, see docs/EDITING-CONTENT.md. The site is currently a draft for client review, so these are
  * dummy articles. Replace them with real company news before launch.
  */
 
