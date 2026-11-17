@@ -22,15 +22,19 @@ export function Hero() {
       // Pulled up under the sticky navbar (h-20) so the video shows behind it
       className="relative isolate -mt-20 overflow-hidden bg-ink text-paper"
     >
-      <Image
-        src="/home/hero-poster.jpg"
-        alt=""
-        fill
-        preload
-        sizes="100vw"
-        className="-z-30 object-cover object-[60%_center]"
-      />
-      <HeroVideo className="absolute inset-0 -z-20 size-full object-cover object-[60%_center] motion-reduce:hidden" />
+      {/* Video (and its still frame) drift slower than the page as you
+          scroll; taller than the section so it has room to move */}
+      <div className="parallax-top absolute inset-x-0 -top-[15%] -z-20 h-[130%]">
+        <Image
+          src="/home/hero-poster.jpg"
+          alt=""
+          fill
+          preload
+          sizes="100vw"
+          className="object-cover object-[60%_center]"
+        />
+        <HeroVideo className="absolute inset-0 size-full object-cover object-[60%_center] motion-reduce:hidden" />
+      </div>
       {/* Darker at the top so the navbar words stand out over the sky */}
       <div
         aria-hidden="true"
@@ -44,7 +48,7 @@ export function Hero() {
 
       <Container className="flex min-h-svh flex-col justify-center pt-28 pb-16">
         {/* Left: text */}
-        <div className="flex flex-col items-center gap-6 text-center [text-shadow:0_2px_12px_rgb(0_0_0/0.55)] lg:items-start lg:text-left">
+        <div className="parallax-fade flex flex-col items-center gap-6 text-center [text-shadow:0_2px_12px_rgb(0_0_0/0.55)] lg:items-start lg:text-left">
           <h1 className="font-geo text-4xl leading-[1.05] tracking-[0.04em] uppercase sm:text-5xl xl:text-6xl 2xl:text-7xl">
             <span className="block font-light">Vehicle delivery</span>
             <span className="block font-bold">

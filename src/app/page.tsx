@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
 import { LocalBusinessSchema } from "@/components/site/local-business-schema";
 import { AnnouncementTicker } from "@/components/site/announcement-ticker";
+import { ParallaxBand } from "@/components/site/parallax-band";
 import {
   AboutTeaser,
   Coverage,
@@ -31,6 +32,11 @@ export default function Home() {
       <Hero />
       <AboutTeaser />
       <ServicesGrid />
+      <ParallaxBand
+        image={{ src: "/samples/photo-2.jpg" }}
+        quote="From one car to a whole fleet, delivered with care."
+        caption="Across the UK"
+      />
       <LatestNews />
       <Partners />
       <Testimonials />
