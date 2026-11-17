@@ -144,13 +144,40 @@ test("the truck on the contact page keeps driving", async ({ page }) => {
   expect(x2).not.toBe(x1);
 });
 
-test("hovering a home service shows its photo and text", async ({ page }) => {
+test("home services move sideways as you scroll, and reset at the top", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(Boolean(isMobile), "phones get a swipeable row instead");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const section = page.locator("section", {
-    has: page.getByRole("heading", { name: "Whatever you need moving" }),
-  });
-  const rows = section.getByRole("list").first().getByRole("link");
-  await expect(rows).toHaveCount(4);
-  await rows.nth(1).focus();
-  await expect(rows.nth(1)).toHaveAttribute("aria-current", "true");
+  const section = page.locator('section[aria-label="Our services"]');
+  const box = await section.evaluate((s) => ({
+    top: s.getBoundingClientRect().top + window.scrollY,
+    height: (s as HTMLElement).offsetHeight,
+  }));
+  const trackX = () =>
+    section.evaluate(
+      (s) =>
+        new DOMMatrix(
+          getComputedStyle(s.querySelector(".will-change-transform")!)
+            .transform,
+        ).m41,
+    );
+  await page.evaluate(
+    (b) => window.scrollTo(0, b.top + (b.height - 900) / 2),
+    box,
+  );
+  await expect.poll(trackX).toBeLessThan(-100);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect.poll(trackX).toBe(0);
+});
+
+test("home services are a swipeable row on phones", async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+  const row = page.locator('section[aria-label="Our services"] .snap-x');
+  const scrolls = await row.evaluate((r) => r.scrollWidth > r.clientWidth);
+  expect(scrolls).toBe(true);
 });

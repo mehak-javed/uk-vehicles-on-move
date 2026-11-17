@@ -10,7 +10,7 @@ import {
   Quote,
 } from "lucide-react";
 
-import { ServicesShowcase } from "@/components/home/services-showcase";
+import { ServicesScroller } from "@/components/home/services-scroller";
 import { UkCoverageMap } from "@/components/home/uk-coverage-map";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
@@ -21,10 +21,10 @@ import {
   featuredCities,
   partners,
   serviceHref,
-  services,
   testimonials,
 } from "@/content/home";
 import { formatNewsDate, getNewsPosts } from "@/content/news";
+import { services as allServices } from "@/content/services";
 
 const steps = [
   {
@@ -166,11 +166,11 @@ const serviceImages: Record<string, { src: string; alt: string }> = {
 };
 
 /**
- * Home "Our services": dark section with an interactive list of services
- * and, on large screens, a photo panel that changes with the active one.
+ * Home "Our services": dark section where the service cards move
+ * sideways as you scroll (swipeable on phones). See ServicesScroller.
  */
 export function ServicesGrid() {
-  const items = services.map((service) => {
+  const items = allServices.map((service) => {
     const Icon = service.icon;
     return {
       id: service.id,
@@ -183,14 +183,11 @@ export function ServicesGrid() {
   });
 
   return (
-    <section
-      data-header-dark
-      className="overflow-x-clip bg-ink py-20 text-paper sm:py-28"
-    >
-      <Container className="flex flex-col gap-14">
-        <div className="scroll-reveal flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+    <ServicesScroller
+      items={items}
+      heading={
+        <Container className="scroll-reveal flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <SectionHeading
-            tone="dark"
             eyebrow="Our services"
             title="Whatever you need moving"
             description="Flexible vehicle delivery for one car or a whole fleet."
@@ -202,14 +199,13 @@ export function ServicesGrid() {
             <span className="font-geo text-sm font-medium tracking-[0.15em] uppercase">
               All services
             </span>
-            <span className="flex size-14 items-center justify-center rounded-full bg-gold text-ink transition-transform duration-300 group-hover:rotate-45 motion-reduce:transition-none">
+            <span className="flex size-14 items-center justify-center rounded-full bg-ink text-gold transition-transform duration-300 group-hover:rotate-45 motion-reduce:transition-none">
               <ArrowUpRight className="size-6" aria-hidden="true" />
             </span>
           </Link>
-        </div>
-        <ServicesShowcase items={items} />
-      </Container>
-    </section>
+        </Container>
+      }
+    />
   );
 }
 
