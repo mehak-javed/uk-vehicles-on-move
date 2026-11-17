@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
+import { HeroVideo } from "@/components/home/hero-video";
 import { Container } from "@/components/layout/container";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
@@ -9,25 +10,27 @@ import { siteConfig } from "@/config/site";
 const highlights = ["Door-to-door", "Trade & private", "Free quotes"];
 
 /**
- * Home hero: a full-width background photo (a van driving along an open
- * road) with all text on the left over a dark gradient, so it stays
- * readable. The photo is preloaded because it is the largest element.
+ * Home hero: a full-width background video (an overhead shot of a highway)
+ * with all text on the left over a dark gradient, so it stays readable.
+ * A still frame of the video is preloaded and shown underneath until the
+ * video plays, so the page appears quickly.
  */
 export function Hero() {
   return (
     <section
       data-header-dark
-      // Pulled up under the sticky navbar (h-20) so the photo shows behind it
+      // Pulled up under the sticky navbar (h-20) so the video shows behind it
       className="relative isolate -mt-20 overflow-hidden bg-ink text-paper"
     >
       <Image
-        src="/home/hero-bg.jpeg"
+        src="/home/hero-poster.jpg"
         alt=""
         fill
         preload
         sizes="100vw"
-        className="-z-20 object-cover object-[60%_center]"
+        className="-z-30 object-cover object-[60%_center]"
       />
+      <HeroVideo className="absolute inset-0 -z-20 size-full object-cover object-[60%_center] motion-reduce:hidden" />
       {/* Darker at the top so the navbar words stand out over the sky */}
       <div
         aria-hidden="true"
