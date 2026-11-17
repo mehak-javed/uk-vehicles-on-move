@@ -1,24 +1,29 @@
 import Image from "next/image";
 
 import { Container } from "@/components/layout/container";
+import { ScrollCue } from "@/components/site/scroll-cue";
 
 type PhotoHeroProps = {
-  /** Small gold label under the headline, between two gold lines. */
-  label: string;
-  /** The page's main heading (h1). */
+  /** Small gold label with a line, in place of a breadcrumb. */
+  eyebrow: string;
+  /** First line of the headline (light). */
   title: string;
+  /** Optional second line in bold, like the homepage headline. */
+  emphasis?: string;
   description?: string;
   image: { src: string; alt?: string };
 };
 
 /**
- * Centred photo header for inner pages, in place of the title band and
- * breadcrumb. The photo drifts slower than the page as you scroll
- * (parallax) and the text fades away; both stay still with reduced motion.
+ * Tall photo header for inner pages (About, Drive With Us), in the same
+ * style as the homepage: text on the left, gold label with a line, large
+ * uppercase headline. The photo drifts slower than the page (parallax),
+ * the text fades as you scroll, and a Scroll cue sits at the bottom.
  */
 export function PhotoHero({
-  label,
+  eyebrow,
   title,
+  emphasis,
   description,
   image,
 }: PhotoHeroProps) {
@@ -26,7 +31,7 @@ export function PhotoHero({
     <section
       data-header-dark
       // Pulled up under the transparent header (h-20) so the photo shows behind it
-      className="relative isolate -mt-20 flex min-h-[72svh] items-center overflow-hidden bg-ink pt-20 text-paper"
+      className="relative isolate -mt-20 flex min-h-[78svh] items-end overflow-hidden bg-ink pt-20 text-paper"
     >
       {/* Taller than the section so it has room to drift down */}
       <div className="parallax-top absolute inset-x-0 -top-1/4 -z-20 h-[125%]">
@@ -39,23 +44,33 @@ export function PhotoHero({
           className="object-cover"
         />
       </div>
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink/60" />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-linear-to-b from-ink/85 via-ink/45 to-ink/90"
+      />
+      {/* Extra shade on the left, behind the text */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-linear-to-r from-ink/60 via-ink/25 to-transparent"
+      />
 
-      <Container className="parallax-fade flex flex-col items-center gap-6 py-24 text-center [text-shadow:0_2px_12px_rgb(0_0_0/0.5)]">
-        <h1 className="max-w-4xl text-4xl leading-tight font-light text-balance sm:text-6xl">
-          {title}
-        </h1>
-        <p className="flex items-center gap-3 font-geo text-xs tracking-[0.3em] text-gold uppercase">
-          <span aria-hidden="true" className="h-px w-8 bg-gold" />
-          {label}
-          <span aria-hidden="true" className="h-px w-8 bg-gold" />
+      <Container className="parallax-fade flex flex-col gap-6 pt-24 pb-20 [text-shadow:0_2px_12px_rgb(0_0_0/0.55)] sm:pb-24">
+        <p className="flex items-center gap-4 font-geo text-xs font-medium tracking-[0.3em] text-gold uppercase sm:text-sm">
+          <span aria-hidden="true" className="h-px w-10 bg-gold sm:w-14" />
+          {eyebrow}
         </p>
+        <h1 className="max-w-4xl font-geo text-4xl leading-[1.05] tracking-[0.02em] text-balance uppercase sm:text-6xl xl:text-7xl">
+          <span className="block font-light">{title}</span>
+          {emphasis && <span className="block font-bold">{emphasis}</span>}
+        </h1>
         {description && (
-          <p className="max-w-xl text-lg text-pretty text-paper/80">
+          <p className="max-w-xl text-lg text-pretty text-paper/80 sm:text-xl">
             {description}
           </p>
         )}
       </Container>
+
+      <ScrollCue />
     </section>
   );
 }

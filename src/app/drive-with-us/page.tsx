@@ -23,8 +23,9 @@ export default function DriveWithUsPage() {
   return (
     <>
       <PhotoHero
-        title="Your next journey starts with us."
-        label="Drive with us"
+        eyebrow="Drive with us"
+        title="Your next journey"
+        emphasis="starts with us"
         description="We're always looking for reliable, professional drivers. Apply below and we'll be in touch."
         image={{ src: "/samples/photo-7.jpg" }}
       />

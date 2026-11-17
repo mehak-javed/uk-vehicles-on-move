@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { RoadAnimation } from "@/components/site/road-animation";
+import { ScrollCue } from "@/components/site/scroll-cue";
 import { TransporterTruck } from "@/components/site/transporter-truck";
 import { siteConfig } from "@/config/site";
 
@@ -17,9 +18,9 @@ export function ContactHero() {
     <section
       // Pulled up under the transparent header (h-20); light, so the
       // header switches to dark text automatically.
-      className="-mt-20 overflow-hidden bg-[color-mix(in_oklch,var(--gold)_16%,var(--paper))] pt-20 text-ink"
+      className="relative -mt-20 overflow-hidden bg-[color-mix(in_oklch,var(--gold)_16%,var(--paper))] pt-20 text-ink"
     >
-      <Container className="flex flex-col pt-14 pb-12 sm:pt-20 sm:pb-16">
+      <Container className="flex flex-col pt-14 pb-20 sm:pt-20 sm:pb-24">
         <p className="flex items-center gap-4 font-geo text-xs font-medium tracking-[0.3em] text-gold-dark uppercase sm:text-sm">
           <span aria-hidden="true" className="h-px w-10 bg-gold-dark sm:w-14" />
           Contact us
@@ -50,6 +51,8 @@ export function ContactHero() {
           </span>
         </Link>
       </Container>
+
+      <ScrollCue tone="dark" />
     </section>
   );
 }
