@@ -155,7 +155,7 @@ test("home services move sideways as you scroll, and reset at the top", async ({
   const section = page.locator('section[aria-label="Our services"]');
   const box = await section.evaluate((s) => ({
     top: s.getBoundingClientRect().top + window.scrollY,
-    height: s.offsetHeight,
+    height: (s as HTMLElement).offsetHeight,
   }));
   const trackX = () =>
     section.evaluate(
