@@ -213,7 +213,7 @@ export default function StyleguidePage() {
 
         <Section
           title="Typography"
-          hint="Headings: Playfair Display. Body: Inter."
+          hint="Montserrat for everything: headings, body and labels."
         >
           <div className="flex flex-col gap-4">
             <p className="font-heading text-5xl font-semibold tracking-tight">
@@ -230,7 +230,7 @@ export default function StyleguidePage() {
               vehicle safely, on time, anywhere in the United Kingdom.
             </p>
             <p className="max-w-2xl">
-              Body text. Regular paragraph copy is set in Inter at 16px for
+              Body text. Regular paragraph copy is set in Montserrat at 16px for
               comfortable reading on every screen size.
             </p>
             <p className="text-sm text-muted-foreground">
