@@ -4,7 +4,7 @@ import { acceptCookies } from "./helpers";
 
 const pages = [
   { path: "/", heading: /vehicle delivery/i },
-  { path: "/about", heading: "About us" },
+  { path: "/about", heading: /moving vehicles, the right way/i },
   { path: "/services", heading: /services/i },
   { path: "/gallery", heading: /gallery/i },
   { path: "/news", heading: /news/i },
