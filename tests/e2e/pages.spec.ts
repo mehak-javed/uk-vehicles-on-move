@@ -8,7 +8,7 @@ const pages = [
   { path: "/services", heading: /services/i },
   { path: "/gallery", heading: /gallery/i },
   { path: "/news", heading: /news/i },
-  { path: "/contact", heading: "Contact us" },
+  { path: "/contact", heading: "Let's move it." },
   { path: "/quote", heading: /quote/i },
   { path: "/drive-with-us", heading: /drive with us/i },
   { path: "/report-incident", heading: /report an incident/i },
@@ -92,11 +92,11 @@ test("the home quote button opens the contact page", async ({ page }) => {
   await expect(page).toHaveURL(/\/contact$/);
 });
 
-test('"Ready to move your vehicle?" appears only on the contact page', async ({
+test('the "Let\'s move it" band appears only on the contact page', async ({
   page,
 }) => {
   const band = page.getByRole("heading", {
-    name: "Ready to move your vehicle?",
+    name: "Let's move it.",
   });
   await page.goto("/contact");
   await expect(band).toBeVisible();
@@ -104,4 +104,20 @@ test('"Ready to move your vehicle?" appears only on the contact page', async ({
     await page.goto(path);
     await expect(band).toHaveCount(0);
   }
+});
+
+test("the contact page header links to the quote form", async ({ page }) => {
+  await page.goto("/contact");
+  await page.getByRole("link", { name: /free quote/i }).click();
+  await expect(page).toHaveURL(/\/quote$/);
+});
+
+test("the truck on the contact page keeps driving", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/contact");
+  const truck = page.locator(".truck-drive");
+  const x1 = (await truck.boundingBox())?.x ?? 0;
+  await page.waitForTimeout(600);
+  const x2 = (await truck.boundingBox())?.x ?? 0;
+  expect(x2).not.toBe(x1);
 });
