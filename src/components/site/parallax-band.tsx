@@ -15,7 +15,9 @@ export function ParallaxBand({ image, quote, caption }: ParallaxBandProps) {
   return (
     <section
       data-header-dark
-      className="relative isolate overflow-hidden bg-ink text-paper"
+      // overflow-clip (not hidden): hidden would make this section its own
+      // scroll container and freeze the parallax
+      className="relative isolate overflow-clip bg-ink text-paper"
     >
       {/* Taller than the band so it has room to drift */}
       <div className="parallax-view absolute inset-x-0 -top-[12%] -z-20 h-[124%]">

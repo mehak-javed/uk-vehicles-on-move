@@ -1,6 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin, Quote } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  FileText,
+  KeyRound,
+  MapPin,
+  MapPinned,
+  Quote,
+} from "lucide-react";
 
 import { UkCoverageMap } from "@/components/home/uk-coverage-map";
 import { Container } from "@/components/layout/container";
@@ -28,52 +36,112 @@ const steps = [
   {
     title: "Request a quote",
     text: "Tell us the vehicle, collection and delivery addresses. We reply with a clear price.",
+    icon: FileText,
+    href: "/quote",
+    action: "Get a quote",
   },
   {
     title: "We collect",
     text: "A professional driver collects your vehicle at the agreed time and checks its condition.",
+    icon: KeyRound,
+    href: "/services#door-to-door",
+    action: "How collection works",
   },
   {
     title: "We deliver",
     text: "Your vehicle is driven straight to its destination and handed over in person.",
+    icon: MapPinned,
+    href: "/services#nationwide",
+    action: "Where we deliver",
   },
 ];
 
+/**
+ * Home "About us" teaser with scroll animations: the text slides in, the
+ * three steps appear one by one while a gold line fills down the timeline,
+ * and each step's number turns gold as you reach it. Every step is a link
+ * that lifts and reveals an arrow on hover or keyboard focus. Without
+ * scroll-animation support, or with reduced motion, everything is static.
+ */
 export function AboutTeaser() {
   return (
-    <section className="py-20 sm:py-24">
-      <Container className="grid items-center gap-12 lg:grid-cols-2">
-        <div className="flex flex-col gap-6">
+    <section className="overflow-x-clip py-20 sm:py-28">
+      <Container className="grid items-start gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-20">
+        <div className="scroll-reveal flex flex-col gap-8 lg:sticky lg:top-32">
           <SectionHeading
             eyebrow="About us"
             title="Moving vehicles, the right way"
             description={`${siteConfig.name} delivers cars and vans across the UK for dealers, businesses and private owners. One point of contact, a clear price and a driver who treats your vehicle as their own.`}
           />
-          <Button asChild variant="outline" size="lg" className="w-fit px-4">
-            <Link href="/about">
-              More about us <ArrowRight data-icon="inline-end" />
-            </Link>
-          </Button>
+          <Link
+            href="/about"
+            className="group flex w-fit items-center gap-4 rounded-full focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none"
+          >
+            <span className="font-geo text-sm font-medium tracking-[0.15em] uppercase">
+              More about us
+            </span>
+            <span className="flex size-14 items-center justify-center rounded-full bg-ink text-gold transition-transform duration-300 group-hover:rotate-45 motion-reduce:transition-none">
+              <ArrowUpRight className="size-6" aria-hidden="true" />
+            </span>
+          </Link>
         </div>
-        <ol className="flex flex-col gap-4">
-          {steps.map((step, i) => (
-            <li
-              key={step.title}
-              className="flex gap-5 rounded-xl border border-border bg-card p-6"
+
+        <div className="flex flex-col gap-6">
+          <p className="scroll-reveal font-geo text-xs font-medium tracking-[0.3em] text-gold-dark uppercase">
+            How it works
+          </p>
+          <ol className="steps-timeline relative flex flex-col gap-5">
+            {/* Timeline track, with a gold line that fills as you scroll */}
+            <span
+              aria-hidden="true"
+              className="absolute top-8 bottom-8 left-[2.45rem] w-px bg-border sm:left-[2.7rem]"
             >
-              <span
-                aria-hidden="true"
-                className="flex size-10 shrink-0 items-center justify-center rounded-full bg-ink font-heading text-lg text-gold"
-              >
-                {i + 1}
-              </span>
-              <div className="flex flex-col gap-1">
-                <h3 className="text-xl font-semibold">{step.title}</h3>
-                <p className="text-muted-foreground">{step.text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+              <span className="steps-progress absolute inset-0 origin-top bg-gold" />
+            </span>
+            {steps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <li key={step.title} className="step-reveal relative">
+                  <Link
+                    href={step.href}
+                    className="group relative flex gap-5 overflow-clip rounded-2xl border border-border bg-card p-5 transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-1 hover:border-gold hover:shadow-xl focus-visible:-translate-y-1 focus-visible:border-gold focus-visible:ring-3 focus-visible:ring-gold/40 focus-visible:outline-none motion-reduce:transition-none sm:p-6"
+                  >
+                    {/* Big faint number behind the card */}
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -right-2 -bottom-8 font-geo text-[7rem] leading-none font-bold text-ink/[0.04] transition-colors duration-300 group-hover:text-gold/15"
+                    >
+                      0{i + 1}
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="step-number relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full bg-ink font-geo text-sm font-medium text-gold ring-4 ring-card transition-transform duration-300 group-hover:scale-110 sm:size-11"
+                    >
+                      {i + 1}
+                    </span>
+                    <div className="relative flex min-w-0 flex-1 flex-col gap-2">
+                      <div className="flex items-center gap-3">
+                        <Icon
+                          className="size-5 text-gold-dark"
+                          aria-hidden="true"
+                        />
+                        <h3 className="text-xl font-semibold">{step.title}</h3>
+                      </div>
+                      <p className="text-muted-foreground">{step.text}</p>
+                      <span className="mt-1 flex items-center gap-2 text-sm font-medium text-gold-dark opacity-70 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                        {step.action}
+                        <ArrowRight
+                          className="size-4 transition-transform duration-300 group-hover:translate-x-1"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
       </Container>
     </section>
   );
