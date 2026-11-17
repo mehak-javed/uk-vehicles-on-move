@@ -7,10 +7,10 @@ import {
   Timer,
 } from "lucide-react";
 
+import { AboutHero } from "@/components/about/about-hero";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
-import { CtaBand } from "@/components/site/cta-band";
-import { PageHeader } from "@/components/site/page-header";
+import { ParallaxBand } from "@/components/site/parallax-band";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -56,10 +56,11 @@ const reasons = [
 export default function AboutPage() {
   return (
     <>
-      <PageHeader
-        breadcrumb="About"
-        title="About us"
+      <AboutHero
+        eyebrow="About us"
+        title="Moving vehicles, the right way"
         description="Professional vehicle delivery across the UK for dealers, businesses and private owners."
+        image={{ src: "/samples/photo-3.jpg" }}
       />
 
       {/* Story */}
@@ -67,7 +68,7 @@ export default function AboutPage() {
         <Container className="grid gap-12 lg:grid-cols-2">
           <SectionHeading
             eyebrow="Our story"
-            title="Moving vehicles, the right way"
+            title="Simple, clear and dependable"
           />
           <div className="flex flex-col gap-5 text-lg text-muted-foreground">
             <p>
@@ -110,6 +111,12 @@ export default function AboutPage() {
         </Container>
       </section>
 
+      <ParallaxBand
+        image={{ src: "/samples/photo-6.jpg" }}
+        quote="Every vehicle is treated as if it were our own."
+        caption="Our promise"
+      />
+
       {/* Why choose us */}
       <section className="py-20 sm:py-24">
         <Container className="grid items-start gap-12 lg:grid-cols-2">
@@ -131,8 +138,6 @@ export default function AboutPage() {
           </ul>
         </Container>
       </section>
-
-      <CtaBand />
     </>
   );
 }

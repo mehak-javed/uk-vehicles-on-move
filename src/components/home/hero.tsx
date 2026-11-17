@@ -82,7 +82,7 @@ export function Hero() {
               size="xl"
               className="rounded-full px-7 font-geo text-sm font-medium tracking-[0.15em] uppercase"
             >
-              <Link href={siteConfig.quoteLink.href}>
+              <Link href="/contact">
                 {siteConfig.quoteLink.title}
                 <ArrowRight data-icon="inline-end" aria-hidden="true" />
               </Link>

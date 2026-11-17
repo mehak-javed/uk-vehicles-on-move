@@ -4,6 +4,7 @@ import { Mail, MessageCircle, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/contact/contact-form";
 import { Container } from "@/components/layout/container";
+import { CtaBand } from "@/components/site/cta-band";
 import { PageHeader } from "@/components/site/page-header";
 import { siteConfig } from "@/config/site";
 
@@ -95,6 +96,7 @@ export default function ContactPage() {
           <ContactForm />
         </Container>
       </section>
+      <CtaBand />
     </>
   );
 }

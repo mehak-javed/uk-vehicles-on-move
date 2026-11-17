@@ -137,3 +137,50 @@
     cursor: pointer;
   }
 }
+
+/* ── Parallax (CSS scroll-driven animations) ──────────────────────────
+ * Photos drift more slowly than the page as it scrolls. Only in browsers
+ * that support scroll-driven animations, and never for visitors who
+ * prefer reduced motion: everyone else simply sees a still photo.
+ */
+@keyframes parallax-view {
+  from {
+    transform: translate3d(0, -12%, 0);
+  }
+  to {
+    transform: translate3d(0, 12%, 0);
+  }
+}
+@keyframes parallax-top {
+  to {
+    transform: translate3d(0, 20%, 0);
+  }
+}
+@keyframes parallax-fade {
+  to {
+    opacity: 0;
+    transform: translate3d(0, -3rem, 0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* For photo bands further down the page */
+    .parallax-view {
+      animation: parallax-view linear both;
+      animation-timeline: view();
+    }
+    /* For a header at the very top of the page */
+    .parallax-top {
+      animation: parallax-top linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+    /* Header text fades and lifts away as you scroll */
+    .parallax-fade {
+      animation: parallax-fade linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 70svh;
+    }
+  }
+}

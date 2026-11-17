@@ -4,7 +4,6 @@ import { ArrowRight, CheckCircle2 } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
-import { CtaBand } from "@/components/site/cta-band";
 import { PageHeader } from "@/components/site/page-header";
 import {
   Accordion,
@@ -139,8 +138,6 @@ export default function ServicesPage() {
           </Accordion>
         </Container>
       </section>
-
-      <CtaBand />
     </>
   );
 }
