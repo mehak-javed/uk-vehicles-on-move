@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Mail, MessageCircle, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/contact/contact-form";
+import { ContactHero } from "@/components/contact/contact-hero";
 import { Container } from "@/components/layout/container";
-import { CtaBand } from "@/components/site/cta-band";
-import { PageHeader } from "@/components/site/page-header";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -45,11 +43,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <PageHeader
-        breadcrumb="Contact"
-        title="Contact us"
-        description="Questions about a delivery, a booking or a trade account? We're happy to help."
-      />
+      <ContactHero />
       <section className="py-12 sm:py-16">
         <Container className="grid gap-10 lg:grid-cols-[18rem_1fr]">
           <aside className="flex flex-col gap-4">
@@ -82,21 +76,10 @@ export default function ContactPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-sm text-muted-foreground">
-              Looking for a price?{" "}
-              <Link
-                href="/quote"
-                className="font-medium text-gold-dark underline underline-offset-4"
-              >
-                Request a free quote
-              </Link>
-              .
-            </p>
           </aside>
           <ContactForm />
         </Container>
       </section>
-      <CtaBand />
     </>
   );
 }

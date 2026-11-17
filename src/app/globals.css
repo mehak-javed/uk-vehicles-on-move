@@ -246,3 +246,53 @@
     }
   }
 }
+
+/* ── "Let's move it" road ─────────────────────────────────────────────
+ * The truck drives in from the left, leaves on the right and loops.
+ * Paused while off screen (RoadAnimation sets data-paused) and parked
+ * for visitors who prefer reduced motion.
+ */
+@keyframes truck-drive {
+  from {
+    left: 0;
+    transform: translateX(-110%);
+  }
+  to {
+    left: 100%;
+    transform: translateX(10%);
+  }
+}
+@keyframes truck-wheel-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.truck-drive {
+  left: 0;
+  transform: translateX(-110%);
+  animation: truck-drive 8s linear infinite;
+}
+.truck-wheel {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: truck-wheel-spin 0.6s linear infinite;
+}
+@media (max-width: 639px) {
+  .truck-drive {
+    animation-duration: 5.5s;
+  }
+}
+.road[data-paused] .truck-drive,
+.road[data-paused] .truck-wheel {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .truck-drive {
+    left: 30%;
+    transform: none;
+    animation: none;
+  }
+  .truck-wheel {
+    animation: none;
+  }
+}
