@@ -11,7 +11,8 @@ concurrency:
 
 jobs:
   quality:
-    name: Lint, typecheck, build & tests
+    # Keep this name: the branch rule on main requires a check with it.
+    name: Lint, typecheck & build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

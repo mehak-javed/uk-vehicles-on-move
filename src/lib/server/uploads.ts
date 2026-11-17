@@ -59,9 +59,13 @@ function cloudinaryEnv() {
 
 export const uploadsEnabled = () => cloudinaryEnv() !== null;
 
-/** Secret used to sign tickets: any server secret that is configured. */
+/**
+ * Secret used to sign tickets: FORM_SIGNING_SECRET if set (the automated
+ * tests use it), otherwise any other server secret that is configured.
+ */
 function ticketSecret(): string | null {
   return (
+    process.env.FORM_SIGNING_SECRET ||
     process.env.CLOUDINARY_API_SECRET ||
     process.env.TURNSTILE_SECRET_KEY ||
     process.env.RESEND_API_KEY ||

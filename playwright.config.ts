@@ -28,6 +28,8 @@ export default defineConfig({
     env: {
       EMAIL_TRANSPORT: "log",
       EMAIL_COMPANY_INBOX: "inbox@example.test",
+      // Signs upload tickets; CI has none of the real service keys.
+      FORM_SIGNING_SECRET: "playwright-test-secret",
       // The spam check needs a real browser token, so tests skip it.
       TURNSTILE_SECRET_KEY: "",
     },
