@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Terms & conditions",
   description:
     "The terms that apply when you use this website or book a vehicle delivery with UK Vehicles On Move.",
+  alternates: { canonical: "/terms" },
 };
 
 export default function TermsPage() {

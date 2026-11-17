@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   title: "Services",
   description:
     "Door-to-door, same-day, insured, nationwide and trade vehicle delivery across the UK. Get a free, no-obligation quote.",
+  alternates: { canonical: "/services" },
 };
 
 export default function ServicesPage() {

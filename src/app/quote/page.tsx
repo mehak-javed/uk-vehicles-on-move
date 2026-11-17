@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Get a free quote",
   description:
     "Request a free, no-obligation quote to move your car, van or motorbike anywhere in the UK. It takes under two minutes.",
+  alternates: { canonical: "/quote" },
 };
 
 const reassurances = [

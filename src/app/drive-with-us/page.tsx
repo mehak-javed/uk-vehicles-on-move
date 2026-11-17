@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Drive with us",
   description:
     "Apply to become a vehicle delivery driver with UK Vehicles On Move.",
+  alternates: { canonical: "/drive-with-us" },
 };
 
 // Draft copy for client review.

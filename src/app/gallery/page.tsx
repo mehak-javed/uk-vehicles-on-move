@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Gallery",
   description:
     "Photos of vehicles we have collected and delivered across the UK.",
+  alternates: { canonical: "/gallery" },
 };
 
 export default function GalleryPage() {

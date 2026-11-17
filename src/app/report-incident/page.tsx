@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Report an incident",
   description:
     "Report damage, an accident, a breakdown or a delay involving a vehicle we are moving.",
+  alternates: { canonical: "/report-incident" },
 };
 
 export default function ReportIncidentPage() {

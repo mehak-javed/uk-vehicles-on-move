@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "Privacy policy",
   description:
     "How UK Vehicles On Move collects, uses and protects your personal information.",
+  alternates: { canonical: "/privacy" },
 };
 
 export default function PrivacyPage() {

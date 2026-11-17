@@ -36,6 +36,14 @@ export const metadata: Metadata = {
     template: "%s | UK Vehicles On Move",
   },
   description: "Professional vehicle delivery across the United Kingdom.",
+  // Shared Open Graph details; each page's own title and description are
+  // used for the rest (and app/opengraph-image.png as the default image).
+  openGraph: {
+    type: "website",
+    siteName: "UK Vehicles On Move",
+    locale: "en_GB",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
