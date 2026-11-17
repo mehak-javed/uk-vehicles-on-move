@@ -144,34 +144,32 @@ test("the truck on the contact page keeps driving", async ({ page }) => {
   expect(x2).not.toBe(x1);
 });
 
-test("home services move sideways as you scroll, and reset at the top", async ({
+test("home services move sideways only while the mouse is over them", async ({
   page,
   isMobile,
 }) => {
-  test.skip(Boolean(isMobile), "phones get a swipeable row instead");
-  await page.emulateMedia({ reducedMotion: "no-preference" });
+  test.skip(Boolean(isMobile), "phones swipe the row instead");
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const section = page.locator('section[aria-label="Our services"]');
-  const box = await section.evaluate((s) => ({
-    top: s.getBoundingClientRect().top + window.scrollY,
-    height: (s as HTMLElement).offsetHeight,
-  }));
-  const trackX = () =>
-    section.evaluate(
-      (s) =>
-        new DOMMatrix(
-          getComputedStyle(s.querySelector(".will-change-transform")!)
-            .transform,
-        ).m41,
-    );
-  await page.evaluate(
-    (b) => window.scrollTo(0, b.top + (b.height - 900) / 2),
-    box,
-  );
-  await expect.poll(trackX).toBeLessThan(-100);
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await expect.poll(trackX).toBe(0);
+  const row = page.locator('section[aria-label="Our services"] .snap-x');
+  await row.scrollIntoViewIfNeeded();
+  const box = (await row.boundingBox())!;
+
+  // Over the cards: the row moves, the page doesn't
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  const pageY = await page.evaluate(() => window.scrollY);
+  await page.mouse.wheel(0, 400);
+  await expect.poll(() => row.evaluate((r) => r.scrollLeft)).toBeGreaterThan(0);
+  expect(await page.evaluate(() => window.scrollY)).toBe(pageY);
+
+  // Outside the cards: the page scrolls normally
+  await page.mouse.move(box.x + 20, box.y - 120);
+  const left = await row.evaluate((r) => r.scrollLeft);
+  await page.mouse.wheel(0, 400);
+  await expect
+    .poll(() => page.evaluate(() => window.scrollY))
+    .toBeGreaterThan(pageY);
+  expect(await row.evaluate((r) => r.scrollLeft)).toBe(left);
 });
 
 test("home services are a swipeable row on phones", async ({ page }) => {
