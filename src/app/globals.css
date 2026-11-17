@@ -93,10 +93,11 @@
   --color-grey-400: var(--grey-400); /* text on ink: 9.3:1 */
   --color-grey-600: var(--grey-600); /* text on paper: 6.5:1 */
 
-  /* Typography: serif headings, sans-serif body */
-  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-display), ui-serif, Georgia, serif;
-  --font-geo: var(--font-geo), ui-sans-serif, system-ui, sans-serif;
+  /* Typography: Montserrat everywhere (body, headings, labels, codes) */
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-geo: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
 
   /* Announcement ticker: content is duplicated, so -50% loops seamlessly */
   --animate-ticker: ticker 40s linear infinite;
