@@ -199,3 +199,23 @@ test("hovering a city pill shows it on the coverage map", async ({
     /border-gold/,
   );
 });
+
+for (const path of ["/", "/about", "/drive-with-us", "/contact"]) {
+  test(`the Scroll button on ${path} scrolls past the header`, async ({
+    page,
+  }) => {
+    await page.goto(path);
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+    await page
+      .getByRole("button", { name: "Scroll down to the content" })
+      .click();
+    const target = await page.evaluate(() => {
+      const hero = document.querySelector("main section")!;
+      const navbar = document.querySelector("header")!.offsetHeight;
+      return hero.getBoundingClientRect().bottom + window.scrollY - navbar;
+    });
+    await expect
+      .poll(() => page.evaluate(() => window.scrollY))
+      .toBeGreaterThan(target - 5);
+  });
+}
