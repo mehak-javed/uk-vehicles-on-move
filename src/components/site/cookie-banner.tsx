@@ -79,7 +79,7 @@ export function CookieBanner() {
                       Strictly necessary
                     </Label>
                     <p className="text-sm text-muted-foreground">
-                      Needed for security, sign-in and forms. Always on.
+                      Needed for security and forms. Always on.
                     </p>
                   </div>
                   <Switch id="consent-necessary" checked disabled />

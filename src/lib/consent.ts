@@ -60,3 +60,13 @@ export function useConsent(): Consent | null | undefined {
     return null;
   }
 }
+
+/** Forget the saved choice so the cookie banner asks again. */
+export function clearConsent() {
+  try {
+    window.localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Storage blocked: nothing was saved.
+  }
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
