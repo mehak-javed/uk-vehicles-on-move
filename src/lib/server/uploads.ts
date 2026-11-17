@@ -162,6 +162,8 @@ export async function confirmUploads(
   uploads: unknown,
 ): Promise<EmailAttachment[] | null> {
   if (!Array.isArray(uploads)) return null;
+  // No files expected and none sent (e.g. an incident report without photos)
+  if (ticket.ids.length === 0 && uploads.length === 0) return [];
   const env = cloudinaryEnv();
 
   // Local development without Cloudinary: nothing was uploaded.
