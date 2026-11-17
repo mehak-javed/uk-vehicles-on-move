@@ -43,11 +43,14 @@ test("unknown pages show the branded 404", async ({ page }) => {
   );
 });
 
-test("the hero video is silent and loops", async ({ page }) => {
+test("the homepage background videos are silent and loop", async ({ page }) => {
   await page.goto("/");
-  const video = page.locator("video");
-  await expect(video).toHaveJSProperty("muted", true);
-  await expect(video).toHaveJSProperty("loop", true);
+  const videos = page.locator("video");
+  await expect(videos).toHaveCount(2); // hero + photo band
+  for (const video of await videos.all()) {
+    await expect(video).toHaveJSProperty("muted", true);
+    await expect(video).toHaveJSProperty("loop", true);
+  }
 });
 
 test("first visit shows the cookie banner, and the choice is remembered", async ({
