@@ -116,7 +116,6 @@ export default function PrivacyPage() {
             <li>Website hosting (Netlify)</li>
             <li>Sending emails (Resend) and our business email (Zoho Mail)</li>
             <li>Secure storage of uploaded files (Cloudinary)</li>
-            <li>Database hosting (Neon)</li>
             <li>Spam protection and privacy-friendly analytics (Cloudflare)</li>
           </ul>
           <p>
@@ -150,7 +149,7 @@ export default function PrivacyPage() {
         <p>
           The website uses encrypted connections (HTTPS). Uploaded documents and
           photos are stored as private files that can only be opened through
-          short-lived secure links, and access to your information is limited to
+          private, signed links, and access to your information is limited to
           the people who need it.
         </p>
       ),

@@ -13,6 +13,7 @@ import {
   TextareaField,
   TextField,
 } from "@/components/forms/fields";
+import { Turnstile } from "@/components/forms/turnstile";
 import { useFormSubmit } from "@/components/forms/use-form-submit";
 import {
   contactSchema,
@@ -29,7 +30,7 @@ export function ContactForm() {
     defaultValues: { fullName: "", email: "", phone: "", message: "" },
     mode: "onTouched",
   });
-  const { result, error, pending, headingRef, run } = useFormSubmit();
+  const { result, error, pending, headingRef, run, captcha } = useFormSubmit();
 
   if (result) {
     return (
@@ -48,7 +49,7 @@ export function ContactForm() {
       <form
         noValidate
         onSubmit={form.handleSubmit(() =>
-          run(() => sendContactMessage(form.getValues())),
+          run((token) => sendContactMessage(form.getValues(), token)),
         )}
         className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6 sm:p-8"
       >
@@ -86,6 +87,7 @@ export function ContactForm() {
             purpose="to reply to my message"
           />
         </div>
+        <Turnstile {...captcha} />
         <FormError message={error} />
         <SubmitButton pending={pending}>Send message</SubmitButton>
       </form>

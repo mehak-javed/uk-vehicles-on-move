@@ -15,7 +15,9 @@ import {
   TextareaField,
   TextField,
 } from "@/components/forms/fields";
+import { Turnstile } from "@/components/forms/turnstile";
 import { useFormSubmit } from "@/components/forms/use-form-submit";
+import { submitWithFiles } from "@/lib/uploads/client";
 import { toFileMeta } from "@/lib/validation/common";
 import {
   availabilityOptions,
@@ -39,7 +41,7 @@ export function DriverApplicationForm() {
     },
     mode: "onTouched",
   });
-  const { result, error, pending, headingRef, run } = useFormSubmit();
+  const { result, error, pending, headingRef, run, captcha } = useFormSubmit();
 
   if (result) {
     return (
@@ -59,14 +61,23 @@ export function DriverApplicationForm() {
       <form
         noValidate
         onSubmit={form.handleSubmit((data) =>
-          // Only file details are sent; the files themselves will be
-          // uploaded straight to secure storage in US-15.
-          run(() =>
-            submitDriverApplication({
-              ...form.getValues(),
-              cv: toFileMeta(data.cv),
-              licence: toFileMeta(data.licence),
-            }),
+          // Files go straight to private storage; only their details
+          // and the upload ticket are sent with the form.
+          run((token) =>
+            submitWithFiles(
+              "driver",
+              { cv: data.cv, licence: data.licence },
+              token,
+              (proof) =>
+                submitDriverApplication(
+                  {
+                    ...form.getValues(),
+                    cv: toFileMeta(data.cv),
+                    licence: toFileMeta(data.licence),
+                  },
+                  proof,
+                ),
+            ),
           ),
         )}
         className="flex flex-col gap-8 rounded-2xl border border-border bg-card p-6 sm:p-8"
@@ -141,6 +152,7 @@ export function DriverApplicationForm() {
             purpose="to assess my application"
           />
         </div>
+        <Turnstile {...captcha} />
         <FormError message={error} />
         <SubmitButton pending={pending}>Submit application</SubmitButton>
       </form>
