@@ -19,11 +19,13 @@ type LegalPageProps = {
   /** ISO date for the <time> element, e.g. "2026-11-16". */
   lastUpdatedIso: string;
   sections: LegalSection[];
+  /** Show the "Draft for review" notice (pages still awaiting details). */
+  draft?: boolean;
 };
 
 /**
  * Shared layout for the Privacy, Cookie and Terms pages: title band,
- * "last updated" date, draft notice, table of contents and readable text.
+ * "last updated" date, optional draft notice, table of contents and text.
  */
 export function LegalPage({
   title,
@@ -32,6 +34,7 @@ export function LegalPage({
   lastUpdated,
   lastUpdatedIso,
   sections,
+  draft = false,
 }: LegalPageProps) {
   return (
     <>
@@ -66,22 +69,24 @@ export function LegalPage({
               </time>
             </p>
 
-            <div
-              role="note"
-              className="flex gap-3 rounded-xl border border-gold/40 bg-gold/10 p-4 text-sm"
-            >
-              <FileWarning
-                className="mt-0.5 size-5 shrink-0 text-gold-dark"
-                aria-hidden="true"
-              />
-              <p>
-                <strong>Draft for review.</strong> This page will be finalised
-                with the company&apos;s details and checked before the website
-                goes live. Items marked{" "}
-                <span className="rounded bg-gold/25 px-1">[like this]</span> are
-                still to be confirmed.
-              </p>
-            </div>
+            {draft && (
+              <div
+                role="note"
+                className="flex gap-3 rounded-xl border border-gold/40 bg-gold/10 p-4 text-sm"
+              >
+                <FileWarning
+                  className="mt-0.5 size-5 shrink-0 text-gold-dark"
+                  aria-hidden="true"
+                />
+                <p>
+                  <strong>Draft for review.</strong> This page will be finalised
+                  with the company&apos;s details and checked before the website
+                  goes live. Items marked{" "}
+                  <span className="rounded bg-gold/25 px-1">[like this]</span>{" "}
+                  are still to be confirmed.
+                </p>
+              </div>
+            )}
 
             {sections.map((s) => (
               <section

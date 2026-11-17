@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import {
-  LegalPage,
-  Tbc,
-  type LegalSection,
-} from "@/components/legal/legal-page";
+import { LegalPage, type LegalSection } from "@/components/legal/legal-page";
 import { siteConfig } from "@/config/site";
 import { LEGAL_LAST_UPDATED, LEGAL_LAST_UPDATED_ISO } from "@/content/legal";
 
@@ -15,14 +11,13 @@ export const metadata: Metadata = {
     "How UK Vehicles On Move collects, uses and protects your personal information.",
 };
 
-// Draft wording for client review. Not legal advice: to be checked before launch.
 export default function PrivacyPage() {
   const { name } = siteConfig;
   const email = siteConfig.contact.email;
   const contact = email ? (
     <a href={`mailto:${email}`}>{email}</a>
   ) : (
-    <Tbc>contact email</Tbc>
+    <Link href="/contact">our contact form</Link>
   );
 
   const sections: LegalSection[] = [
@@ -32,11 +27,8 @@ export default function PrivacyPage() {
       content: (
         <>
           <p>
-            {name} (<Tbc>registered company name</Tbc>, company number{" "}
-            <Tbc>number</Tbc>) is the controller of the personal information
-            described in this policy. We are registered with the Information
-            Commissioner&apos;s Office (ICO) under number{" "}
-            <Tbc>ICO registration number</Tbc>.
+            {name} is responsible for the personal information described in this
+            policy. We collect and use it in line with UK data protection law.
           </p>
           <p>For any privacy question or request, contact us at {contact}.</p>
         </>
@@ -128,9 +120,9 @@ export default function PrivacyPage() {
             <li>Spam protection and privacy-friendly analytics (Cloudflare)</li>
           </ul>
           <p>
-            Where needed, we may also share information with our insurers{" "}
-            <Tbc>insurer details</Tbc>, the drivers handling your job, or the
-            authorities when the law requires it.
+            Where needed, we may also share information with our insurers, the
+            drivers handling your job, or the authorities when the law requires
+            it.
           </p>
           <p>
             Some providers process data outside the UK. Where this happens, we
@@ -144,22 +136,11 @@ export default function PrivacyPage() {
       id: "how-long-we-keep-it",
       title: "How long we keep it",
       content: (
-        <ul>
-          <li>
-            Quote requests that do not go ahead: <Tbc>12 months</Tbc>
-          </li>
-          <li>
-            Contact messages: <Tbc>12 months</Tbc>
-          </li>
-          <li>
-            Unsuccessful driver applications, including CV and licence copies:{" "}
-            <Tbc>6 months</Tbc>
-          </li>
-          <li>
-            Completed jobs and incident reports: <Tbc>6 years</Tbc>, for
-            accounting and legal claims
-          </li>
-        </ul>
+        <p>
+          We keep personal information only for as long as we need it for the
+          purpose it was collected, and to meet our legal, accounting and
+          insurance obligations. After that, we delete it securely.
+        </p>
       ),
     },
     {

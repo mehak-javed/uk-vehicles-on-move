@@ -190,6 +190,7 @@ export default function CookiesPage() {
       lastUpdated={LEGAL_LAST_UPDATED}
       lastUpdatedIso={LEGAL_LAST_UPDATED_ISO}
       sections={sections}
+      draft
     />
   );
 }
