@@ -217,7 +217,7 @@ export function Coverage() {
               tone="dark"
               eyebrow="Where we deliver"
               title="Coverage across the United Kingdom"
-              description="We collect and deliver nationwide. These are some of the cities we serve most often. Not listed? Ask us for a quote."
+              description="We collect and deliver anywhere in the UK, from city centres to rural addresses. These are just some of the cities we serve most often."
             />
           }
         />
