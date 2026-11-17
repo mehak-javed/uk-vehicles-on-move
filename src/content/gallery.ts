@@ -1,5 +1,5 @@
 /**
- * Gallery photos. Static for now; managed from the admin area later (US-22).
+ * Gallery photos. To replace them, see docs/EDITING-CONTENT.md.
  *
  * The site is currently a draft for client review, so the gallery shows
  * dummy stock photos. Replace `galleryImages` with the company's own photos
