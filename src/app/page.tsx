@@ -7,7 +7,6 @@ import { ParallaxBand } from "@/components/site/parallax-band";
 import {
   AboutTeaser,
   Coverage,
-  LatestNews,
   Partners,
   ServicesGrid,
   Testimonials,
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * Home page (US-04): hero, about, services, news, partners, testimonials,
+ * Home page (US-04): hero, about, services, partners, testimonials,
  * then the gold announcement banner with the coverage map ("Where we
  * deliver") below it, in place of the closing CTA band (for now).
  */
@@ -37,7 +36,6 @@ export default function Home() {
         quote="From one car to a whole fleet, delivered with care."
         caption="Across the UK"
       />
-      <LatestNews />
       <Partners />
       <Testimonials />
       <AnnouncementTicker />
