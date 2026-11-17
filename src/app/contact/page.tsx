@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowUpRight, Mail, MessageCircle, Phone } from "lucide-react";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/contact/contact-form";
 import { ContactHero } from "@/components/contact/contact-hero";
@@ -77,17 +76,6 @@ export default function ContactPage() {
                 </li>
               ))}
             </ul>
-            <Link
-              href={siteConfig.quoteLink.href}
-              className="group mt-2 flex items-center justify-between gap-4 rounded-full focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none"
-            >
-              <span className="font-geo text-sm font-medium tracking-[0.15em] uppercase">
-                {siteConfig.quoteLink.title}
-              </span>
-              <span className="flex size-16 shrink-0 items-center justify-center rounded-full bg-ink text-gold transition-transform duration-300 group-hover:rotate-45 motion-reduce:transition-none">
-                <ArrowUpRight className="size-7" aria-hidden="true" />
-              </span>
-            </Link>
           </aside>
           <ContactForm />
         </Container>

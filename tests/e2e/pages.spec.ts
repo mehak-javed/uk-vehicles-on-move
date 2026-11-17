@@ -106,10 +106,18 @@ test('the "Let\'s move it" band appears only on the contact page', async ({
   }
 });
 
-test("the contact page links to the quote form from its sidebar", async ({
-  page,
-}) => {
+test("the contact page header links to the quote form", async ({ page }) => {
   await page.goto("/contact");
   await page.getByRole("link", { name: /free quote/i }).click();
   await expect(page).toHaveURL(/\/quote$/);
+});
+
+test("the truck on the contact page keeps driving", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/contact");
+  const truck = page.locator(".truck-drive");
+  const x1 = (await truck.boundingBox())?.x ?? 0;
+  await page.waitForTimeout(600);
+  const x2 = (await truck.boundingBox())?.x ?? 0;
+  expect(x2).not.toBe(x1);
 });
