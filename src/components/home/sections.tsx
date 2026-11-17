@@ -10,18 +10,12 @@ import {
   Quote,
 } from "lucide-react";
 
+import { ServicesShowcase } from "@/components/home/services-showcase";
 import { UkCoverageMap } from "@/components/home/uk-coverage-map";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { siteConfig } from "@/config/site";
 import {
   featuredCities,
@@ -147,52 +141,73 @@ export function AboutTeaser() {
   );
 }
 
+/** Photo for each service in the showcase (sample photos for now). */
+const serviceImages: Record<string, { src: string; alt: string }> = {
+  "door-to-door": {
+    src: "/samples/photo-6.jpg",
+    alt: "Red hatchback driving on an open country road",
+  },
+  "same-day": {
+    src: "/samples/photo-3.jpg",
+    alt: "Car transporter truck driving along a highway",
+  },
+  insured: {
+    src: "/samples/photo-4.jpg",
+    alt: "Black car secured inside a transport truck",
+  },
+  nationwide: {
+    src: "/samples/photo-1.jpg",
+    alt: "Car carrier truck transporting vehicles on a road",
+  },
+  trade: {
+    src: "/samples/photo-2.jpg",
+    alt: "Two cars loaded onto a car carrier truck",
+  },
+};
+
+/**
+ * Home "Our services": dark section with an interactive list of services
+ * and, on large screens, a photo panel that changes with the active one.
+ */
 export function ServicesGrid() {
+  const items = services.map((service) => {
+    const Icon = service.icon;
+    return {
+      id: service.id,
+      title: service.title,
+      description: service.description,
+      href: serviceHref(service),
+      image: serviceImages[service.id] ?? serviceImages["door-to-door"],
+      icon: <Icon className="size-6" aria-hidden="true" />,
+    };
+  });
+
   return (
-    <section className="bg-grey-100 py-20 sm:py-24">
-      <Container className="flex flex-col gap-12">
-        <SectionHeading
-          align="center"
-          eyebrow="Our services"
-          title="Whatever you need moving"
-          description="Flexible vehicle delivery for one car or a whole fleet."
-        />
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((service) => {
-            const { title, description, icon: Icon } = service;
-            const href = serviceHref(service);
-            return (
-              <li key={title}>
-                <Card className="h-full transition-shadow hover:shadow-lg">
-                  <CardHeader className="gap-4">
-                    <span className="flex size-12 items-center justify-center rounded-lg bg-ink text-gold">
-                      <Icon className="size-6" aria-hidden="true" />
-                    </span>
-                    <CardTitle className="font-heading text-xl">
-                      <h3>{title}</h3>
-                    </CardTitle>
-                    <CardDescription className="text-base">
-                      {description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardFooter className="mt-auto">
-                    <Link
-                      href={href}
-                      className="inline-flex items-center gap-1 rounded-sm text-sm font-semibold text-gold-dark hover:underline focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-                    >
-                      Learn more
-                      <span className="sr-only">
-                        {" "}
-                        about {title.toLowerCase()}
-                      </span>
-                      <ArrowRight className="size-4" aria-hidden="true" />
-                    </Link>
-                  </CardFooter>
-                </Card>
-              </li>
-            );
-          })}
-        </ul>
+    <section
+      data-header-dark
+      className="overflow-x-clip bg-ink py-20 text-paper sm:py-28"
+    >
+      <Container className="flex flex-col gap-14">
+        <div className="scroll-reveal flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <SectionHeading
+            tone="dark"
+            eyebrow="Our services"
+            title="Whatever you need moving"
+            description="Flexible vehicle delivery for one car or a whole fleet."
+          />
+          <Link
+            href="/services"
+            className="group flex w-fit shrink-0 items-center gap-4 rounded-full focus-visible:ring-3 focus-visible:ring-gold/60 focus-visible:outline-none"
+          >
+            <span className="font-geo text-sm font-medium tracking-[0.15em] uppercase">
+              All services
+            </span>
+            <span className="flex size-14 items-center justify-center rounded-full bg-gold text-ink transition-transform duration-300 group-hover:rotate-45 motion-reduce:transition-none">
+              <ArrowUpRight className="size-6" aria-hidden="true" />
+            </span>
+          </Link>
+        </div>
+        <ServicesShowcase items={items} />
       </Container>
     </section>
   );

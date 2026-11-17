@@ -143,3 +143,14 @@ test("the truck on the contact page keeps driving", async ({ page }) => {
   const x2 = (await truck.boundingBox())?.x ?? 0;
   expect(x2).not.toBe(x1);
 });
+
+test("hovering a home service shows its photo and text", async ({ page }) => {
+  await page.goto("/");
+  const section = page.locator("section", {
+    has: page.getByRole("heading", { name: "Whatever you need moving" }),
+  });
+  const rows = section.getByRole("list").first().getByRole("link");
+  await expect(rows).toHaveCount(4);
+  await rows.nth(1).focus();
+  await expect(rows.nth(1)).toHaveAttribute("aria-current", "true");
+});
