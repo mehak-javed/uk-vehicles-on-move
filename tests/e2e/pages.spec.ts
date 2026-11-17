@@ -105,3 +105,25 @@ test('"Ready to move your vehicle?" appears only on the contact page', async ({
     await expect(band).toHaveCount(0);
   }
 });
+
+test("the home steps fill in as you scroll", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("/");
+  const line = page.locator(".steps-progress");
+  const scaleY = () =>
+    line.evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).d);
+  const top = await page.evaluate(
+    () =>
+      document.querySelector(".steps-timeline")!.getBoundingClientRect().top,
+  );
+  await page.evaluate((y) => window.scrollTo(0, y - 900), top);
+  const before = await scaleY();
+  await page.evaluate((y) => window.scrollTo(0, y), top);
+  await expect.poll(scaleY).toBeGreaterThan(before);
+});
+
+test("each home step links somewhere useful", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: /request a quote/i }).click();
+  await expect(page).toHaveURL(/\/quote$/);
+});

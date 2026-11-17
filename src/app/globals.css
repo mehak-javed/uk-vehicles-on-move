@@ -184,3 +184,65 @@
     }
   }
 }
+
+/* ── Home "About us" steps: scroll animations ─────────────────────────
+ * Text slides up as it enters, steps slide in one by one, the timeline
+ * line fills gold, and each number turns gold when you reach it.
+ */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 2.5rem, 0);
+  }
+}
+@keyframes reveal-step {
+  from {
+    opacity: 0;
+    transform: translate3d(3rem, 1.5rem, 0) scale(0.97);
+  }
+}
+@keyframes fill-down {
+  from {
+    transform: scaleY(0);
+  }
+}
+@keyframes number-reached {
+  0%,
+  40% {
+    background-color: var(--ink);
+    color: var(--gold);
+  }
+  60%,
+  100% {
+    background-color: var(--gold);
+    color: var(--ink);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .scroll-reveal {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+    .step-reveal {
+      animation: reveal-step linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 35%;
+    }
+    .steps-timeline {
+      view-timeline-name: --steps;
+    }
+    .steps-progress {
+      animation: fill-down linear both;
+      animation-timeline: --steps;
+      animation-range: entry 60% exit 10%;
+    }
+    .step-number {
+      animation: number-reached linear both;
+      animation-timeline: view();
+      animation-range: entry 100% cover 55%;
+    }
+  }
+}
