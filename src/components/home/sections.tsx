@@ -5,13 +5,12 @@ import {
   ArrowUpRight,
   FileText,
   KeyRound,
-  MapPin,
   MapPinned,
   Quote,
 } from "lucide-react";
 
 import { ServicesScroller } from "@/components/home/services-scroller";
-import { UkCoverageMap } from "@/components/home/uk-coverage-map";
+import { CoverageExplorer } from "@/components/home/coverage-explorer";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { siteConfig } from "@/config/site";
@@ -210,29 +209,18 @@ export function ServicesGrid() {
 export function Coverage() {
   return (
     <section data-header-dark className="bg-ink py-20 text-paper sm:py-24">
-      <Container className="grid items-center gap-12 lg:grid-cols-2">
-        <div className="flex flex-col gap-8">
-          <SectionHeading
-            tone="dark"
-            eyebrow="Where we deliver"
-            title="Coverage across the United Kingdom"
-            description="We collect and deliver nationwide. These are some of the cities we serve most often. Not listed? Ask us for a quote."
-          />
-          <ul className="flex flex-wrap gap-2" aria-label="Featured cities">
-            {featuredCities.map((city) => (
-              <li
-                key={city.name}
-                className="flex items-center gap-1.5 rounded-full border border-paper/15 px-3 py-1.5 text-sm"
-              >
-                <MapPin className="size-3.5 text-gold" aria-hidden="true" />
-                {city.name}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="flex justify-center">
-          <UkCoverageMap cities={featuredCities} />
-        </div>
+      <Container>
+        <CoverageExplorer
+          cities={featuredCities}
+          heading={
+            <SectionHeading
+              tone="dark"
+              eyebrow="Where we deliver"
+              title="Coverage across the United Kingdom"
+              description="We collect and deliver nationwide. These are some of the cities we serve most often. Not listed? Ask us for a quote."
+            />
+          }
+        />
       </Container>
     </section>
   );

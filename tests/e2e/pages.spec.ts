@@ -179,3 +179,23 @@ test("home services are a swipeable row on phones", async ({ page }) => {
   const scrolls = await row.evaluate((r) => r.scrollWidth > r.clientWidth);
   expect(scrolls).toBe(true);
 });
+
+test("hovering a city pill shows it on the coverage map", async ({
+  page,
+  isMobile,
+}) => {
+  test.skip(Boolean(isMobile), "hover only");
+  await page.goto("/");
+  const section = page.locator("section", {
+    has: page.getByRole("heading", {
+      name: "Coverage across the United Kingdom",
+    }),
+  });
+  await section.locator('li[data-city="Glasgow"]').hover();
+  await expect(
+    section.getByText("Glasgow", { exact: true }).last(),
+  ).toBeVisible();
+  await expect(section.locator('li[data-city="Glasgow"]')).toHaveClass(
+    /border-gold/,
+  );
+});
