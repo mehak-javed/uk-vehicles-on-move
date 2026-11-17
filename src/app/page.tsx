@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { Hero } from "@/components/home/hero";
 import { LocalBusinessSchema } from "@/components/site/local-business-schema";
-import { AnnouncementTicker } from "@/components/site/announcement-ticker";
 import { ParallaxBand } from "@/components/site/parallax-band";
 import {
   AboutTeaser,
@@ -21,7 +20,7 @@ export const metadata: Metadata = {
 
 /**
  * Home page (US-04): hero, about, services, partners, testimonials,
- * then the gold announcement banner with the coverage map ("Where we
+ * then the coverage map ("Where we
  * deliver") below it, in place of the closing CTA band (for now).
  */
 export default function Home() {
@@ -32,13 +31,13 @@ export default function Home() {
       <AboutTeaser />
       <ServicesGrid />
       <ParallaxBand
-        image={{ src: "/samples/photo-2.jpg" }}
+        image={{ src: "/home/band-poster.jpg" }}
+        video={{ src: "/home/band.mp4", mobileSrc: "/home/band-mobile.mp4" }}
         quote="From one car to a whole fleet, delivered with care."
         caption="Across the UK"
       />
       <Partners />
       <Testimonials />
-      <AnnouncementTicker />
       <Coverage />
     </>
   );

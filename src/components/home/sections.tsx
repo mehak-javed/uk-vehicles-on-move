@@ -208,13 +208,12 @@ export function ServicesGrid() {
 /** Featured cities followed by the UK coverage map. */
 export function Coverage() {
   return (
-    <section data-header-dark className="bg-ink py-20 text-paper sm:py-24">
+    <section className="bg-paper py-20 text-ink sm:py-24">
       <Container>
         <CoverageExplorer
           cities={featuredCities}
           heading={
             <SectionHeading
-              tone="dark"
               eyebrow="Where we deliver"
               title="Coverage across the United Kingdom"
               description="We collect and deliver anywhere in the UK, from city centres to rural addresses. These are just some of the cities we serve most often."

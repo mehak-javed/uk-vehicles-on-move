@@ -62,6 +62,17 @@ function project([lon, lat]: LonLat) {
   };
 }
 
+function toPath(points: LonLat[]) {
+  return (
+    points
+      .map((p, i) => {
+        const { x, y } = project(p);
+        return `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
+      })
+      .join(" ") + " Z"
+  );
+}
+
 /** Is the point inside the polygon? (ray casting) */
 function inside(x: number, y: number, poly: { x: number; y: number }[]) {
   let hit = false;
@@ -99,7 +110,7 @@ export const projectCity = (city: City) => project([city.lon, city.lat]);
 export const MAP_SIZE = { width: WIDTH, height: HEIGHT };
 
 /**
- * UK map drawn from small gold dots, with a pin per featured city. Pins
+ * UK map drawn from small gold dots (dark gold, for light backgrounds), with a pin per featured city. Pins
  * pulse softly (staggered); the active city's pin grows. Hovering a pin
  * reports it through `onActive`.
  */
@@ -124,7 +135,19 @@ export function UkCoverageMap({
         Map of the United Kingdom with pins on {cities.length} featured cities:{" "}
         {cities.map((c) => c.name).join(", ")}.
       </desc>
-      <g className="fill-gold/30" aria-hidden="true">
+      {/* Gold-tinted coastline around the dots */}
+      <g
+        aria-hidden="true"
+        fill="none"
+        className="stroke-gold/70"
+        strokeWidth={1.6}
+        strokeLinejoin="round"
+      >
+        <path d={toPath(GREAT_BRITAIN)} />
+        <path d={toPath(NORTHERN_IRELAND)} />
+        <path d={toPath(ISLE_OF_WIGHT)} />
+      </g>
+      <g className="fill-gold-dark/25" aria-hidden="true">
         {DOTS.map(({ x, y }) => (
           <circle key={`${x}-${y}`} cx={x} cy={y} r={2.6} />
         ))}
@@ -144,14 +167,14 @@ export function UkCoverageMap({
               cx={x}
               cy={y}
               r={6}
-              className="pin-pulse fill-gold"
+              className="pin-pulse fill-gold-dark"
               style={{ animationDelay: `${i * 0.33}s` }}
             />
             <circle
               cx={x}
               cy={y}
               r={isActive ? 10 : 6}
-              className="fill-gold transition-[r] duration-300"
+              className="fill-gold-dark transition-[r] duration-300"
             />
             {/* Larger invisible target, easier to hover */}
             <circle cx={x} cy={y} r={18} fill="transparent" />

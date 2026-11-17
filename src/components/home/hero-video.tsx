@@ -3,14 +3,24 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Silent, looping background video for the home hero. Phones get a smaller
- * 720p file. The still frame (rendered behind it) shows while the video
+ * Silent, looping background video (home hero, photo bands). Phones get
+ * a smaller 720p file. Off screen it pauses (preload="none" there too). The still frame (rendered behind it) shows while the video
  * loads and for visitors who prefer reduced motion, who get no video.
  *
  * `muted` is also set from code: React does not put it in the server HTML,
  * and browsers only autoplay videos that are muted.
  */
-export function HeroVideo({ className }: { className?: string }) {
+export function HeroVideo({
+  className,
+  src = "/home/hero.mp4",
+  mobileSrc = "/home/hero-mobile.mp4",
+  preload = "auto",
+}: {
+  className?: string;
+  src?: string;
+  mobileSrc?: string;
+  preload?: "auto" | "none" | "metadata";
+}) {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -26,9 +36,21 @@ export function HeroVideo({ className }: { className?: string }) {
         });
       }
     };
+    // Only play while on screen (saves battery and data further down the page)
+    let visible = true;
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) sync();
+      else video.pause();
+    });
+    observer.observe(video);
     sync();
-    reduce.addEventListener("change", sync);
-    return () => reduce.removeEventListener("change", sync);
+    const onChange = () => visible && sync();
+    reduce.addEventListener("change", onChange);
+    return () => {
+      observer.disconnect();
+      reduce.removeEventListener("change", onChange);
+    };
   }, []);
 
   return (
@@ -40,15 +62,11 @@ export function HeroVideo({ className }: { className?: string }) {
       loop
       playsInline
       autoPlay
-      preload="auto"
+      preload={preload}
       className={className}
     >
-      <source
-        src="/home/hero-mobile.mp4"
-        type="video/mp4"
-        media="(max-width: 767px)"
-      />
-      <source src="/home/hero.mp4" type="video/mp4" />
+      <source src={mobileSrc} type="video/mp4" media="(max-width: 767px)" />
+      <source src={src} type="video/mp4" />
     </video>
   );
 }
