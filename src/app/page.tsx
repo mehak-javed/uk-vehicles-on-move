@@ -31,7 +31,8 @@ export default function Home() {
       <AboutTeaser />
       <ServicesGrid />
       <ParallaxBand
-        image={{ src: "/samples/photo-2.jpg" }}
+        image={{ src: "/home/band-poster.jpg" }}
+        video={{ src: "/home/band.mp4", mobileSrc: "/home/band-mobile.mp4" }}
         quote="From one car to a whole fleet, delivered with care."
         caption="Across the UK"
       />

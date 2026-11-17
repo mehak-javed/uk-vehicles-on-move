@@ -1,9 +1,13 @@
 import Image from "next/image";
 
+import { HeroVideo } from "@/components/home/hero-video";
 import { Container } from "@/components/layout/container";
 
 type ParallaxBandProps = {
+  /** Photo (also the still frame shown before/instead of a video). */
   image: { src: string; alt?: string };
+  /** Optional background video, played over the photo. */
+  video?: { src: string; mobileSrc: string };
   /** Short statement shown over the photo. */
   quote: string;
   /** Optional small gold label under the statement. */
@@ -15,7 +19,12 @@ type ParallaxBandProps = {
  * the screen like a window while the page scrolls, so the sections above
  * and below slide over it. Works on phones too (no background-attachment).
  */
-export function ParallaxBand({ image, quote, caption }: ParallaxBandProps) {
+export function ParallaxBand({
+  image,
+  video,
+  quote,
+  caption,
+}: ParallaxBandProps) {
   return (
     <section
       data-header-dark
@@ -31,6 +40,14 @@ export function ParallaxBand({ image, quote, caption }: ParallaxBandProps) {
           sizes="100vw"
           className="object-cover"
         />
+        {video && (
+          <HeroVideo
+            src={video.src}
+            mobileSrc={video.mobileSrc}
+            preload="none"
+            className="absolute inset-0 size-full object-cover motion-reduce:hidden"
+          />
+        )}
       </div>
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink/60" />
 
