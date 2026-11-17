@@ -14,20 +14,17 @@ export type ScrollerService = {
   icon: React.ReactNode;
 };
 
-/** Pinned (horizontal) mode: large screens, motion allowed. */
-const PIN_QUERY =
-  "(min-width: 1024px) and (prefers-reduced-motion: no-preference)";
+/** Large screens: the mouse wheel moves the cards while over them. */
+const WHEEL_QUERY = "(min-width: 1024px)";
 
 /**
  * Services as a horizontal row of cards.
  *
- * Large screens: the section pins to the top of the screen and scrolling
- * down moves the cards to the left (1 px down = 1 px left), with a gold
- * progress bar. The section's height is measured from the track's width,
- * so the speed stays natural at any size. Scrolling back up moves the
- * cards back; at the top everything is back at the start.
- *
- * Phones, tablets and reduced motion: a normal swipeable row instead.
+ * The page never locks. With the mouse over the cards, scrolling moves
+ * them sideways until the row ends, then the page carries on scrolling;
+ * anywhere else the page scrolls normally. Trackpads and phones can also
+ * swipe the row sideways (with snap points on touch screens). A gold bar
+ * and counter show how far along the row you are.
  */
 export function ServicesScroller({
   heading,
@@ -36,37 +33,19 @@ export function ServicesScroller({
   heading: React.ReactNode;
   items: ScrollerService[];
 }) {
-  const outer = useRef<HTMLElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
-  const track = useRef<HTMLDivElement>(null);
   const bar = useRef<HTMLSpanElement>(null);
   const counter = useRef<HTMLSpanElement>(null);
   const total = items.length;
 
   useEffect(() => {
-    const section = outer.current;
-    const frame = viewport.current;
-    const row = track.current;
-    if (!section || !frame || !row) return;
-    const mq = window.matchMedia(PIN_QUERY);
-    let distance = 0;
-
-    const measure = () => {
-      if (!mq.matches) {
-        section.style.height = "";
-        row.style.transform = "";
-        distance = 0;
-        return;
-      }
-      distance = Math.max(0, row.scrollWidth - frame.clientWidth);
-      section.style.height = `${window.innerHeight + distance}px`;
-    };
+    const row = viewport.current;
+    if (!row) return;
+    const mq = window.matchMedia(WHEEL_QUERY);
 
     const update = () => {
-      if (!mq.matches) return;
-      const top = section.getBoundingClientRect().top;
-      const progress = distance ? Math.min(1, Math.max(0, -top / distance)) : 0;
-      row.style.transform = `translate3d(${-progress * distance}px, 0, 0)`;
+      const max = row.scrollWidth - row.clientWidth;
+      const progress = max > 0 ? Math.min(1, row.scrollLeft / max) : 0;
       if (bar.current) bar.current.style.transform = `scaleX(${progress})`;
       if (counter.current)
         counter.current.textContent = String(
@@ -74,50 +53,56 @@ export function ServicesScroller({
         ).padStart(2, "0");
     };
 
-    const refresh = () => {
-      measure();
-      update();
+    // Turn vertical wheel movement into sideways movement, but only while
+    // the row can still move that way; at either end the page scrolls.
+    const onWheel = (event: WheelEvent) => {
+      if (!mq.matches || Math.abs(event.deltaX) > Math.abs(event.deltaY))
+        return;
+      const max = row.scrollWidth - row.clientWidth;
+      const canMove =
+        (event.deltaY > 0 && row.scrollLeft < max - 1) ||
+        (event.deltaY < 0 && row.scrollLeft > 1);
+      if (!canMove) return;
+      event.preventDefault();
+      row.scrollLeft = Math.min(
+        max,
+        Math.max(0, row.scrollLeft + event.deltaY),
+      );
     };
 
-    refresh();
-    const resize = new ResizeObserver(refresh);
-    resize.observe(row);
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", refresh);
-    mq.addEventListener("change", refresh);
+    update();
+    row.addEventListener("scroll", update, { passive: true });
+    row.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("resize", update);
     return () => {
-      resize.disconnect();
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", refresh);
-      mq.removeEventListener("change", refresh);
+      row.removeEventListener("scroll", update);
+      row.removeEventListener("wheel", onWheel);
+      window.removeEventListener("resize", update);
     };
   }, [total]);
 
   return (
     <section
-      ref={outer}
       aria-label="Our services"
       // Warm light sand: the dark photo cards stand out on it, and the
       // header switches to dark text automatically.
       className="relative bg-[color-mix(in_oklch,var(--gold)_14%,var(--paper))] text-ink"
     >
-      <div className="flex flex-col gap-10 py-20 sm:py-24 lg:motion-safe:sticky lg:motion-safe:top-0 lg:motion-safe:h-svh lg:motion-safe:justify-center lg:motion-safe:gap-12 lg:motion-safe:overflow-hidden lg:motion-safe:py-0 lg:motion-safe:pt-20">
+      <div className="flex flex-col gap-10 py-20 sm:py-24 lg:gap-12">
         {heading}
 
-        {/* The track: swipeable on small screens, moved by scroll when pinned */}
+        {/* The row: swipe or trackpad anywhere; mouse wheel while over it */}
         <div
           ref={viewport}
-          className="scrollbar-none snap-x snap-mandatory scroll-px-5 overflow-x-auto sm:scroll-px-8 lg:motion-safe:snap-none lg:motion-safe:overflow-visible"
+          // Vertical padding leaves room for the card shadows
+          className="-my-8 scrollbar-none snap-x snap-mandatory scroll-px-5 overflow-x-auto py-8 sm:scroll-px-8 lg:snap-none"
         >
-          <div
-            ref={track}
-            className="flex w-max gap-5 px-5 will-change-transform sm:px-8 lg:gap-6 lg:px-12 xl:px-16"
-          >
+          <div className="flex w-max gap-5 px-5 sm:px-8 lg:gap-6 lg:px-12 xl:px-16">
             {items.map((item, i) => (
               <Link
                 key={item.id}
                 href={item.href}
-                className="group relative isolate flex h-[26rem] w-[80vw] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl border border-ink/10 bg-ink p-7 text-paper shadow-lg transition-[border-color] duration-500 hover:border-gold focus-visible:border-gold focus-visible:ring-3 focus-visible:ring-gold/50 focus-visible:outline-none sm:w-[24rem] lg:h-[min(60svh,34rem)] lg:w-[clamp(20rem,30vw,28rem)]"
+                className="group relative isolate flex h-[26rem] w-[80vw] shrink-0 snap-start flex-col justify-between overflow-hidden rounded-3xl bg-ink p-7 text-paper shadow-[0_18px_40px_-14px_rgb(11_11_12/0.45)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-16px_rgb(11_11_12/0.55)] focus-visible:-translate-y-1.5 focus-visible:ring-3 focus-visible:ring-gold/50 focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:w-[24rem] lg:h-[min(60svh,34rem)] lg:w-[clamp(20rem,30vw,28rem)]"
               >
                 <Image
                   src={item.image.src}
@@ -157,7 +142,7 @@ export function ServicesScroller({
             {/* Last card: a call to action */}
             <Link
               href="/quote"
-              className="group flex h-[26rem] w-[80vw] shrink-0 snap-start flex-col justify-between rounded-3xl bg-gold p-7 text-ink shadow-lg focus-visible:ring-3 focus-visible:ring-ink/40 focus-visible:outline-none sm:w-[24rem] lg:h-[min(60svh,34rem)] lg:w-[clamp(20rem,30vw,28rem)]"
+              className="group flex h-[26rem] w-[80vw] shrink-0 snap-start flex-col justify-between rounded-3xl bg-gold p-7 text-ink shadow-[0_18px_40px_-14px_rgb(11_11_12/0.45)] transition-[transform,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-16px_rgb(11_11_12/0.55)] focus-visible:-translate-y-1.5 focus-visible:ring-3 focus-visible:ring-ink/40 focus-visible:outline-none motion-reduce:transition-none motion-reduce:hover:translate-y-0 sm:w-[24rem] lg:h-[min(60svh,34rem)] lg:w-[clamp(20rem,30vw,28rem)]"
             >
               <span className="font-geo text-sm tracking-[0.2em] uppercase">
                 Not sure which?
@@ -181,10 +166,10 @@ export function ServicesScroller({
           </div>
         </div>
 
-        {/* Progress (pinned mode only) */}
+        {/* How far along the row you are */}
         <div
           aria-hidden="true"
-          className="mx-auto hidden w-full max-w-[1760px] items-center gap-6 px-5 sm:px-8 lg:px-12 lg:motion-safe:flex xl:px-16"
+          className="mx-auto flex w-full max-w-[1760px] items-center gap-6 px-5 sm:px-8 lg:px-12 xl:px-16"
         >
           <span className="font-geo text-xs tracking-[0.3em] text-ink/60 tabular-nums">
             <span ref={counter}>01</span> / {String(total).padStart(2, "0")}
