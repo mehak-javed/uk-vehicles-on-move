@@ -68,7 +68,8 @@ export async function sendEmail(message: EmailMessage): Promise<boolean> {
       body: JSON.stringify({
         from,
         to: message.to,
-        subject: message.subject,
+        // Customer-typed text can appear in subjects: keep it on one line.
+        subject: message.subject.replace(/[\r\n]+/g, " ").slice(0, 200),
         html: message.html,
         text: message.text,
         reply_to: message.replyTo,
