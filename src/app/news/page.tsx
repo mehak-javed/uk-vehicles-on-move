@@ -11,6 +11,7 @@ import { formatNewsDate, getNewsPosts } from "@/content/news";
 export const metadata: Metadata = {
   title: "News",
   description: "Company updates and helpful advice from UK Vehicles On Move.",
+  alternates: { canonical: "/news" },
 };
 
 export default function NewsPage() {

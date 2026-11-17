@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "About us",
   description:
     "Who we are and how we work: professional vehicle delivery across the UK for dealers, businesses and private owners.",
+  alternates: { canonical: "/about" },
 };
 
 // Draft copy for client review: replace with the company's own story.

@@ -11,6 +11,7 @@ export const metadata: Metadata = {
   title: "Contact us",
   description:
     "Get in touch with UK Vehicles On Move by phone, WhatsApp, email or the contact form.",
+  alternates: { canonical: "/contact" },
 };
 
 export default function ContactPage() {

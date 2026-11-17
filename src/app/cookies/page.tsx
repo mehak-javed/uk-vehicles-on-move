@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "Cookie policy",
   description:
     "Which cookies and similar technologies UK Vehicles On Move uses, and how to change your choice.",
+  alternates: { canonical: "/cookies" },
 };
 
 const cellClass = "border-b border-border px-3 py-2 align-top";
