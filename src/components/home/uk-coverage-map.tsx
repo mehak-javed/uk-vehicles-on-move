@@ -62,6 +62,17 @@ function project([lon, lat]: LonLat) {
   };
 }
 
+function toPath(points: LonLat[]) {
+  return (
+    points
+      .map((p, i) => {
+        const { x, y } = project(p);
+        return `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
+      })
+      .join(" ") + " Z"
+  );
+}
+
 /** Is the point inside the polygon? (ray casting) */
 function inside(x: number, y: number, poly: { x: number; y: number }[]) {
   let hit = false;
@@ -124,6 +135,18 @@ export function UkCoverageMap({
         Map of the United Kingdom with pins on {cities.length} featured cities:{" "}
         {cities.map((c) => c.name).join(", ")}.
       </desc>
+      {/* Gold-tinted coastline around the dots */}
+      <g
+        aria-hidden="true"
+        fill="none"
+        className="stroke-gold/70"
+        strokeWidth={1.6}
+        strokeLinejoin="round"
+      >
+        <path d={toPath(GREAT_BRITAIN)} />
+        <path d={toPath(NORTHERN_IRELAND)} />
+        <path d={toPath(ISLE_OF_WIGHT)} />
+      </g>
       <g className="fill-gold-dark/25" aria-hidden="true">
         {DOTS.map(({ x, y }) => (
           <circle key={`${x}-${y}`} cx={x} cy={y} r={2.6} />
