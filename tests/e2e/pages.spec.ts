@@ -10,7 +10,7 @@ const pages = [
   { path: "/news", heading: /news/i },
   { path: "/contact", heading: "Let's move it." },
   { path: "/quote", heading: /quote/i },
-  { path: "/drive-with-us", heading: /drive with us/i },
+  { path: "/drive-with-us", heading: /your next journey/i },
   { path: "/report-incident", heading: /report an incident/i },
   { path: "/privacy", heading: "Privacy policy" },
   { path: "/cookies", heading: "Cookie policy" },

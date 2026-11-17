@@ -3,7 +3,7 @@ import { CalendarClock, MapPinned, Route } from "lucide-react";
 
 import { DriverApplicationForm } from "@/components/drive-with-us/driver-application-form";
 import { Container } from "@/components/layout/container";
-import { PageHeader } from "@/components/site/page-header";
+import { PhotoHero } from "@/components/site/photo-hero";
 
 export const metadata: Metadata = {
   title: "Drive with us",
@@ -22,10 +22,11 @@ const perks = [
 export default function DriveWithUsPage() {
   return (
     <>
-      <PageHeader
-        breadcrumb="Drive with us"
-        title="Drive with us"
+      <PhotoHero
+        title="Your next journey starts with us."
+        label="Drive with us"
         description="We're always looking for reliable, professional drivers. Apply below and we'll be in touch."
+        image={{ src: "/samples/photo-7.jpg" }}
       />
       <section className="py-12 sm:py-16">
         <Container className="grid gap-10 lg:grid-cols-[1fr_18rem]">
