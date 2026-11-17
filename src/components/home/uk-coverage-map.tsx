@@ -62,48 +62,99 @@ function project([lon, lat]: LonLat) {
   };
 }
 
-function toPath(points: LonLat[]) {
-  return (
-    points
-      .map((p, i) => {
-        const { x, y } = project(p);
-        return `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
-      })
-      .join(" ") + " Z"
-  );
+/** Is the point inside the polygon? (ray casting) */
+function inside(x: number, y: number, poly: { x: number; y: number }[]) {
+  let hit = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const a = poly[i];
+    const b = poly[j];
+    if (
+      a.y > y !== b.y > y &&
+      x < ((b.x - a.x) * (y - a.y)) / (b.y - a.y) + a.x
+    )
+      hit = !hit;
+  }
+  return hit;
 }
 
 const WIDTH = Math.ceil((2.1 - LON_MIN) * LON_FACTOR * SCALE);
 const HEIGHT = Math.ceil((LAT_MAX - 49.7) * SCALE);
 
-export function UkCoverageMap({ cities }: { cities: City[] }) {
+/** Spacing of the dot grid, in map units. */
+const GAP = 11;
+
+/** Every grid point that falls on land: the map is drawn from these. */
+const DOTS = (() => {
+  const shapes = [GREAT_BRITAIN, NORTHERN_IRELAND, ISLE_OF_WIGHT].map((s) =>
+    s.map(project),
+  );
+  const dots: { x: number; y: number }[] = [];
+  for (let y = GAP / 2; y < HEIGHT; y += GAP)
+    for (let x = GAP / 2; x < WIDTH; x += GAP)
+      if (shapes.some((shape) => inside(x, y, shape))) dots.push({ x, y });
+  return dots;
+})();
+
+export const projectCity = (city: City) => project([city.lon, city.lat]);
+export const MAP_SIZE = { width: WIDTH, height: HEIGHT };
+
+/**
+ * UK map drawn from small gold dots, with a pin per featured city. Pins
+ * pulse softly (staggered); the active city's pin grows. Hovering a pin
+ * reports it through `onActive`.
+ */
+export function UkCoverageMap({
+  cities,
+  active,
+  onActive,
+}: {
+  cities: City[];
+  active: string | null;
+  onActive: (name: string | null) => void;
+}) {
   return (
     <svg
       viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
       role="img"
       aria-labelledby="uk-map-title uk-map-desc"
-      className="h-auto w-full max-w-xs sm:max-w-sm"
+      className="h-auto w-full overflow-visible"
     >
       <title id="uk-map-title">UK coverage map</title>
       <desc id="uk-map-desc">
         Map of the United Kingdom with pins on {cities.length} featured cities:{" "}
         {cities.map((c) => c.name).join(", ")}.
       </desc>
-      <g
-        className="fill-ink-soft stroke-gold/60"
-        strokeWidth={1.5}
-        strokeLinejoin="round"
-      >
-        <path d={toPath(GREAT_BRITAIN)} />
-        <path d={toPath(NORTHERN_IRELAND)} />
-        <path d={toPath(ISLE_OF_WIGHT)} />
+      <g className="fill-gold/30" aria-hidden="true">
+        {DOTS.map(({ x, y }) => (
+          <circle key={`${x}-${y}`} cx={x} cy={y} r={2.6} />
+        ))}
       </g>
-      {cities.map((city) => {
-        const { x, y } = project([city.lon, city.lat]);
+      {cities.map((city, i) => {
+        const { x, y } = projectCity(city);
+        const isActive = active === city.name;
         return (
-          <g key={city.name} aria-hidden="true">
-            <circle cx={x} cy={y} r={9} className="fill-gold/25" />
-            <circle cx={x} cy={y} r={4} className="fill-gold" />
+          <g
+            key={city.name}
+            aria-hidden="true"
+            className="cursor-pointer"
+            onMouseEnter={() => onActive(city.name)}
+            onMouseLeave={() => onActive(null)}
+          >
+            <circle
+              cx={x}
+              cy={y}
+              r={6}
+              className="pin-pulse fill-gold"
+              style={{ animationDelay: `${i * 0.33}s` }}
+            />
+            <circle
+              cx={x}
+              cy={y}
+              r={isActive ? 10 : 6}
+              className="fill-gold transition-[r] duration-300"
+            />
+            {/* Larger invisible target, easier to hover */}
+            <circle cx={x} cy={y} r={18} fill="transparent" />
           </g>
         );
       })}
