@@ -3,7 +3,6 @@ import { ImageIcon } from "lucide-react";
 
 import { GalleryGrid } from "@/components/gallery/gallery-grid";
 import { Container } from "@/components/layout/container";
-import { CtaBand } from "@/components/site/cta-band";
 import { PageHeader } from "@/components/site/page-header";
 import { getGalleryImages } from "@/content/gallery";
 
@@ -43,7 +42,6 @@ export default function GalleryPage() {
           )}
         </Container>
       </section>
-      <CtaBand />
     </>
   );
 }

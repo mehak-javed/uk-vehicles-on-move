@@ -6,7 +6,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
-import { CtaBand } from "@/components/site/cta-band";
 import { formatNewsDate, getNewsPost, getNewsPosts } from "@/content/news";
 
 /**
@@ -67,7 +66,6 @@ export default function NewsArticlePage({ params }: PageProps<"/news/[slug]">) {
       <Suspense fallback={<ArticleSkeleton />}>
         <Article params={params} />
       </Suspense>
-      <CtaBand />
     </>
   );
 }

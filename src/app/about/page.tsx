@@ -10,7 +10,6 @@ import {
 import { AboutHero } from "@/components/about/about-hero";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
-import { CtaBand } from "@/components/site/cta-band";
 import { ParallaxBand } from "@/components/site/parallax-band";
 import { siteConfig } from "@/config/site";
 
@@ -139,8 +138,6 @@ export default function AboutPage() {
           </ul>
         </Container>
       </section>
-
-      <CtaBand />
     </>
   );
 }

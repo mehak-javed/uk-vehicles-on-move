@@ -81,3 +81,27 @@ test("search engine files and security headers are in place", async ({
   expect(headers["x-content-type-options"]).toBe("nosniff");
   expect(headers["x-powered-by"]).toBeUndefined();
 });
+
+test("the home quote button opens the contact page", async ({ page }) => {
+  await page.goto("/");
+  await page
+    .getByRole("main")
+    .getByRole("link", { name: /get a free quote/i })
+    .first()
+    .click();
+  await expect(page).toHaveURL(/\/contact$/);
+});
+
+test('"Ready to move your vehicle?" appears only on the contact page', async ({
+  page,
+}) => {
+  const band = page.getByRole("heading", {
+    name: "Ready to move your vehicle?",
+  });
+  await page.goto("/contact");
+  await expect(band).toBeVisible();
+  for (const path of ["/", "/about", "/services", "/gallery", "/news"]) {
+    await page.goto(path);
+    await expect(band).toHaveCount(0);
+  }
+});

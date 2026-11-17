@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight, Newspaper } from "lucide-react";
 
 import { Container } from "@/components/layout/container";
-import { CtaBand } from "@/components/site/cta-band";
 import { PageHeader } from "@/components/site/page-header";
 import { formatNewsDate, getNewsPosts } from "@/content/news";
 
@@ -90,7 +89,6 @@ export default function NewsPage() {
           )}
         </Container>
       </section>
-      <CtaBand />
     </>
   );
 }
