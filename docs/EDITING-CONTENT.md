@@ -30,13 +30,13 @@ In `src/content/news.ts`, copy an existing entry in `newsPosts` and change:
 Newest articles appear first. The article is added to the sitemap
 automatically.
 
-## Replacing the gallery photos
+## Adding or replacing gallery photos
 
 1. Put the photos in `public/gallery/` (JPG, about 1600 px on the long side).
-2. In `src/content/gallery.ts`, replace the sample entries with one entry
-   per photo: `src`, `alt` (what the photo shows), `width`, `height`, and an
-   optional `caption`.
-3. Delete the `public/samples/` photos once nothing uses them.
+2. In `src/content/gallery.ts`, add one entry per photo with its `alt` (what
+   the photo shows) and its `width` and `height` in pixels. The list order is
+   the order on the page.
+3. Delete photos from `public/gallery/` that are no longer listed.
 
 ## Replacing the hero video
 

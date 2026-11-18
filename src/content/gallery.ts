@@ -1,9 +1,6 @@
 /**
- * Gallery photos. To replace them, see docs/EDITING-CONTENT.md.
- *
- * The site is currently a draft for client review, so the gallery shows
- * dummy stock photos. Replace `galleryImages` with the company's own photos
- * (in /public/gallery) before launch.
+ * Gallery photos, in display order. Images live in /public/gallery.
+ * To add or replace photos, see docs/EDITING-CONTENT.md.
  */
 export type GalleryImage = {
   src: string;
@@ -14,37 +11,72 @@ export type GalleryImage = {
   caption?: string;
 };
 
-/**
- * Dummy stock photos from Unsplash (Unsplash License: free to use, no
- * attribution required). Photo IDs are noted so they can be traced.
- */
-const sample = (
-  n: number,
+const photo = (
+  n: string,
   width: number,
   height: number,
   alt: string,
-): GalleryImage => ({
-  src: `/samples/photo-${n}.jpg`,
-  alt,
-  width,
-  height,
-  caption: `Sample photo ${n}`,
-});
+): GalleryImage => ({ src: `/gallery/truck-${n}.jpg`, alt, width, height });
 
 const galleryImages: GalleryImage[] = [
-  sample(1, 878, 1200, "Car carrier truck transporting vehicles on a road"), // q36Yp9RpHa0
-  sample(2, 1200, 676, "Two cars loaded onto a car carrier truck"), // vvnZdwe80EE
-  sample(3, 1200, 752, "Car transporter truck driving along a highway"), // 9iTgJ8mv_S4
-  sample(4, 1200, 900, "Black luxury car secured inside a red transport truck"), // ZUC0RGbVfME
-  sample(5, 799, 1200, "Classic car on the back of a flatbed recovery truck"), // iJGax56o5yU
-  sample(6, 1200, 899, "Red hatchback driving on an open country road"), // bFTVxTo266E
-  sample(
-    7,
-    1200,
-    801,
-    "Driver's view of hands on the steering wheel on a snowy road",
-  ), // XuDPnpox8tc
-  sample(8, 799, 1200, "Aerial view of a car driving down a country road"), // IEaFYkVMwQA
+  photo(
+    "02",
+    831,
+    561,
+    "Red car transporter crossing Westminster Bridge by Big Ben",
+  ),
+  photo(
+    "03",
+    792,
+    561,
+    "Car transporter on a winding road through misty hills",
+  ),
+  photo("10", 831, 549, "Loaded car transporter driving along a motorway"),
+  photo(
+    "12",
+    831,
+    555,
+    "Classic silver sports car being loaded onto a transporter",
+  ),
+  photo("05", 831, 561, "Car transporter driving onto a ferry deck"),
+  photo(
+    "04",
+    831,
+    561,
+    "Driver lowering the upper deck of a car transporter at dusk",
+  ),
+  photo("06", 831, 475, "Car transporter in a floodlit depot at night"),
+  photo("16", 831, 552, "Classic car and transporter arriving at a gated site"),
+  photo("11", 831, 555, "Transporter cab leaving through a site gate"),
+  photo(
+    "17",
+    831,
+    552,
+    "Driver standing beside his truck on a farm track with cattle",
+  ),
+  photo(
+    "18",
+    792,
+    552,
+    "Driver and truck on an airfield next to a light aircraft",
+  ),
+  photo("20", 831, 552, "Car transporter driving through heavy rain"),
+  photo(
+    "01",
+    831,
+    561,
+    "Driver handing over paperwork outside a car dealership",
+  ),
+  photo(
+    "07",
+    831,
+    433,
+    "Driver handing car keys to a customer outside his home",
+  ),
+  photo("19", 831, 552, "Smiling driver in the cab of a red truck"),
+  photo("13", 792, 555, "Driver enjoying a coffee break at a truck stop"),
+  photo("14", 831, 555, "Classic car secured on the transporter's lower deck"),
+  photo("15", 831, 555, "Red truck parked at a roadside service station"),
 ];
 
 export function getGalleryImages(): GalleryImage[] {
