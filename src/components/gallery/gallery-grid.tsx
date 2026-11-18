@@ -35,7 +35,7 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
 
   return (
     <>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {images.map((image, i) => (
           <li key={image.src}>
             <button
@@ -52,7 +52,7 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
                 alt=""
                 width={image.width}
                 height={image.height}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </button>
@@ -62,7 +62,7 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
 
       <Dialog open={open} onOpenChange={(o) => !o && setIndex(null)}>
         <DialogContent
-          className="max-w-[min(92vw,1100px)] gap-3 border-none bg-ink p-3 text-paper sm:max-w-[min(92vw,1100px)] sm:p-4"
+          className="max-w-[min(92vw,760px)] gap-3 border-none bg-ink p-3 text-paper sm:max-w-[min(92vw,760px)] sm:p-4"
           onCloseAutoFocus={(e) => {
             e.preventDefault();
             thumbs.current[lastViewed.current]?.focus();
@@ -82,14 +82,17 @@ export function GalleryGrid({ images }: { images: GalleryImage[] }) {
                 {current.alt}. Use the left and right arrow keys to move between
                 photos, and Escape to close.
               </DialogDescription>
-              <div className="relative flex max-h-[78vh] items-center justify-center">
+              {/* The photos are small (about 830 px wide): show the original
+                  file at no more than its own size, so it is not
+                  re-compressed or stretched. */}
+              <div className="relative flex max-h-[70vh] items-center justify-center">
                 <Image
                   src={current.src}
                   alt={current.alt}
                   width={current.width}
                   height={current.height}
-                  sizes="92vw"
-                  className="h-auto max-h-[78vh] w-auto rounded-md object-contain"
+                  unoptimized
+                  className="h-auto max-h-[70vh] w-auto max-w-full rounded-md object-contain"
                 />
               </div>
               <div className="flex items-center justify-between gap-4 text-sm">
