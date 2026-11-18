@@ -11,72 +11,36 @@ export type GalleryImage = {
   caption?: string;
 };
 
-const photo = (
-  n: string,
-  width: number,
-  height: number,
-  alt: string,
-): GalleryImage => ({ src: `/gallery/truck-${n}.jpg`, alt, width, height });
+const photo = (file: string, alt: string): GalleryImage => ({
+  src: `/gallery/${file}.jpg`,
+  alt,
+  width: 1408,
+  height: 768,
+});
 
 const galleryImages: GalleryImage[] = [
   photo(
-    "02",
-    831,
-    561,
-    "Red car transporter crossing Westminster Bridge by Big Ben",
+    "westminster",
+    "Our car transporter on Westminster Bridge in front of Big Ben",
   ),
   photo(
-    "03",
-    792,
-    561,
-    "Car transporter on a winding road through misty hills",
+    "highlands",
+    "Our car transporter on a winding road through the Scottish Highlands",
   ),
-  photo("10", 831, 549, "Loaded car transporter driving along a motorway"),
+  photo("ferry", "Our car transporter driving off a ferry onto the quay"),
   photo(
-    "12",
-    831,
-    555,
-    "Classic silver sports car being loaded onto a transporter",
-  ),
-  photo("05", 831, 561, "Car transporter driving onto a ferry deck"),
-  photo(
-    "04",
-    831,
-    561,
-    "Driver lowering the upper deck of a car transporter at dusk",
-  ),
-  photo("06", 831, 475, "Car transporter in a floodlit depot at night"),
-  photo("16", 831, 552, "Classic car and transporter arriving at a gated site"),
-  photo("11", 831, 555, "Transporter cab leaving through a site gate"),
-  photo(
-    "17",
-    831,
-    552,
-    "Driver standing beside his truck on a farm track with cattle",
+    "dealership",
+    "Two of our team checking paperwork beside the truck at a car dealership",
   ),
   photo(
-    "18",
-    792,
-    552,
-    "Driver and truck on an airfield next to a light aircraft",
-  ),
-  photo("20", 831, 552, "Car transporter driving through heavy rain"),
-  photo(
-    "01",
-    831,
-    561,
-    "Driver handing over paperwork outside a car dealership",
+    "driver",
+    "Our driver with car keys and a clipboard in front of a loaded transporter",
   ),
   photo(
-    "07",
-    831,
-    433,
-    "Driver handing car keys to a customer outside his home",
+    "handover",
+    "Our driver shaking hands with a customer as their car is handed over",
   ),
-  photo("19", 831, 552, "Smiling driver in the cab of a red truck"),
-  photo("13", 792, 555, "Driver enjoying a coffee break at a truck stop"),
-  photo("14", 831, 555, "Classic car secured on the transporter's lower deck"),
-  photo("15", 831, 555, "Red truck parked at a roadside service station"),
+  photo("in-the-cab", "Smiling driver at the wheel of the truck on a motorway"),
 ];
 
 export function getGalleryImages(): GalleryImage[] {
