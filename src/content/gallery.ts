@@ -11,12 +11,12 @@ export type GalleryImage = {
   caption?: string;
 };
 
-const photo = (file: string, alt: string): GalleryImage => ({
-  src: `/gallery/${file}.jpg`,
-  alt,
-  width: 1408,
-  height: 768,
-});
+/** Most photos are 1408 x 768; pass the size for any that differ. */
+const photo = (
+  file: string,
+  alt: string,
+  [width, height] = [1408, 768],
+): GalleryImage => ({ src: `/gallery/${file}.jpg`, alt, width, height });
 
 const galleryImages: GalleryImage[] = [
   photo(
@@ -47,7 +47,8 @@ const galleryImages: GalleryImage[] = [
   ),
   photo(
     "clifton-bridge",
-    "Our car transporter crossing the Clifton Suspension Bridge in Bristol",
+    "Our loaded car transporter crossing the Clifton Suspension Bridge in Bristol",
+    [1024, 572],
   ),
   photo(
     "electric-car-inspection",
