@@ -7,10 +7,10 @@ import {
   Timer,
 } from "lucide-react";
 
-import { AboutHero } from "@/components/about/about-hero";
 import { Container } from "@/components/layout/container";
 import { SectionHeading } from "@/components/layout/section-heading";
 import { ParallaxBand } from "@/components/site/parallax-band";
+import { PhotoHero } from "@/components/site/photo-hero";
 import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
@@ -56,7 +56,7 @@ const reasons = [
 export default function AboutPage() {
   return (
     <>
-      <AboutHero
+      <PhotoHero
         eyebrow="About us"
         title="Moving vehicles, the right way"
         description="Professional vehicle delivery across the UK for dealers, businesses and private owners."

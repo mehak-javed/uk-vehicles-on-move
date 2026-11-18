@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 import { HeroVideo } from "@/components/home/hero-video";
 import { Container } from "@/components/layout/container";
+import { ScrollCue } from "@/components/site/scroll-cue";
 import { Button } from "@/components/ui/button";
 import { siteConfig } from "@/config/site";
 
@@ -94,6 +95,8 @@ export function Hero() {
           </div>
         </div>
       </Container>
+
+      <ScrollCue />
     </section>
   );
 }
