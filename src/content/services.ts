@@ -22,6 +22,8 @@ export type Service = {
   /** Key points shown as a checklist on /services. */
   points: string[];
   icon: LucideIcon;
+  /** Photo on the home page cards and the /services page (in /public). */
+  image: { src: string; alt: string };
   /** Shown on the home page. */
   featured: boolean;
 };
@@ -40,6 +42,10 @@ export const services: Service[] = [
       "Condition checked at collection and handover",
     ],
     icon: DoorOpen,
+    image: {
+      src: "/gallery/family-delivery.jpg",
+      alt: "Our driver handing a car over to a family outside their home",
+    },
     featured: true,
   },
   {
@@ -55,6 +61,10 @@ export const services: Service[] = [
       "Updates on the day",
     ],
     icon: Clock,
+    image: {
+      src: "/gallery/in-the-cab.jpg",
+      alt: "Smiling driver at the wheel of the truck on a motorway",
+    },
     featured: true,
   },
   {
@@ -70,6 +80,10 @@ export const services: Service[] = [
       "Condition recorded at collection and delivery",
     ],
     icon: ShieldCheck,
+    image: {
+      src: "/gallery/securing-straps.jpg",
+      alt: "Driver tightening a wheel strap on the transporter deck",
+    },
     featured: false,
   },
   {
@@ -85,6 +99,10 @@ export const services: Service[] = [
       "One point of contact for the whole move",
     ],
     icon: MapPinned,
+    image: {
+      src: "/gallery/highlands.jpg",
+      alt: "Car transporter on a winding road through the Scottish Highlands",
+    },
     featured: true,
   },
   {
@@ -100,6 +118,10 @@ export const services: Service[] = [
       "Regular or one-off bookings",
     ],
     icon: Building2,
+    image: {
+      src: "/gallery/dealership.jpg",
+      alt: "Two of our team checking paperwork beside the truck at a car dealership",
+    },
     featured: true,
   },
 ];
