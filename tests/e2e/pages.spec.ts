@@ -6,7 +6,7 @@ const pages = [
   { path: "/", heading: /vehicle delivery/i },
   { path: "/about", heading: /moving vehicles, the right way/i },
   { path: "/services", heading: /services/i },
-  { path: "/gallery", heading: /gallery/i },
+  { path: "/gallery", heading: /our work/i },
   { path: "/news", heading: /news/i },
   { path: "/contact", heading: "Let's move it." },
   { path: "/quote", heading: /quote/i },
@@ -203,7 +203,7 @@ test("hovering a city pill shows it on the coverage map", async ({
   );
 });
 
-for (const path of ["/", "/about", "/drive-with-us", "/contact"]) {
+for (const path of ["/", "/about", "/gallery", "/drive-with-us", "/contact"]) {
   test(`the Scroll button on ${path} scrolls past the header`, async ({
     page,
   }) => {

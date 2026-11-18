@@ -3,7 +3,7 @@ import { ImageIcon } from "lucide-react";
 
 import { GalleryGrid } from "@/components/gallery/gallery-grid";
 import { Container } from "@/components/layout/container";
-import { PageHeader } from "@/components/site/page-header";
+import { PhotoHero } from "@/components/site/photo-hero";
 import { getGalleryImages } from "@/content/gallery";
 
 export const metadata: Metadata = {
@@ -18,10 +18,12 @@ export default function GalleryPage() {
 
   return (
     <>
-      <PageHeader
-        breadcrumb="Gallery"
-        title="Gallery"
+      <PhotoHero
+        eyebrow="Gallery"
+        title="Our work"
+        emphasis="across the UK"
         description="A look at some of the vehicles we've moved. Select a photo to view it full size."
+        image={{ src: "/gallery/edinburgh.jpg" }}
       />
       <section className="py-16 sm:py-20">
         <Container>
