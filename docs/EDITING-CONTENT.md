@@ -8,7 +8,7 @@ The live site updates a few minutes later.
 | -------------------------------------- | ---------------------------------------------------------------------------------------------- |
 | Phone, WhatsApp, public email, socials | Netlify environment variables (see [LAUNCH.md](LAUNCH.md)), then redeploy                      |
 | Menu links, footer links, gold banner  | `src/config/site.ts` (`mainNav`, `footerNav`, `announcements`)                                 |
-| Services and FAQs                      | `src/content/services.ts`                                                                      |
+| Services (text, photos) and FAQs       | `src/content/services.ts`                                                                      |
 | Homepage sections (steps, cities…)     | `src/content/home.ts`                                                                          |
 | Gallery photos                         | `src/content/gallery.ts` + images in `public/gallery/`                                         |
 | News articles                          | `src/content/news.ts` + images in `public/news/`                                               |
