@@ -5,7 +5,7 @@ import { acceptCookies } from "./helpers";
 const pages = [
   { path: "/", heading: /vehicle delivery/i },
   { path: "/about", heading: /moving vehicles, the right way/i },
-  { path: "/services", heading: /services/i },
+  { path: "/services", heading: /every move/i },
   { path: "/gallery", heading: /our work/i },
   { path: "/news", heading: /news/i },
   { path: "/contact", heading: "Let's move it." },
@@ -203,7 +203,14 @@ test("hovering a city pill shows it on the coverage map", async ({
   );
 });
 
-for (const path of ["/", "/about", "/gallery", "/drive-with-us", "/contact"]) {
+for (const path of [
+  "/",
+  "/about",
+  "/services",
+  "/gallery",
+  "/drive-with-us",
+  "/contact",
+]) {
   test(`the Scroll button on ${path} scrolls past the header`, async ({
     page,
   }) => {
@@ -222,3 +229,23 @@ for (const path of ["/", "/about", "/gallery", "/drive-with-us", "/contact"]) {
       .toBeGreaterThan(target - 5);
   });
 }
+
+test("the services menu stays in view and highlights the current service", async ({
+  page,
+}) => {
+  await page.goto("/services");
+  const menu = page.getByRole("navigation", { name: "Services on this page" });
+  await page.locator("#trade").scrollIntoViewIfNeeded();
+  await page
+    .locator("#trade h2")
+    .evaluate((el) => el.scrollIntoView({ block: "center" }));
+  await expect(menu).toBeInViewport();
+  await expect(menu.locator('a[aria-current="true"]')).toHaveAttribute(
+    "href",
+    "#trade",
+  );
+  await page
+    .locator("#faq h2")
+    .evaluate((el) => el.scrollIntoView({ block: "center" }));
+  await expect(menu.locator('a[aria-current="true"]')).toHaveCount(0);
+});

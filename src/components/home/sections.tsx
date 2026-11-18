@@ -138,29 +138,6 @@ export function AboutTeaser() {
 }
 
 /** Photo for each service in the showcase (sample photos for now). */
-const serviceImages: Record<string, { src: string; alt: string }> = {
-  "door-to-door": {
-    src: "/samples/photo-6.jpg",
-    alt: "Red hatchback driving on an open country road",
-  },
-  "same-day": {
-    src: "/samples/photo-3.jpg",
-    alt: "Car transporter truck driving along a highway",
-  },
-  insured: {
-    src: "/samples/photo-4.jpg",
-    alt: "Black car secured inside a transport truck",
-  },
-  nationwide: {
-    src: "/samples/photo-1.jpg",
-    alt: "Car carrier truck transporting vehicles on a road",
-  },
-  trade: {
-    src: "/samples/photo-2.jpg",
-    alt: "Two cars loaded onto a car carrier truck",
-  },
-};
-
 /**
  * Home "Our services": dark section where the service cards move
  * sideways as you scroll (swipeable on phones). See ServicesScroller.
@@ -173,7 +150,7 @@ export function ServicesGrid() {
       title: service.title,
       description: service.description,
       href: serviceHref(service),
-      image: serviceImages[service.id] ?? serviceImages["door-to-door"],
+      image: service.image,
       icon: <Icon className="size-6" aria-hidden="true" />,
     };
   });

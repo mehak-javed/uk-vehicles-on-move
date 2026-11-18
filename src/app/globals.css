@@ -327,3 +327,25 @@
     animation: pin-pulse 2.6s ease-out infinite;
   }
 }
+
+/* ── Services page: photos open up as they scroll into view ──────────── */
+@keyframes image-reveal {
+  from {
+    clip-path: inset(10% 10% 10% 10% round 1rem);
+    opacity: 0.3;
+  }
+  to {
+    clip-path: inset(0 0 0 0 round 1rem);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .image-reveal {
+      animation: image-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 40%;
+    }
+  }
+}
