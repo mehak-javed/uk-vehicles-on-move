@@ -3,6 +3,13 @@
 All notable changes to this project. Format based on
 [Keep a Changelog](https://keepachangelog.com/en-GB/1.1.0/).
 
+## [Unreleased]
+
+### Removed
+
+- The News page and news articles, and their links in the menu, footer
+  and sitemap.
+
 ## [1.0.0] – 2026-11-17
 
 First version for client review.

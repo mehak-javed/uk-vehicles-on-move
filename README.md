@@ -1,7 +1,7 @@
 # UK Vehicles On Move
 
 Website for a UK vehicle delivery company: company information, services,
-gallery and news, plus four forms (quote request, contact, driver
+and a photo gallery, plus four forms (quote request, contact, driver
 application, incident report) that are sent by email.
 
 There is no database and no login. Every form submission goes to the
@@ -10,7 +10,7 @@ reference.
 
 - **Launch guide:** [docs/LAUNCH.md](docs/LAUNCH.md)
 - **Running the site (services, accounts, limits):** [docs/RUNBOOK.md](docs/RUNBOOK.md)
-- **Changing text, photos and news:** [docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md)
+- **Changing text and photos:** [docs/EDITING-CONTENT.md](docs/EDITING-CONTENT.md)
 - **Email, spam check and uploads setup:** [docs/FORMS-EMAIL-SETUP.md](docs/FORMS-EMAIL-SETUP.md)
 - **Ways of working:** [CONTRIBUTING.md](CONTRIBUTING.md) · **Changes:** [CHANGELOG.md](CHANGELOG.md)
 
@@ -44,7 +44,7 @@ Turnstile · Netlify · GitHub Actions · Vitest · Playwright
 | -------------------- | -------------------------------------------------------------- |
 | `src/app`            | Pages (one folder per page), sitemap, robots, 404 / error page |
 | `src/components`     | Page sections, forms, header, footer, UI building blocks       |
-| `src/content`        | Text and lists shown on the site: services, gallery, news      |
+| `src/content`        | Text and lists shown on the site: services, gallery            |
 | `src/config/site.ts` | Navigation, contact details (from environment variables)       |
 | `src/lib/validation` | Form rules, shared by the browser and the server               |
 | `src/lib/server`     | Email sending, spam check, upload security (server only)       |

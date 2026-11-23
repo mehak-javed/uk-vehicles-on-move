@@ -1,4 +1,4 @@
-# Changing text, photos and news
+# Changing text and photos
 
 There is no admin area: content lives in a few files in the project. Change
 the file, open a pull request, check the Netlify preview link, then merge.
@@ -11,24 +11,9 @@ The live site updates a few minutes later.
 | Services (text, photos) and FAQs       | `src/content/services.ts`                                                                      |
 | Homepage sections (steps, cities…)     | `src/content/home.ts`                                                                          |
 | Gallery photos                         | `src/content/gallery.ts` + images in `public/gallery/`                                         |
-| News articles                          | `src/content/news.ts` + images in `public/news/`                                               |
 | About page text                        | `src/app/about/page.tsx`                                                                       |
 | Privacy, cookie and terms pages        | `src/app/privacy`, `src/app/cookies`, `src/app/terms` (and the date in `src/content/legal.ts`) |
 | Hero video                             | `public/home/` (see below)                                                                     |
-
-## Adding a news article
-
-In `src/content/news.ts`, copy an existing entry in `newsPosts` and change:
-
-- `slug`: the web address, lowercase with dashes, e.g. `new-depot-in-leeds`
-- `title`, `excerpt` (one sentence shown on the news list)
-- `publishedAt`: date as `YYYY-MM-DD`
-- `body`: one string per paragraph
-- `image` (optional): put the photo in `public/news/` and set `src`, a
-  short `alt` description, and its `width` and `height` in pixels
-
-Newest articles appear first. The article is added to the sitemap
-automatically.
 
 ## Adding or replacing gallery photos
 

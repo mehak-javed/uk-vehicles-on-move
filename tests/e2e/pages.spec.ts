@@ -7,7 +7,6 @@ const pages = [
   { path: "/about", heading: /moving vehicles, the right way/i },
   { path: "/services", heading: /every move/i },
   { path: "/gallery", heading: /our work/i },
-  { path: "/news", heading: /news/i },
   { path: "/contact", heading: "Let's move it." },
   { path: "/quote", heading: /quote/i },
   { path: "/drive-with-us", heading: /your next journey/i },
@@ -103,7 +102,7 @@ test('the "Let\'s move it" band appears only on the contact page', async ({
   });
   await page.goto("/contact");
   await expect(band).toBeVisible();
-  for (const path of ["/", "/about", "/services", "/gallery", "/news"]) {
+  for (const path of ["/", "/about", "/services", "/gallery"]) {
     await page.goto(path);
     await expect(band).toHaveCount(0);
   }
