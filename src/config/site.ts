@@ -38,7 +38,6 @@ export const siteConfig = {
     { title: "About", href: "/about" },
     { title: "Services", href: "/services" },
     { title: "Gallery", href: "/gallery" },
-    { title: "News", href: "/news" },
     { title: "Drive With Us", href: "/drive-with-us" },
     { title: "Contact", href: "/contact" },
   ],
@@ -50,7 +49,6 @@ export const siteConfig = {
       { title: "About us", href: "/about" },
       { title: "Services", href: "/services" },
       { title: "Gallery", href: "/gallery" },
-      { title: "News", href: "/news" },
     ],
     help: [
       { title: "Get a quote", href: "/quote" },

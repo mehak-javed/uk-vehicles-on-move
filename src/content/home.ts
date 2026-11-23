@@ -1,9 +1,9 @@
 /**
- * Home page content. Static for now; news, testimonials and partners move to
+ * Home page content. Static for now; testimonials and partners move to
  * the database and admin area in US-22.
  *
  * Rule: no fabricated content goes live. Sections whose list is empty
- * (news, testimonials, partners) are hidden automatically.
+ * (testimonials, partners) are hidden automatically.
  */
 export { featuredServices as services, serviceHref } from "./services";
 
