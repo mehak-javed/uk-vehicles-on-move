@@ -105,34 +105,6 @@ export default function PrivacyPage() {
       ),
     },
     {
-      id: "who-we-share-with",
-      title: "Who we share it with",
-      content: (
-        <>
-          <p>
-            We do not sell your information. We use trusted service providers
-            who process it on our behalf and only as we instruct:
-          </p>
-          <ul>
-            <li>Website hosting (Netlify)</li>
-            <li>Sending emails (Resend) and our business email (Zoho Mail)</li>
-            <li>Secure storage of uploaded files (Cloudinary)</li>
-            <li>Spam protection and privacy-friendly analytics (Cloudflare)</li>
-          </ul>
-          <p>
-            Where needed, we may also share information with our insurers, the
-            drivers handling your job, or the authorities when the law requires
-            it.
-          </p>
-          <p>
-            Some providers process data outside the UK. Where this happens, we
-            make sure appropriate safeguards are in place, such as UK adequacy
-            regulations or the UK International Data Transfer Agreement.
-          </p>
-        </>
-      ),
-    },
-    {
       id: "how-long-we-keep-it",
       title: "How long we keep it",
       content: (
